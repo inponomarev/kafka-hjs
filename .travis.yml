@@ -11,9 +11,9 @@ before_install:
   - mkdir output
 
 script:
+  - cp -rf images output/images
   - docker run --rm -v `pwd`:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor-revealjs -a revealjsdir=https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0 -r asciidoctor-diagram -o index.html -D /documents/output lecture.adoc
   - cp -f white_course.css output/white_course.css
-  - cp -r images/. output/images/
   - cp -rf font-awesome-4.7.0 output/font-awesome-4.7.0
   - cp -rf roboto-2014 output/roboto-2014
 
