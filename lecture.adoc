@@ -1,0 +1,1808 @@
+= Apache Kafka: что это и как она изменит архитектуру вашего приложения
+Иван Пономарёв, КУРС/МФТИ
+:revealjs_theme: black
+:revealjs_customtheme: white_course.css
+:revealjs_slideNumber:
+:revealjs_history:
+:revealjs_progress:
+:encoding: UTF-8
+:lang: ru
+include::_doc_general_attributes.adoc[]
+:doctype: article
+:toclevels: 3
+:imagesdir: images
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:icons: font
+:iconfont-remote!:
+:iconfont-name: font-awesome-4.7.0/css/font-awesome
+:revealjs_mouseWheel: true
+:revealjs_center: false
+:revealjs_transition: none
+:revealjs_width: 1600
+:revealjs_height: 900
+
+
+//== Часть 1. Введение
+:!figure-caption:
+
+ponomarev@corchestra.ru
+
+icon:twitter[size=lg] @inponomarev
+
+[%notitle]
+== Кто я такой
+
+[cols="30a,70a"]
+|===
+.^|image::me.jpg[]
+.^|
+* Tech Lead at KURS
+* ERP systems & Java background
+* Speaker at JPoint, Devoops, Heisenbug, JUG.MSK, etc.
+* Twitter @inponomarev
+|===
+
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+1. *Что такое лог и почему это важно*
+2. Что такое Kafka и что она умеет
+3. Что такое потоковая архитектура и на что способны потоковые обработчики
+4. Kafka и JavaScript
+5. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
+
+[%notitle]
+== Вот работник склада
+
+//Получил задание на перемещение
+
+image::worker.jpg[]
+
+== Берёт 2 единицы товара из ячейки A
+
+[cols=2]
+|===
+a|
+
+[cols="50a,50a",options=header]
+!===
+!A
+!B
+!10 pcs
+!0 pcs
+!===
+
+a|
+
+[plantuml, getitem, png]
+----
+@startuml
+skinparam monochrome true
+skinparam dpi 200
+
+left to right direction
+
+object A {
+ item X
+}
+mix_actor Worker
+
+A --> "2 pcs" Worker
+@enduml
+----
+|===
+
+== Везёт на погрузчике
+
+[cols=2]
+|===
+a|
+image::forklift.jpg[]
+a|
+
+[cols="50a,50a",options=header]
+!===
+!A
+!B
+!8 pcs
+!0 pcs
+!===
+
+|===
+
+== Кладёт в ячейку B
+
+[cols=2]
+|===
+a|
+[plantuml, putitem, png]
+----
+@startuml
+skinparam monochrome true
+skinparam dpi 200
+
+left to right direction
+object B {
+  item X
+}
+mix_actor Worker
+
+Worker --> "2 pcs" B
+@enduml
+----
+a|
+[cols="50a,50a",options=header]
+!===
+!A
+!B
+!8 pcs
+!2 pcs
+!===
+
+|===
+
+== Каким образом это автоматизировать?
+
+// База данных -- это склад?!
+[cols="1,1,1",options=header]
+|===
+|товар | ячейка | кол-во 
+|X     |  A     | 8     
+|X     |  B     | 2      
+|Y     |  B     | 1      
+|===
+
+== Всё хорошо, пока...
+
+// Надо взять товар с полки, но там пусто!
+
+image::emptyshelf.jpg[]
+
+== Что это может быть?
+
+[cols=2]
+|===
+a|
+[%step]
+* Украли
+* Потеряли: лежит где-то рядом
+* Разбили и выкинули
+a|
+|===
+
+== Что это может быть?
+
+[cols=2]
+|===
+a|
+* Украли
+* Потеряли: лежит где-то рядом
+* Разбили и выкинули
+* *ЭТО ВАША ТУПАЯ ПРОГРАММА НЕ РАБОТАЕТ*
+a|
+image::upset-cropped.jpg[]
+
+|===
+
+== Что будем делать?
+
+// * «Текущий снимок»? Делать нечего.
+// * «База данных есть склад» -- просто, но не работает
+
+image::messy.jpg[]
+
+
+== Как на самом деле надо проектировать?
+
+[cols="1a,3a"]
+|===
+|image::noway.png[]
+<.^|* «База данных -- это склад»
+|===
+
+== Как на самом деле надо проектировать?
+
+[cols="1a,3a"]
+|===
+|image::noway.png[]
+<.^|* «База данных -- это склад»
+|image::okay.png[]
+<.^|
+
+* База данных отражает процессы. 
+
+* Текущее состояние -- результат выполнения процессов
+|===
+
+
+== Warehouse Ledger
+
+[cols="1,1,1,1,1",options=header]
+|===
+
+|дата |товар | ячейка | кол-во | описание
+|02.04.2020|X     |  A     | 10     | начальный остаток
+|02.04.2020|X     |  B     | 2      | начальный остаток
+|02.04.2020|Y     |  B     | 1      | начальный остаток
+|===
+
+== Warehouse Ledger
+
+[cols="1,1,1,1,1",options=header]
+|===
+
+|дата |товар | ячейка | кол-во | описание
+|02.04.2020|X     |  A     | 10     | начальный остаток
+|02.04.2020|X     |  B     | 2      | начальный остаток
+|02.04.2020|Y     |  B     | 1      | начальный остаток
+|09.04.2020|X     |  A     | -2     | Василий по заданию №1
+|===
+
+== Warehouse Ledger
+
+[cols="1,1,1,1,1",options=header]
+|===
+
+|дата |товар | ячейка | кол-во | описание
+|02.04.2020|X     |  A     | 10     | начальный остаток
+|02.04.2020|X     |  B     | 2      | начальный остаток
+|02.04.2020|Y     |  B     | 1      | начальный остаток
+|09.04.2020|X     |  A     | -2     | Василий по заданию №1
+|09.04.2020|X     |  B     | 2     | Василий по заданию №1
+|===
+
+== А если мы ошиблись с учётом?
+
+[cols="1,1,1,1,1",options=header]
+|===
+
+|дата |товар | ячейка | кол-во | описание
+|9.04.2020|X     |  A     | -2     | Василий по заданию №1
+|9.04.2020|X     |  B     | 2     | Василий по заданию №1
+|9.04.2020|X     |  A     | 2     | Сторно задания №1
+|9.04.2020|X     |  B     | -2     | Сторно задания №1
+
+|===
+
+== Расследуем инцидент
+
+* 9 апреля Василий должен был положить товар из A в В.
+* Давайте посмотрим, что лежит в A?
+* Давайте спросим Василия?
+
+== На какие вопросы уже можно ответить?
+
+[%step]
+* Сколько у нас всего на складе товара Y?
+* Что лежит в ячейке B?
+* Сколько товаров переместил Василий 9 апреля?
+* Какие корректировки вносились в систему?
+
+== Новые требования
+
+[%step]
+* Нагрузка на полку лимитирована 100 кг
+* -- Добавляем поле "вес" в Ledger!
+* Нужно посчитать зарплату работников склада
+* -- Даже добавлять ничего не надо.
+
+
+
+== Архитектура решения: Ledger не работает в одиночку
+
+[graphviz,erp-architecture,png]
+----
+digraph G {
+  graph[dpi="180"];
+  rankdir="LR";
+  A[label="Documents",shape="cylinder"];
+  B[label="Posting",shape="rectable",style="rounded"];
+  Ledger [shape="record",label="{ | | | | }"];
+  Caption[label="Ledger",shape="plaintext"];
+  
+  {rank = same; Ledger; Caption;}
+  C[label="Aggregating",shape="rectable",style="rounded"];
+  D[label="Balance Sheets\nReports\netc",shape="cylinder"];
+  A->B;
+  B->Ledger;
+  Ledger->C;
+  C->D;
+}
+----
+
+== Подведём итоги
+
+Наличие лога позволяет
+
+[%step]
+* Добавлять новую функциональность
+* Искать корелляции событий, выявлять и расследовать мошенническое поведение
+* Исправлять алгоритмические ошибки и пересчитывать данные
+* Наша жизнь -- это append-only log
+
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+1. [line-through]#Что такое лог и почему это важно#
+2. *Что такое Kafka и что она умеет*
+3. Что такое потоковая архитектура и на что способны потоковые обработчики
+4. Kafka и JavaScript
+5. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
+== Kafka это
+
+[cols="1a,1a"]
+|===
+|image::kafka-logo.svg[]
+<.^|
+* распределённый
+* масштабируемый
+* отказоустойчивый лог
+* https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines[миллионы записей в секунду]
+|===
+
+
+== В Кафке можно
+
+[cols="1a,2a"]
+|===
+| image::okay.png[]
+|* Записать нечто в именованный лог (topic)
+* Прочитать записи из топика в FIFO порядке (в пределах партиции)
+* Зафиксировать место, до которого дочитал
+
+|===
+
+== В Кафке нельзя
+
+[cols="1a,2a"]
+|===
+| image::noway.png[]
+|* Стереть запись
+* Изменить запись
+* Найти в логе запись иначе, как по её порядковому номеру
+|===
+
+== Лог или очередь сообщений?
+
+* Данные сразу записываются на диск и реплицируются
+* Данные не теряются после вычитывания
+* Могут быть прочитаны несколькими потребителями
+* Не брокер уведомляет консьюмеров, а консьюмеры забирают их
+
+// == TODO: база данных наизнанку
+
+== Брокеры и Zookeeper: минимальный production кластер
+
+[cols=5]
+|===
+a|
+Kafka broker
+
+image::kafka-logo.svg[] 
+a|
+Kafka broker
+
+image::kafka-logo.svg[] 
+a|
+Zookeeper node
+
+image::zookeeper-logo.png[{image-50-width}]
+a|
+Zookeeper node
+
+image::zookeeper-logo.png[{image-50-width}] 
+
+a|
+Zookeeper node
+
+image::zookeeper-logo.png[{image-50-width}]
+|===
+
+
+
+
+== Топики, партиции и репликация
+
+[graphviz,broker-topics,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    label="broker 3"
+  }
+  
+  b1p1->b2p1;
+  b2p2->b3p2;
+  b3p3->b1p3;
+}
+
+----
+
+== Топики, партиции и репликация
+
+[graphviz,broker-topics2,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3"];
+    label="broker 3";
+    style=filled;
+    
+  }
+  
+  b1p1->b2p1;
+  b2p2->b3p2[style=invis];
+  b3p3->b1p3[style=invis];
+}
+
+----
+
+== Топики, партиции и репликация
+
+[graphviz,broker-topics3,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3",style=filled; fillcolor="green"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3"];
+    label="broker 3";
+    style=filled;
+    
+  }
+  
+  b1p1->b2p1;
+  b2p2->b3p2[style=invis];
+  b3p3->b1p3[style=invis];
+}
+
+----
+
+
+== Топики, партиции и репликация
+
+[graphviz,broker-topics4,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3",style=filled; fillcolor="green"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3"];
+    label="broker 3"
+  }
+  
+  b1p1->b2p1;
+  b2p2->b3p2;
+  b1p3->b3p3;
+}
+
+----
+
+== Топики, партиции и репликация
+
+[graphviz,broker-topics5,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    label="broker 3"
+  }
+  
+  b1p1->b2p1;
+  b2p2->b3p2;
+  b3p3->b1p3;
+}
+
+----
+
+== Анатомия сообщения
+
+[cols="1a"]
+|===
+^|image::message.jpg[{image-20-width}]
+^|Ключ
+^|Значение
+^|Номер партиции
+|===
+
+
+== В какую партицию полетит сообщение?
+[source,java]
+----
+// hash the keyBytes to choose a partition
+return Utils.toPositive(Utils.murmur2(keyBytes)) % numPartitions;
+----
+
+[source,java]
+----
+int part = Utils.toPositive(nextValue) % availablePartitions.size();
+----
+
+== Пропускная способность vs время ожидания
+
+`batch.size` and `linger.ms`
+
+[cols=2]
+|===
+a|image::low-throughput.jpg[]
+a|image::high-throughput.jpg[]
+|===
+
+== Запись в Кафку
+
+[cols=2]
+|===
+a|
+* `acks` = 0
+
+a|
+
+[graphviz,prod1,png]
+----
+digraph G {
+  node [shape="rectangle"];
+  compound=true;
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1"];
+    
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    b3p1[label="partition 1"];
+    label="broker 3";
+  }
+ 
+  b1p1->b2p1->b3p1[style="invis"]
+  
+  a[shape="point"];
+  b[shape="point"];
+  b->b1p1[lhead="cluster_broker1",dir=back];
+  a->b1p1[lhead="cluster_broker1"];
+  
+  
+  {rank = same; a; b;}
+
+}
+
+----
+|===
+
+== Запись в Кафку
+
+[cols=2]
+|===
+a|
+* `acks` = 1
+a|
+
+[graphviz,prod2,png]
+----
+digraph G {
+  node [shape="rectangle"];
+  compound=true;
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style="filled"];
+    
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1"];
+    label="broker 2"
+  }
+ 
+  subgraph cluster_broker3{
+    b3p1[label="partition 1"];
+    label="broker 3";
+  }
+ 
+  b1p1->b2p1->b3p1[style="invis"]
+  
+  a[shape="point"];
+  b[shape="point"];
+  b->b1p1[dir=back];
+  a->b1p1[];
+  
+  
+  {rank = same; a; b;}
+
+}
+
+----
+|===
+
+== Запись в Кафку
+
+[cols=2]
+|===
+a|
+* `acks` = -1
+* min.insync.replicas
+a|
+
+[graphviz,prod3,png]
+----
+digraph G {
+  node [shape="rectangle"];
+  compound=true;
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    b1p1[label="partition 1",style="filled"];
+    
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    b2p1[label="partition 1",style="filled"];
+    label="broker 2"
+  }
+ 
+  subgraph cluster_broker3{
+    b3p1[label="partition 1",style="filled"];
+    label="broker 3";
+  }
+ 
+  b1p1->b2p1->b1p1;
+  b1p1->b3p1->b1p1;
+  
+  a[shape="point"];
+  b[shape="point"];
+  b->b1p1[dir=back];
+  a->b1p1[];
+  
+  
+  {rank = same; a; b;}
+
+}
+
+----
+|===
+== Чтение из Кафки
+
+[graphviz,ConsumerG0,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  subgraph cluster_s2{
+    o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+    label="Consumer Group"
+  }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o1
+    "partition 3"->o1
+  }
+}
+----
+
+== Чтение из Кафки
+
+[graphviz,ConsumerG,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+  
+  
+      subgraph cluster_s2{
+          
+            
+        o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+            
+            
+            
+          
+        o2[label="Cons. 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        
+        label="Consumer Group"
+      }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o1
+    "partition 3"->o2    
+  }
+}
+----
+
+== Чтение из Кафки
+[graphviz,ConsumerG2,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+  
+  
+      subgraph cluster_s2{
+            
+        o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        
+        o2[label="Cons. 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+
+        o3[label="Cons. 3"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        
+        label="Consumer Group"
+      }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o2
+    "partition 3"->o3 
+    label="source-topic"
+  }
+  
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit1,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+   Consumer[shape="circle",label="C1"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit2,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+   Consumer[shape="circle",label="C1"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit3,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+   Consumer[shape="circle",label="C1"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit4,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+   Consumer[shape="circle",label="C1", style="filled"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+}
+----
+
+
+== Чтение -- это запись!
+
+[graphviz,offcommit5,png]
+----
+digraph G {
+   graph [ dpi = 200 ];
+    rankdir="LR"
+   Consumer2[shape="circle",label="C1", style="filled"]
+   Consumer[shape="circle",label="C2"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+    Ledger->Consumer2[dir=back, style="invis"]
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit6,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+
+   Consumer[shape="circle",label="C2"]
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+   Ledger->Consumer[dir=back] 
+}
+----
+
+// == At least once, at most once & exactly once в понимании Кафки
+// TODO
+
+
+== Как работает retention
+
+[graphviz,retention1,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s4[label="segment 4",style="filled",fillcolor="green"]
+  s4->"segment 3"->"segment 2"->"segment 1"
+}
+----
+
+== Как работает retention
+
+[graphviz,retention2,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s5[label="segment 5",style="filled",fillcolor="green"];
+  s1[label="segment 1",style="filled"];
+  s5->"segment 4"->"segment 3"->"segment 2"->s1
+}
+----
+
+== Как работает retention
+
+[graphviz,retention3,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s5[label="segment 5",style="filled",fillcolor="green"];
+  s5->"segment 4"->"segment 3"->"segment 2"
+}
+----
+
+[%notitle]
+== Kafka как зацикленная магнитофонная плёнка
+
+image::tapeloop.jpg[{image-70-width}]
+
+== Компактификация топиков
+
+.Источник: Kafka Documentation
+image::log_compaction.png[{image-60-width}]
+
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+1. [line-through]#Что такое лог и почему это важно#
+2. [line-through]#Что такое Kafka и что она умеет#
+3. *Что такое потоковая архитектура и на что способны потоковые обработчики*
+4. Kafka и JavaScript
+5. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
+
+== Потоковая обработка данных: архитектура
+
+[graphviz,streaming-arch1,png]
+----
+digraph G {
+  graph [ dpi = 190 ];
+  rankdir="LR";
+  A[label="Collection\ntier",shape="rectangle",style="rounded"];
+
+  Ledger1 [shape="record",label="{ | | | | }"];
+  Caption1[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger1; Caption1;}
+  C[label="Analysis tier",shape="rectangle",style="rounded"];
+  Ledger2 [shape="record",label="{ | | | | }"];
+  Caption2[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger2; Caption2;}
+  D[label="In-memory\ndata store",shape="cylinder"];
+  E[label="Data\naccess tier",shape="rectangle",style="rounded"];
+  A->Ledger1->C->Ledger2->D->E;
+  {rank = same; C; D;} 
+}
+----
+
+== Существующие фреймворки потоковой обработки
+
+image::streaming-frameworks.png[]
+
+
+== Когда меня спрашивают, какой стриминговый фреймворк использовать
+
+image::weuseflink1.jpg[{image-90-width}]
+
+
+== Когда меня спрашивают, какой стриминговый фреймворк использовать
+
+image::weuseflink2.jpg[{image-90-width}]
+
+== Stateless Transformation
+[graphviz, "yelling-topology1.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
+Source[style=filled; fillcolor="#ffffcc"];
+Source -> MapVal -> Sink
+
+}
+-----
+
+[source,java]
+----
+KStream<String, String> stream =  streamsBuilder.stream(
+     SRC_TOPIC, Consumed.with(Serdes.String(), Serdes.String());
+----
+
+
+== Stateless Transformation
+[graphviz, "yelling-topology2.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
+MapVal[style=filled; fillcolor="#ffffcc"];
+
+Source -> MapVal -> Sink
+
+}
+-----
+
+[source,java]
+----
+KStream<String, String> upperCasedStream =
+    stream.mapValues(String::toUpperCase);
+----
+
+
+== Stateless Transformation
+[graphviz, "yelling-topology3.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
+Sink[style=filled; fillcolor="#ffffcc"];
+
+Source -> MapVal -> Sink
+
+}
+-----
+
+[source,java,highlight='7-8']
+----
+upperCasedStream.to(SINK_TOPIC,
+     Produced.with(Serdes.String(), Serdes.String());
+----
+
+== Три строчки кода, ну и что тут такого?
+
+* Больше сообщений в секунду? -- больше машин с одинаковым  `application.id`!
+
+[graphviz,w1,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 140 ];
+  rankdir="LR";
+  
+    subgraph cluster_s2{
+        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        label="APP_ID_1"
+   }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o1
+    "partition 3"->o1  
+    label="source-topic"
+    
+  }
+  
+  sink[label="sink-topic"]
+  o1->sink
+}
+----
+
+== Добавляем ноды
+
+[graphviz,w2,svg]
+----
+digraph G {
+  node [shape="rectangle"]
+ // graph [ dpi = 140 ];
+  rankdir="LR";
+  
+  
+  
+      subgraph cluster_s2{
+          
+            
+        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+            
+            
+            
+          
+        o2[label="Worker 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        
+        label="APP_ID_1"
+      }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o1
+    "partition 3"->o2 
+    label="source-topic"
+  }
+  
+  sink[label="sink-topic"]
+  o1->sink
+  o2->sink
+}
+----
+
+== Ограничены только числом партиций
+
+[graphviz,w4,svg]
+----
+digraph G {
+  node [shape="rectangle"]
+ // graph [ dpi = 140 ];
+  rankdir="LR";
+  
+  
+  
+      subgraph cluster_s2{
+            
+        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        
+        o2[label="Worker 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+
+        o3[label="Worker 3"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+
+        o4[label="Worker 4"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+
+        
+        label="APP_ID_1"
+      }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o2
+    "partition 3"->o3 
+    label="source-topic"
+  }
+  
+  sink[label="sink-topic"]
+  o1->sink
+  o2->sink
+  o3->sink
+}
+----
+
+
+
+== Магия Stateful Transformation
+[graphviz, "counting-topology-changelog1.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=18; shape="circle"; fixedsize="true"; width="1.1"];
+Store [shape="cylinder"; label="RocksDB"; fixedsize="true"; width="1.5"]
+Source -> MapVal -> Sum -> Sink
+Sum -> Store [dir=both; label=" \n "]
+{rank = same; Store; Sum;}
+Store -> Changelog[style="invis"]
+Changelog[shape="box"; style="invis"; width="1.5"; fillcolor="#ffffcc"]
+}
+-----
+
+== Изменения реплицируются в топик!
+[graphviz, "counting-topology-changelog2.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=18; shape="circle"; fixedsize="true"; width="1.1"];
+Store [shape="cylinder"; label="RocksDB"; fixedsize="true"; width="1.5"]
+Source -> MapVal -> Sum -> Sink
+Sum -> Store [dir=both; label=" \n "]
+{rank = same; Store; Sum;}
+Store -> Changelog
+Changelog[shape="box"; style="filled"; width="1.5"; fillcolor="#ffffcc"]
+}
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-oneworker.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+        subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        d->ls1;
+        
+        ls1->p3[dir="both"];
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "RocksDB"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+        
+        
+    }
+    
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "RocksDB"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+    }
+    subgraph cluster_p2 {
+      label = "Worker 2";
+      subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        ls2[shape="cylinder" label = "RocksDB"]
+        d->ls2;
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        ls2->p3[dir="both"];
+    }
+    
+    
+  }
+} 
+-----
+
+== Что ещё умеют стримы?
+
+Соединять источники!
+
+[graphviz, "join-storages.png"]
+-----
+digraph G {
+graph [ dpi = 150 ]; 
+rankdir="LR";
+node [fontsize=18; shape="circle"; fixedsize="true"; width="1.1"];
+Store1 [shape="cylinder"; label="Local Store 1"; fixedsize="true"; width="1.7"]
+Store2 [shape="cylinder"; label="Local Store 2"; fixedsize="true"; width="1.7"]
+Source1 -> Join
+Source2 -> Join
+
+Join -> Sink
+Join -> Store1 [dir=both; label=" \n "]
+Join -> Store2 [dir=both; label=" \n "]
+Store1 -> Store2 [style=invis]
+{rank = same; Store1; Join }
+
+}
+-----
+
+== Агрегировать данные во временных окнах
+
+.Источник: Kafka Streams in Action
+image::tumbling-window.png[{image-70-width}]
+
+== «Склеивать» данные, относящиеся к рабочей сессии
+
+image::streams-session-windows-02.png[{image-50-width}]
+
+== KSQL 
+
+
+[source,sql]
+----
+CREATE STREAM pageviews_enriched AS
+  SELECT pv.viewtime,
+         pv.userid AS userid,
+         pv.pageid,
+         pv.timestring,
+         u.gender,
+         u.regionid,
+         u.interests,
+         u.contactinfo
+  FROM pageviews_transformed pv
+  LEFT JOIN users_5part u ON pv.userid = u.userid
+  EMIT CHANGES;
+----
+
+== KSQL
+
+
+[source,sql]
+----
+CREATE TABLE pageviews_per_region_per_30secs AS
+  SELECT regionid,
+         count(*)
+  FROM pageviews_enriched
+  WINDOW TUMBLING (SIZE 30 SECONDS)
+  WHERE UCASE(gender)='FEMALE' AND LCASE(regionid)='region_6'
+  GROUP BY regionid
+  EMIT CHANGES;
+----
+
+== Кейсы для потоковых систем
+
+* Мониторинг! Логи!
+* Отслеживание действий пользователей
+* Выявление аномалий (в т. ч. попыток мошенничества)
+
+[%notitle]
+== Всюду, где ценность/влияние данных уменьшается с их «возрастом»
+
+image::tapeloop.jpg[{image-70-width}]
+
+== О чём следует помнить
+
+* При изменении схемы данных миграция не похожа на RDBMS.
+* Once-only delivery:
+** В обычном режиме, сбой в KStreams приводит к повторному чтению данных.
+** В режиме once-only delivery -- чтение и запись между топиками Kafka.
+
+== Если нужно хранить данные всё время
+
+* Лямбда-архитектура
+
+[cols="30a,70a"]
+|===
+.^|image::nikita_salnikov.jpg[]
+.^|
+*Никита Сальников-Тарновский* https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
+|===
+
+
+== Гарантии
+
+
+== Вывод 
+
+* Старые данные могут потеряться
+* Клиенты могут видеть устаревшие данные
+
+Для подсчёта денег вам помогут лишь старые добрые RDBMS.
+
+== Наш план
+
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+1. [line-through]#Что такое лог и почему это важно#
+2. [line-through]#Что такое Kafka и что она умеет#
+3. [line-through]#Что такое потоковая архитектура и на что способны потоковые обработчики#
+4. *Kafka и JavaScript*
+5. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
+== Kafka и Javascript
+
+[graphviz,streaming-arch2,png]
+----
+digraph G {
+  graph [ dpi = 190 ];
+  rankdir="LR";
+  A[label="Collection\ntier",shape="rectangle",style="rounded"];
+
+  Ledger1 [shape="record",label="{ | | | | }"];
+  Caption1[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger1; Caption1;}
+  C[label="Analysis tier",shape="rectangle",style="rounded"];
+  Ledger2 [shape="record",label="{ | | | | }"];
+  Caption2[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger2; Caption2;}
+  D[label="In-memory\ndata store",shape="cylinder"];
+  E[label="Data\naccess tier",shape="rectangle",style="rounded"];
+  A->Ledger1->C->Ledger2->D->E;
+  {rank = same; C; D;} 
+}
+----
+
+== Kafka и Javascript
+
+[graphviz,streaming-arch3,png]
+----
+digraph G {
+  graph [ dpi = 190 ];
+  rankdir="LR";
+  A[label="Collection\ntier",shape="rectangle",style="rounded,filled"];
+
+  Ledger1 [shape="record",label="{ | | | | }"];
+  Caption1[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger1; Caption1;}
+  C[label="Analysis tier",shape="rectangle",style="rounded"];
+  Ledger2 [shape="record",label="{ | | | | }"];
+  Caption2[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger2; Caption2;}
+  D[label="In-memory\ndata store",shape="cylinder"];
+  E[label="Data\naccess tier",shape="rectangle",style="rounded"];
+  A->Ledger1->C->Ledger2->D->E;
+  {rank = same; C; D;} 
+}
+----
+
+== kafka-node
+
+image::kafka-node.png[]
+
+* Лидер по звёздам и количеству использований
+* Чистая JavaScript-реализация
+* Умеет не всё.
+
+== node-rdkafka
+
+image::node-rdkafka.png[]
+
+* Github-метрики проигрывают kafka-node
+* JavaScript/C++
+* Обёртка вокруг librdkafka -- очень зрелого проекта
+* Умеет работать с Confluent Cloud
+
+
+== Преобразующий/выходной каскад на node.js?
+
+[graphviz,streaming-arch4,png]
+----
+digraph G {
+  graph [ dpi = 190 ];
+  rankdir="LR";
+  A[label="Collection\ntier",shape="rectangle",style="rounded"];
+
+  Ledger1 [shape="record",label="{ | | | | }"];
+  Caption1[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger1; Caption1;}
+  C[label="Analysis tier",shape="rectangle",style="rounded,filled"];
+  Ledger2 [shape="record",label="{ | | | | }"];
+  Caption2[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger2; Caption2;}
+  D[label="In-memory\ndata store",shape="cylinder"];
+  E[label="Data\naccess tier",shape="rectangle",style="rounded"];
+  A->Ledger1->C->Ledger2->D->E;
+  {rank = same; C; D;} 
+}
+----
+
+
+
+== Преобразующий/выходной каскад на node.js?
+
+[cols=2]
+|===
+a|image::nodefluent.png[]
+a|
+https://github.com/nodefluent[Nodefluent]
+
+* node-sinek -- ещё один клиент
+* kafka-streams -- реимплементация KStreams для node.js
+* kafka-connect -- реимплементация kafka-connect
+|===
+
+== KSQL + Serverless
+
+[graphviz,streaming-arch5,png]
+----
+digraph G {
+  graph [ dpi = 190 ];
+  rankdir="LR";
+  A[label="Collection\ntier",shape="rectangle",style="rounded"];
+
+  Ledger1 [shape="record",label="{ | | | | }"];
+  Caption1[label="Log\n(Kafka)",shape="plaintext"];
+  {rank = same; Ledger1; Caption1;}
+  C[label="Analysis tier\n(KSQL)",shape="rectangle",style="rounded"];
+ 
+  E[label="Consumer\n(serverless)",shape="rectangle",style="rounded,filled"];
+  A->Ledger1->C->E;
+}
+----
+
+https://www.confluent.io/kafka-summit-lon19/event-sourcing-stream-processing-serverless[Benjamin Stopford: Event Sourcing, Stream Processing and Serverless]
+
+== Наш план
+
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+1. [line-through]#Что такое лог и почему это важно#
+2. [line-through]#Что такое Kafka и что она умеет#
+3. [line-through]#Что такое потоковая архитектура и на что способны потоковые обработчики#
+4. [line-through]#Kafka и JavaScript#
+5. *Как попробовать Кафку сегодня*
+.^|image::kafka.jpg[]
+|===
+
+== Вы решили попробовать Кафку. С чего начать?
+
+https://kafka.apache.org/downloads
+
+`kafkacat` -- лучший CLI инструмент
+
+image::conduktor.png[]
+
+Conduktor -- лучший GUI инструмент
+
+== Conduktor
+
+image::conduktor-screen.png[]
+
+== Эксплуатировать Кафку в production тяжело
+
+[cols="30a,70a"]
+|===
+.^|image::koshelev.jpg[]
+.^|
+*Григорий Кошелев*
+
+* https://2019.jpoint.ru/talks/1xa5ea6p9djq1phnauiygm/[Когда всё пошло по Кафке]
+* https://2019.devoops-piter.ru/2019/spb/talks/3cq28gbf1fzn40dpbq6bpu/[Как готовить Кафку, чтобы не пригорало]
+|===
+
+
+
+
+
+
+
+
+== Kafka: The Definitive Guide
+
+[.custom-style]
+[cols="30a,70a"]
+|===
+|image::kafka-the-definitive-guide.jpg[]
+|
+* Gwen Shapira, Neha Narkhede, Todd Palino
+* September 2017
+|===
+
+
+== Сообщества, конференции
+- Kafka Summit Conference: https://kafka-summit.org/
+
+image::kafka-summit.png[]
+
+== Телеграм
+
+Грефневая Кафка
+
+* https://t.me/AwesomeKafka_ru
+* https://t.me/proKafka
+
+== Митап в Москве 
+
+Moscow Apache Kafka® Meetup by Confluent -- раз в квартал
+
+
