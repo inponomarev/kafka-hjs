@@ -56,100 +56,25 @@ icon:twitter[size=lg] @inponomarev
 .^|image::kafka.jpg[]
 |===
 
+== Что такое лог?
+
+[%step]
+* Добавляем данные в конец
+* Записанное не можем изменить
+* Читаем последовательно
 
 [%notitle]
-== Вот работник склада
+== Вступление
 
-//Получил задание на перемещение
+-- Что наша жизнь? 
+[.fragment]
+-- Лог!
 
-image::worker.jpg[]
 
-== Берёт 2 единицы товара из ячейки A
 
-[cols=2]
-|===
-a|
+== Автоматизировать склад. Как?
 
-[cols="50a,50a",options=header]
-!===
-!A
-!B
-!10 pcs
-!0 pcs
-!===
-
-a|
-
-[plantuml, getitem, png]
-----
-@startuml
-skinparam monochrome true
-skinparam dpi 200
-
-left to right direction
-
-object A {
- item X
-}
-mix_actor Worker
-
-A --> "2 pcs" Worker
-@enduml
-----
-|===
-
-== Везёт на погрузчике
-
-[cols=2]
-|===
-a|
-image::forklift.jpg[]
-a|
-
-[cols="50a,50a",options=header]
-!===
-!A
-!B
-!8 pcs
-!0 pcs
-!===
-
-|===
-
-== Кладёт в ячейку B
-
-[cols=2]
-|===
-a|
-[plantuml, putitem, png]
-----
-@startuml
-skinparam monochrome true
-skinparam dpi 200
-
-left to right direction
-object B {
-  item X
-}
-mix_actor Worker
-
-Worker --> "2 pcs" B
-@enduml
-----
-a|
-[cols="50a,50a",options=header]
-!===
-!A
-!B
-!8 pcs
-!2 pcs
-!===
-
-|===
-
-== Каким образом это автоматизировать?
-
-// База данных -- это склад?!
+[.fragment]
 [cols="1,1,1",options=header]
 |===
 |товар | ячейка | кол-во 
@@ -157,6 +82,8 @@ a|
 |X     |  B     | 2      
 |Y     |  B     | 1      
 |===
+
+// База данных -- это склад?!
 
 == Всё хорошо, пока...
 
@@ -270,11 +197,6 @@ image::messy.jpg[]
 
 |===
 
-== Расследуем инцидент
-
-* 9 апреля Василий должен был положить товар из A в В.
-* Давайте посмотрим, что лежит в A?
-* Давайте спросим Василия?
 
 == На какие вопросы уже можно ответить?
 
@@ -284,7 +206,13 @@ image::messy.jpg[]
 * Сколько товаров переместил Василий 9 апреля?
 * Какие корректировки вносились в систему?
 
-== Новые требования
+== Расследуем инцидент
+
+* 9 апреля Василий должен был положить товар из A в В.
+* Давайте посмотрим, что лежит в A?
+* Давайте спросим Василия?
+
+== На какие вопросы можно будет легко ответить?
 
 [%step]
 * Нагрузка на полку лимитирована 100 кг
@@ -382,37 +310,73 @@ digraph G {
 
 // == TODO: база данных наизнанку
 
-== Брокеры и Zookeeper: минимальный production кластер
+== Кластер Kafka: брокеры и Zookeeper
 
-[cols=5]
+[cols=3]
 |===
 a|
-Kafka broker
+Broker
 
-image::kafka-logo.svg[] 
-a|
-Kafka broker
-
-image::kafka-logo.svg[] 
-a|
-Zookeeper node
-
-image::zookeeper-logo.png[{image-50-width}]
-a|
-Zookeeper node
-
-image::zookeeper-logo.png[{image-50-width}] 
+image::kafka-logo.svg[{image-40-width}] 
 
 a|
-Zookeeper node
+Broker
 
-image::zookeeper-logo.png[{image-50-width}]
+image::kafka-logo.svg[{image-40-width}] 
+a|
+Broker
+
+image::kafka-logo.svg[{image-40-width}] 
+a|
+Zookeeper
+
+image::zookeeper-logo.png[{image-20-width}]
+a|
+Zookeeper
+
+image::zookeeper-logo.png[{image-20-width}] 
+
+a|
+Zookeeper
+
+image::zookeeper-logo.png[{image-20-width}]
 |===
 
 
 
+== Топики и партиции
 
-== Топики, партиции и репликация
+[graphviz,topics-partitions,png]
+----
+digraph D {
+  graph [ dpi = 180 ]; 
+
+   rankdir = LR;
+    subgraph cluster_t1 {
+      label = "topic A";
+      style = "rounded";
+      T1[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4"]
+    }
+     
+    subgraph cluster_t2 {
+      label = "topic B";
+      style = "rounded";
+      T2[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3"]
+
+    }   
+
+
+    subgraph cluster_t3 {
+      label = "topic C";
+      style = "rounded";
+      T3[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4|partition 5"]
+    }   
+    
+    T1:p0->T2:p0->T3:p0[style=invis]
+} 
+----
+
+== Репликация партиций
 
 [graphviz,broker-topics,png]
 ----
@@ -442,14 +406,17 @@ digraph G {
     label="broker 3"
   }
   
-  b1p1->b2p1;
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1[weight=10];
   b2p2->b3p2;
   b3p3->b1p3;
 }
 
 ----
 
-== Топики, партиции и репликация
+
+
+== Репликация партиций
 
 [graphviz,broker-topics2,png]
 ----
@@ -481,14 +448,16 @@ digraph G {
     
   }
   
-  b1p1->b2p1;
+  
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1[weight=10];
   b2p2->b3p2[style=invis];
   b3p3->b1p3[style=invis];
 }
 
 ----
 
-== Топики, партиции и репликация
+== Репликация партиций
 
 [graphviz,broker-topics3,png]
 ----
@@ -520,7 +489,8 @@ digraph G {
     
   }
   
-  b1p1->b2p1;
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1[weight=10];
   b2p2->b3p2[style=invis];
   b3p3->b1p3[style=invis];
 }
@@ -528,7 +498,7 @@ digraph G {
 ----
 
 
-== Топики, партиции и репликация
+== Репликация партиций
 
 [graphviz,broker-topics4,png]
 ----
@@ -558,14 +528,15 @@ digraph G {
     label="broker 3"
   }
   
-  b1p1->b2p1;
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1[weight=10];
   b2p2->b3p2;
-  b1p3->b3p3;
+  b3p3->b1p3[dir=back];
 }
 
 ----
 
-== Топики, партиции и репликация
+== Репликация партиций
 
 [graphviz,broker-topics5,png]
 ----
@@ -595,7 +566,8 @@ digraph G {
     label="broker 3"
   }
   
-  b1p1->b2p1;
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1[weight=10];
   b2p2->b3p2;
   b3p3->b1p3;
 }
@@ -873,7 +845,13 @@ digraph G {
 digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
-   Consumer[shape="circle",label="C1"]
+   
+      subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
+        style="rounded";
+        label="Group"
+   }
     Ledger
     [
         shape = none
@@ -892,6 +870,7 @@ digraph G {
                 </table>>
     ]
    Ledger->Consumer[dir=back] 
+   Ledger->Consumer2[dir=back, style=invis]
 }
 ----
 
@@ -902,7 +881,12 @@ digraph G {
 digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
-   Consumer[shape="circle",label="C1"]
+      subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
+        style="rounded";
+        label="Group"
+   }
     Ledger
     [
         shape = none
@@ -921,6 +905,7 @@ digraph G {
                 </table>>
     ]
    Ledger->Consumer[dir=back] 
+   Ledger->Consumer2[dir=back, style=invis]
 }
 ----
 
@@ -931,7 +916,12 @@ digraph G {
 digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
-   Consumer[shape="circle",label="C1"]
+      subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
+        style="rounded";
+        label="Group"
+   }
     Ledger
     [
         shape = none
@@ -949,7 +939,8 @@ digraph G {
                     </tr>
                 </table>>
     ]
-   Ledger->Consumer[dir=back] 
+   Ledger->Consumer[dir=back]
+   Ledger->Consumer2[dir=back, style=invis]
 }
 ----
 
@@ -960,7 +951,12 @@ digraph G {
 digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
-   Consumer[shape="circle",label="C1", style="filled"]
+    subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1", style="filled"];
+        Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
+        style="rounded";
+        label="Group"
+   }
     Ledger
     [
         shape = none
@@ -979,6 +975,7 @@ digraph G {
                 </table>>
     ]
    Ledger->Consumer[dir=back] 
+   Ledger->Consumer2[dir=back, style=invis]
 }
 ----
 
@@ -990,8 +987,14 @@ digraph G {
 digraph G {
    graph [ dpi = 200 ];
     rankdir="LR"
-   Consumer2[shape="circle",label="C1", style="filled"]
-   Consumer[shape="circle",label="C2"]
+    subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1", style="filled"];
+        Consumer2[shape="circle",style="rounded",label="C2"]
+        style="rounded";
+        label="Group"
+   }
+    
+
     Ledger
     [
         shape = none
@@ -1009,8 +1012,8 @@ digraph G {
                     </tr>
                 </table>>
     ]
-   Ledger->Consumer[dir=back] 
-    Ledger->Consumer2[dir=back, style="invis"]
+    Ledger->Consumer[dir=back, style="invis"]
+    Ledger->Consumer2[dir=back] 
 }
 ----
 
@@ -1022,7 +1025,13 @@ digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
 
-   Consumer[shape="circle",label="C2"]
+    subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1", style="invis"];
+        Consumer2[shape="circle",style="rounded",label="C2"]
+        style="rounded";
+        label="Group"
+   }
+   
     Ledger
     [
         shape = none
@@ -1040,13 +1049,71 @@ digraph G {
                     </tr>
                 </table>>
     ]
-   Ledger->Consumer[dir=back] 
+    Ledger->Consumer[dir=back, style="invis"]
+    Ledger->Consumer2[dir=back]  
+}
+----
+
+== Чтение -- это запись!
+
+[graphviz,offcommit7,png]
+----
+digraph G {
+    graph [ dpi = 200 ];
+    rankdir="LR"
+
+    subgraph cluster_s2{
+        Consumer[shape="circle",style="rounded",label="C1", style="invis"];
+        Consumer2[shape="circle",style="rounded",label="C2"]
+        style="rounded";
+        label="Group"
+   }
+   
+    Ledger
+    [
+        shape = none
+        label = <<table border="0" cellspacing="0">
+                    <tr>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="white">&nbsp;</td>
+                    </tr>
+                </table>>
+    ]
+    Ledger->Consumer[dir=back, style="invis"]
+    Ledger->Consumer2[dir=back]  
 }
 ----
 
 // == At least once, at most once & exactly once в понимании Кафки
 // TODO
 
+
+== Как работает retention
+
+[graphviz,retention0,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s3[label="segment 3",style="filled",fillcolor="green"]
+  s3->"segment 2"->"segment 1"
+  
+  
+  nm[label="new messages",shape="oval"]
+  nm->s3
+  {rank =same; nm; s3}
+
+}
+----
 
 == Как работает retention
 
@@ -1059,6 +1126,12 @@ digraph G {
   
   s4[label="segment 4",style="filled",fillcolor="green"]
   s4->"segment 3"->"segment 2"->"segment 1"
+  
+  
+  nm[label="new messages",shape="oval"]
+  nm->s4
+  {rank =same; nm; s4}
+
 }
 ----
 
@@ -1074,6 +1147,11 @@ digraph G {
   s5[label="segment 5",style="filled",fillcolor="green"];
   s1[label="segment 1",style="filled"];
   s5->"segment 4"->"segment 3"->"segment 2"->s1
+  
+  nm[label="new messages",shape="oval"]
+  nm->s5
+  {rank =same; nm; s5}
+
 }
 ----
 
@@ -1088,6 +1166,10 @@ digraph G {
   
   s5[label="segment 5",style="filled",fillcolor="green"];
   s5->"segment 4"->"segment 3"->"segment 2"
+  
+  nm[label="new messages",shape="oval"]
+  nm->s5
+  {rank =same; nm; s5}
 }
 ----
 
@@ -1419,12 +1501,154 @@ digraph D {
 -----
 
 == Партиционирование и local state
-[graphviz, "local-partitioning.png"]
+[graphviz, "local-partitioning-1.png"]
 -----
 digraph D {
   graph [ dpi = 150 ]; 
   subgraph system {
 
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+        subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        d->ls1;
+        
+        ls1->p3[dir="both"];
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 15\nB: 10\nD: 20"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+        
+
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1;
+        p1v1[shape="record"; label="{B: 10}"];
+        p2v1[shape="record"; label="{D: 20}"];
+        p3v1[shape="record"; label="{A: 15}"];
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-2.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ];
+  subgraph system {
+
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+        subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        d->ls1;
+        
+        ls1->p3[dir="both"];
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 19\nB: 12\nD: 22"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+        
+
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1;
+        p1v1[shape="record"; label="{B: 12|B: 10}"];
+        p2v1[shape="record"; label="{D: 22|D: 20}"];
+        p3v1[shape="record"; label="{A: 19|A: 15}"];
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-25.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+  
      subgraph cluster_s2{
           style = "invis"
           S1 [shape=plaintext label = "Source"];
@@ -1454,7 +1678,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "RocksDB"]
+        ls1[shape="cylinder" label = "A: 19\nB: 12"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -1475,16 +1699,312 @@ digraph D {
           }
           
           
-        ls2[shape="cylinder" label = "RocksDB"]
+        ls2[shape="cylinder" label = "D: ???"]
         d->ls2;
         p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
         ls2->p3[dir="both"];
     }
-    
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1[style="invis"];
+        p1v1[shape="record"; label="{B: 12|B: 10}"];
+        p3v1[shape="record"; label="{D: 22|D: 20}"; style="invis"];
+        p2v1[shape="record"; label="{A: 19|A: 15}"];
     
   }
 } 
 -----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-3.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+  
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 19\nB: 12"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+    }
+    subgraph cluster_p2 {
+      label = "Worker 2";
+      subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        ls2[shape="cylinder" label = "D: 22"]
+        d->ls2;
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        ls2->p3[dir="both"];
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1[dir="back"];
+        p1v1[shape="record"; label="{B: 12|B: 10}"];
+        p3v1[shape="record"; label="{D: 22|D: 20}"];
+        p2v1[shape="record"; label="{A: 19|A: 15}"];
+    
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-4.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+  
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 21\nB: 13"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+    }
+    subgraph cluster_p2 {
+      label = "Worker 2";
+      subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        ls2[shape="cylinder" label = "D: 23"]
+        d->ls2;
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        ls2->p3[dir="both"];
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1;
+        p1v1[shape="record"; label="{B: 13|B: 12|B: 10}"];
+        p3v1[shape="record"; label="{D: 23|D: 22|D: 20}"];
+        p2v1[shape="record"; label="{A: 21|A: 19|A: 15}"];
+    
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-5.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+  
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 21\nB: 13"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+    }
+    subgraph cluster_p2 {
+      label = "Worker 2";
+      subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        ls2[shape="cylinder" label = "D: 23"]
+        d->ls2;
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        ls2->p3[dir="both"];
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1;
+        p1v1[shape="record"; label="{B: 13}"];
+        p3v1[shape="record"; label="{D: 23}"];
+        p2v1[shape="record"; label="{A: 21}"];
+    
+  }
+} 
+-----
+
+== Партиционирование и local state
+[graphviz, "local-partitioning-6.png"]
+-----
+digraph D {
+  graph [ dpi = 150 ]; 
+  subgraph system {
+
+     subgraph cluster_s2{
+          style = "invis"
+          S1 [shape=plaintext label = "Source"];
+          S2 [shape=plaintext label = "Local store"];
+          S3 [shape=plaintext label = "Changelog"];
+          S1->S2->S3 [style="invis"]
+      }
+
+    subgraph cluster_p1 {
+      label = "Worker 1";
+        
+        subgraph cluster_pp2{
+              label = "Partition 3"
+                
+              d[label = "D"];
+              
+              
+          }
+          
+          
+        d->ls1;
+        
+        ls1->p3[dir="both"];
+          
+          subgraph cluster_pp11{
+              label = "Partition 2"
+          
+              b [label = "B"];
+              c[label = "C"];
+              
+          }
+ 
+        subgraph cluster_pp1{
+              label = "Partition 1"
+              
+              
+              a [label = "A"];
+              
+          }
+          
+        
+        ls1[shape="cylinder" label = "A: 21\nB: 13\nD: 23"]
+        a->ls1;
+        b->ls1;
+        c->ls1;
+        
+        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
+        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
+        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
+        ls1->p1[dir="both"];
+        ls1->p2[dir="both"];
+        
+
+    }
+        p1->p1v1;
+        p2->p2v1;
+        p3->p3v1;
+        p1v1[shape="record"; label="{B: 13}"];
+        p2v1[shape="record"; label="{D: 23}"];
+        p3v1[shape="record"; label="{A: 21}"];
+  }
+} 
+-----
+
 
 == Что ещё умеют стримы?
 
@@ -1561,8 +2081,16 @@ CREATE TABLE pageviews_per_region_per_30secs AS
 
 [%notitle]
 == Всюду, где ценность/влияние данных уменьшается с их «возрастом»
+image::streams-ok.svg[{image-90-width}]
 
+
+[%notitle]
+== Kafka -- это зацикленная плёнка
 image::tapeloop.jpg[{image-70-width}]
+
+[%notitle]
+== Где использовать Kafka не очень удобно
+image::streams-noway.svg[{image-90-width}]
 
 == О чём следует помнить
 
@@ -1581,17 +2109,6 @@ image::tapeloop.jpg[{image-70-width}]
 .^|
 *Никита Сальников-Тарновский* https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
 |===
-
-
-== Гарантии
-
-
-== Вывод 
-
-* Старые данные могут потеряться
-* Клиенты могут видеть устаревшие данные
-
-Для подсчёта денег вам помогут лишь старые добрые RDBMS.
 
 == Наш план
 
