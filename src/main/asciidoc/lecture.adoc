@@ -791,13 +791,12 @@ digraph G {
  
   b1p1->b2p1->b3p1[style="invis"]
   
-  a[shape="point"];
-  b[shape="point"];
-  b->b1p1[lhead="cluster_broker1",dir=back];
+  a[shape="none",label="",
+                 image="src/main/asciidoc/images/zany.png"];
+  a->b1p1[lhead="cluster_broker1",dir=back];
   a->b1p1[lhead="cluster_broker1"];
   
-  
-  {rank = same; a; b;}
+ 
 
 }
 
@@ -817,7 +816,7 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
-    b1p1[label="partition 1",style="filled"];
+    b1p1[label="partition 1",style="filled",fillcolor="green"];
     
     label="broker 1"
   }
@@ -835,13 +834,13 @@ digraph G {
  
   b1p1->b2p1->b3p1[style="invis"]
   
-  a[shape="point"];
-  b[shape="point"];
-  b->b1p1[dir=back];
+
+  a[shape="none",label="",
+                 image="src/main/asciidoc/images/suspicious.png"];
+
+  a->b1p1[dir=back];
   a->b1p1[];
-  
-  
-  {rank = same; a; b;}
+
 
 }
 
@@ -864,33 +863,35 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
-    b1p1[label="partition 1",style="filled"];
+    b1p1[label="partition 1",style="filled",fillcolor="green"];
     
     label="broker 1"
   }
   
   
   subgraph cluster_broker2{
-    b2p1[label="partition 1",style="filled"];
+    b2p1[label="partition 1",style="filled",fillcolor="green"];
     label="broker 2"
   }
  
   subgraph cluster_broker3{
-    b3p1[label="partition 1",style="filled"];
+    b3p1[label="partition 1",style="filled",fillcolor="green"];
     label="broker 3";
   }
  
-  b1p1->b2p1->b1p1;
+  b1p1->b2p1[weight=10];
+  b1p1->b2p1[weight=10;dir=back];
+  b2p1->b3p1[weight=10;style=invis];
+  
+  
+  
   b1p1->b3p1->b1p1;
   
-  a[shape="point"];
-  b[shape="point"];
-  b->b1p1[dir=back];
-  a->b1p1[];
-  
-  
-  {rank = same; a; b;}
+  a[shape="none",label="",
+                 image="src/main/asciidoc/images/fear.png"];
 
+  a->b1p1[dir=back];
+  a->b1p1[];
 }
 ----
 
