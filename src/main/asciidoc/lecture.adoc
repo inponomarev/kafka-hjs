@@ -723,13 +723,12 @@ digraph G {
   msg[
     shape="none";
     label=<<table cellspacing="0" style="rounded">
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.jpg"/></td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <tr><td>Ключ</td></tr>
                     <tr><td>Значение</td></tr>
                     <tr><td>Номер партиции</td></tr>
             </table>>
   ]
-
 }
 ----
 
