@@ -355,6 +355,38 @@ digraph D {
     subgraph cluster_t1 {
       label = "topic A";
       style = "rounded";
+      T1[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4"; style="invis"]
+    }
+     
+    subgraph cluster_t2 {
+      label = "topic B";
+      style = "rounded";
+      T2[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3"; style="invis"]
+
+    }   
+
+
+    subgraph cluster_t3 {
+      label = "topic C";
+      style = "rounded";
+      T3[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4|partition 5"; style="invis"]
+    }   
+    
+    T1:p0->T2:p0->T3:p0[style=invis]
+} 
+----
+
+== Топики и партиции
+
+[graphviz,topics-partitions2,png]
+----
+digraph D {
+  graph [ dpi = 180 ]; 
+
+   rankdir = LR;
+    subgraph cluster_t1 {
+      label = "topic A";
+      style = "rounded";
       T1[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4"]
     }
      
@@ -375,6 +407,7 @@ digraph D {
     T1:p0->T2:p0->T3:p0[style=invis]
 } 
 ----
+
 
 == Репликация партиций
 
@@ -684,14 +717,21 @@ digraph G {
 
 == Анатомия сообщения
 
-[cols="1a"]
-|===
-^|image::message.jpg[{image-20-width}]
-^|Ключ
-^|Значение
-^|Номер партиции
-|===
+[graphviz,message-anatomy,png]
+----
+digraph G {
+  msg[
+    shape="none";
+    label=<<table cellspacing="0" style="rounded">
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.jpg"/></td></tr>
+                    <tr><td>Ключ</td></tr>
+                    <tr><td>Значение</td></tr>
+                    <tr><td>Номер партиции</td></tr>
+            </table>>
+  ]
 
+}
+----
 
 == В какую партицию полетит сообщение?
 [source,java]
@@ -717,12 +757,7 @@ a|image::high-throughput.jpg[]
 
 == Запись в Кафку
 
-[cols=2]
-|===
-a|
-* `acks` = 0
-
-a|
+`acks` = 0
 
 [graphviz,prod1,png]
 ----
@@ -763,15 +798,11 @@ digraph G {
 }
 
 ----
-|===
+
 
 == Запись в Кафку
 
-[cols=2]
-|===
-a|
-* `acks` = 1
-a|
+`acks` = 1
 
 [graphviz,prod2,png]
 ----
@@ -811,16 +842,14 @@ digraph G {
 }
 
 ----
-|===
+
 
 == Запись в Кафку
 
-[cols=2]
-|===
-a|
-* `acks` = -1
-* min.insync.replicas
-a|
+`acks` = -1
+
+`min.insync.replicas`
+
 
 [graphviz,prod3,png]
 ----
@@ -859,9 +888,8 @@ digraph G {
   {rank = same; a; b;}
 
 }
-
 ----
-|===
+
 == Чтение из Кафки
 
 [graphviz,ConsumerG0,png]
@@ -934,6 +962,44 @@ digraph G {
         o3[shape="none",label="",
                  image="src/main/asciidoc/images/smiley.png"]
         
+        label="Consumer Group"
+        style="rounded"
+        
+      }
+  
+  subgraph cluster_s1{
+    "partition 1"->o1
+    "partition 2"->o2
+    "partition 3"->o3 
+    label="source-topic"
+  }
+  
+}
+----
+
+== Чтение из Кафки
+[graphviz,ConsumerG3,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+  
+  
+      subgraph cluster_s2{
+            
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
+        
+        o2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
+
+        o3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
+        
+        o4[shape="none",label="",
+                 image="src/main/asciidoc/images/rollingeyes.png"]
         label="Consumer Group"
         style="rounded"
         

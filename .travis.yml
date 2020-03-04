@@ -14,7 +14,7 @@ cache:
   - node_modules
 
 before_install:
-  - curl -sL https://deb.nodesource.com/setup_11.x | sudo bash -
+  - curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
   - sudo apt install nodejs
   - npm install decktape
 
