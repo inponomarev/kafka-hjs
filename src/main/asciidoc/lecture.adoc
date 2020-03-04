@@ -720,14 +720,19 @@ digraph G {
 [graphviz,message-anatomy,png]
 ----
 digraph G {
+  graph [ dpi = 200 ];
   msg[
     shape="none";
-    label=<<table cellspacing="0" style="rounded">
+    label=<<table cellspacing="5" cellborder="0" style="rounded" border="1">
                     <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
+                    <hr/>
                     <tr><td>Ключ</td></tr>
+                    <hr/>
                     <tr><td>Значение</td></tr>
+                    <hr/>
                     <tr><td>Номер партиции</td></tr>
-            </table>>
+            </table>>;
+            
   ]
 }
 ----
