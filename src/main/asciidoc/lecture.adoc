@@ -418,15 +418,26 @@ digraph D {
       label = "topic A";
       style = "rounded";
       T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
+                    <tr><td port="p0"><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 1</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
                     <hr/>
-                    <tr><td>partition 2</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 3</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
                     <hr/>
-                    <tr><td>partition 4</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
             </table>>]
     }
      
@@ -436,11 +447,17 @@ digraph D {
       T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
                     <tr><td port="p0">partition 0</td></tr>
                     <hr/>
-                    <tr><td>partition 1</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
                     <hr/>
-                    <tr><td>partition 2</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
                     <hr/>
-                    <tr><td>partition 3</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
             </table>>]
 
     }   
@@ -450,17 +467,27 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
+                    <tr><td port="p0"><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    </td></tr>
                     <hr/>
-                    <tr><td>partition 1</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 2</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 3</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 4</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
-                    <tr><td>partition 5</td></tr>
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
+                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
             </table>>]
     }   
     
@@ -1851,7 +1878,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 15\nB: 10\nD: 20"]
+        ls1[shape="cylinder" label = "A: 15, B: 10, D: 20"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -1922,7 +1949,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 19\nB: 12\nD: 22"]
+        ls1[shape="cylinder" label = "A: 19, B: 12, D: 22"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -1981,7 +2008,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 19\nB: 12"]
+        ls1[shape="cylinder" label = "A: 19, B: 12"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -2054,7 +2081,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 19\nB: 12"]
+        ls1[shape="cylinder" label = "A: 19, B: 12"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -2127,7 +2154,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 21\nB: 13"]
+        ls1[shape="cylinder" label = "A: 21, B: 13"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -2200,7 +2227,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 21\nB: 13"]
+        ls1[shape="cylinder" label = "A: 21, B: 13"]
         a->ls1;
         b->ls1;
         c->ls1;
@@ -2285,7 +2312,7 @@ digraph D {
           }
           
         
-        ls1[shape="cylinder" label = "A: 21\nB: 13\nD: 23"]
+        ls1[shape="cylinder" label = "A: 21, B: 13, D: 23"]
         a->ls1;
         b->ls1;
         c->ls1;
