@@ -1,21 +1,25 @@
 ---
-services:
-  - docker
+dist: bionic
+addons:
+  apt:
+    packages:
+      - graphviz
+
+language: java
+jdk: openjdk8
 
 cache:
   directories:
-  - docker_images
+  - $HOME/.m2
+  - node_modules
 
 before_install:
-  - docker load -i docker_images/images.tar || true
-  - mkdir output
+  - curl -sL https://deb.nodesource.com/setup_11.x | sudo bash -
+  - sudo apt install nodejs
+  - npm install decktape
 
 script:
-  - cp -rf images output/images
-  - docker run --rm -v `pwd`:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor-revealjs -a revealjsdir=https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0 -r asciidoctor-diagram -o index.html -D /documents/output lecture.adoc
-  - cp -f white_course.css output/white_course.css
-  - cp -rf font-awesome-4.7.0 output/font-awesome-4.7.0
-  - cp -rf roboto-2014 output/roboto-2014
+  - node node_modules/decktape/decktape.js -s 3200x1800 --slides 1-500 reveal "file:///${TRAVIS_BUILD_DIR}/target/generated-slides/index.html?fragments=true" target/generated-slides/slides.pdf  
 
 deploy:
   provider: pages
@@ -24,6 +28,3 @@ deploy:
   local_dir: output
   on:
     branch: master
-
-before_cache:
-  - docker save -o docker_images/images.tar $(docker images -a -q)
