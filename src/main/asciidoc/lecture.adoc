@@ -413,9 +413,12 @@ digraph G {
   }
   
   subgraph cluster_clients{
-    R1;
-    R2;
-    R3;
+    R1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -426,9 +429,9 @@ digraph G {
   b2p2->b3p2;
   b3p3->b1p3;
   
-  R1->b1p1;
-  R2->b2p2;
-  R3->b3p3;
+  R1->b1p1[dir="none"];
+  R2->b2p2[dir="none"];
+  R3->b3p3[dir="none"];
 
 }
 
@@ -473,11 +476,27 @@ digraph G {
     
   }
   
+  subgraph cluster_clients{
+    R1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R3[shape="none",label="",
+                 image="src/main/asciidoc/images/worried.png"];
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
   
+  b1p1->b2p2[weight=10,style=invis];
   b2p1->b3p2[weight=10,style=invis];
-  b1p1->b2p1[weight=10];
+  b1p1->b2p1;
   b2p2->b3p2[style=invis];
   b3p3->b1p3[style=invis];
+  
+  R1->b1p1[dir="none"];
+  R2->b2p2[dir="none"];
+  R3->b3p3[dir="none",style="dashed"];
+  
 }
 
 ----
@@ -493,7 +512,7 @@ digraph G {
   
    subgraph cluster_broker1{
     sm1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/neutral.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 1"
@@ -519,10 +538,25 @@ digraph G {
     
   }
   
-  b2p1->b3p2[weight=10,style=invis];
-  b1p1->b2p1[weight=10];
-  b2p2->b3p2[style=invis];
+  subgraph cluster_clients{
+    R1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
+  
+  b1p1->b2p2[weight=10,style=invis];
+  b1p1->b2p1;
+  b2p2->b3p2[weight=10,style=invis];
   b3p3->b1p3[style=invis];
+  
+  R1->b1p1[dir="none"];
+  R2->b2p2[dir="none"];
+  R3->b1p3[dir="none",weight=0];
 }
 
 ----
@@ -539,7 +573,7 @@ digraph G {
   
    subgraph cluster_broker1{
     sm1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/neutral.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 1"
@@ -563,10 +597,28 @@ digraph G {
     label="broker 3"
   }
   
-  b2p1->b3p2[weight=10,style=invis];
-  b1p1->b2p1[weight=10];
+  subgraph cluster_clients{
+    R1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
+  
+  
+  b1p1->b2p2[weight=10,style=invis];
+  b2p2->b3p2[weight=10,style=invis];
+  
+  b1p1->b2p1;
   b2p2->b3p2;
   b3p3->b1p3[dir=back];
+  
+  R1->b1p1[dir="none"];
+  R2->b2p2[dir="none"];
+  R3->b1p3[dir="none",weight=0];
 }
 
 ----
@@ -580,7 +632,7 @@ digraph G {
   graph [ dpi = 180 ];
   rankdir="LR";
   
-  subgraph cluster_broker1{
+   subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
@@ -601,17 +653,33 @@ digraph G {
   subgraph cluster_broker3{
     sm3[shape="none",label="",
                  image="src/main/asciidoc/images/smiley.png"];
+    
     b3p2[label="partition 2"];
     b3p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 3"
   }
   
+  subgraph cluster_clients{
+    R1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
+  
+  b1p1->b2p2[weight=10,style=invis];
   b2p1->b3p2[weight=10,style=invis];
-  b1p1->b2p1[weight=10];
+  b1p1->b2p1;
   b2p2->b3p2;
   b3p3->b1p3;
+  
+  R1->b1p1[dir="none"];
+  R2->b2p2[dir="none"];
+  R3->b3p3[dir="none"];
 }
-
 ----
 
 == Анатомия сообщения

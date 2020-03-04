@@ -18,8 +18,8 @@ before_install:
   - sudo apt install nodejs
   - npm install decktape
 
-script:
-  - node node_modules/decktape/decktape.js -s 3200x1800 --slides 1-500 reveal "file:///${TRAVIS_BUILD_DIR}/target/generated-slides/index.html?fragments=true" target/generated-slides/slides.pdf  
+#script:
+#  - node node_modules/decktape/decktape.js -s 3200x1800 --slides 1-500 reveal "file:///${TRAVIS_BUILD_DIR}/target/generated-slides/index.html?fragments=true" target/generated-slides/slides.pdf  
 
 deploy:
   provider: pages
