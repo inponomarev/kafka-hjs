@@ -386,6 +386,8 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -393,6 +395,8 @@ digraph G {
   
   
   subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -400,16 +404,32 @@ digraph G {
   }
   
   subgraph cluster_broker3{
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     
     b3p2[label="partition 2"];
     b3p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 3"
   }
   
+  subgraph cluster_clients{
+    R1;
+    R2;
+    R3;
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
+  
+  b1p1->b2p2[weight=10,style=invis];
   b2p1->b3p2[weight=10,style=invis];
-  b1p1->b2p1[weight=10];
+  b1p1->b2p1;
   b2p2->b3p2;
   b3p3->b1p3;
+  
+  R1->b1p1;
+  R2->b2p2;
+  R3->b3p3;
+
 }
 
 ----
@@ -426,6 +446,8 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -433,6 +455,8 @@ digraph G {
   
   
   subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -440,7 +464,8 @@ digraph G {
   }
   
   subgraph cluster_broker3{
-    
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/dizzy.png"];
     b3p2[label="partition 2"];
     b3p3[label="partition 3"];
     label="broker 3";
@@ -467,6 +492,8 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 1"
@@ -474,6 +501,8 @@ digraph G {
   
   
   subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -481,7 +510,8 @@ digraph G {
   }
   
   subgraph cluster_broker3{
-    
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/dizzy.png"];
     b3p2[label="partition 2"];
     b3p3[label="partition 3"];
     label="broker 3";
@@ -508,6 +538,8 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 1"
@@ -515,6 +547,8 @@ digraph G {
   
   
   subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -522,7 +556,8 @@ digraph G {
   }
   
   subgraph cluster_broker3{
-    
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b3p2[label="partition 2"];
     b3p3[label="partition 3"];
     label="broker 3"
@@ -545,7 +580,9 @@ digraph G {
   graph [ dpi = 180 ];
   rankdir="LR";
   
-   subgraph cluster_broker1{
+  subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -553,6 +590,8 @@ digraph G {
   
   
   subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -560,7 +599,8 @@ digraph G {
   }
   
   subgraph cluster_broker3{
-    
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
     b3p2[label="partition 2"];
     b3p3[label="partition 3",style=filled; fillcolor="green"];
     label="broker 3"
@@ -763,8 +803,10 @@ digraph G {
   graph [ dpi = 180 ];
   rankdir="LR";
   subgraph cluster_s2{
-    o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+    o1[shape="none",label="",
+                 image="src/main/asciidoc/images/worried.png"]
     label="Consumer Group"
+    style="rounded"
   }
   
   subgraph cluster_s1{
@@ -783,20 +825,16 @@ digraph G {
   node [shape="rectangle"]
   graph [ dpi = 180 ];
   rankdir="LR";
-  
-  
-  
       subgraph cluster_s2{
           
-            
-        o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
-            
-            
-            
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"];
           
-        o2[label="Cons. 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o2[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"];
         
-        label="Consumer Group"
+        label="Consumer Group";
+        style="rounded"
       }
   
   subgraph cluster_s1{
@@ -819,13 +857,18 @@ digraph G {
   
       subgraph cluster_s2{
             
-        o1[label="Cons. 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
         
-        o2[label="Cons. 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
 
-        o3[label="Cons. 3"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
         
         label="Consumer Group"
+        style="rounded"
+        
       }
   
   subgraph cluster_s1{
@@ -838,7 +881,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit1,png]
 ----
@@ -847,7 +890,8 @@ digraph G {
     rankdir="LR"
    
       subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
         style="rounded";
         label="Group"
@@ -874,7 +918,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit2,png]
 ----
@@ -882,7 +926,8 @@ digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
       subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
         style="rounded";
         label="Group"
@@ -909,7 +954,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit3,png]
 ----
@@ -917,7 +962,8 @@ digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
       subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1"];
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
         style="rounded";
         label="Group"
@@ -944,7 +990,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit4,png]
 ----
@@ -952,7 +998,8 @@ digraph G {
     graph [ dpi = 200 ];
     rankdir="LR"
     subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1", style="filled"];
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/dizzy.png"];
         Consumer2[shape="circle",style="rounded",label="C2",style="invis"]
         style="rounded";
         label="Group"
@@ -980,7 +1027,7 @@ digraph G {
 ----
 
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit5,png]
 ----
@@ -988,8 +1035,10 @@ digraph G {
    graph [ dpi = 200 ];
     rankdir="LR"
     subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1", style="filled"];
-        Consumer2[shape="circle",style="rounded",label="C2"]
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/skull.png"];
+        Consumer2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         style="rounded";
         label="Group"
    }
@@ -1017,7 +1066,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit6,png]
 ----
@@ -1026,8 +1075,10 @@ digraph G {
     rankdir="LR"
 
     subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1", style="invis"];
-        Consumer2[shape="circle",style="rounded",label="C2"]
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/skull.png"];
+        Consumer2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         style="rounded";
         label="Group"
    }
@@ -1054,7 +1105,7 @@ digraph G {
 }
 ----
 
-== Чтение -- это запись!
+== Offset Commit
 
 [graphviz,offcommit7,png]
 ----
@@ -1063,8 +1114,10 @@ digraph G {
     rankdir="LR"
 
     subgraph cluster_s2{
-        Consumer[shape="circle",style="rounded",label="C1", style="invis"];
-        Consumer2[shape="circle",style="rounded",label="C2"]
+        Consumer[shape="none",label="",
+                 image="src/main/asciidoc/images/skull.png"];
+        Consumer2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"];
         style="rounded";
         label="Group"
    }
@@ -1367,7 +1420,7 @@ digraph G {
 ----
 digraph G {
   node [shape="rectangle"]
- // graph [ dpi = 140 ];
+  graph [ dpi = 140 ];
   rankdir="LR";
   
   
