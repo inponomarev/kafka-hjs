@@ -1296,13 +1296,13 @@ digraph G {
   graph [ dpi = 190 ];
   rankdir="RL";
   
-  s3[label="segment 3",style="filled",fillcolor="green"]
-  s3->"segment 2"->"segment 1"
+  s1[label="segment 1"]
   
   
-  nm[label="new messages",shape="oval"]
-  nm->s3
-  {rank =same; nm; s3}
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+  nm->s1
+  {rank =same; nm; s1}
 
 }
 ----
@@ -1316,13 +1316,14 @@ digraph G {
   graph [ dpi = 190 ];
   rankdir="RL";
   
-  s4[label="segment 4",style="filled",fillcolor="green"]
-  s4->"segment 3"->"segment 2"->"segment 1"
+  s1[label="segment 1"]
+  s2[label="segment 2"]
+  s2->s1;
   
-  
-  nm[label="new messages",shape="oval"]
-  nm->s4
-  {rank =same; nm; s4}
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+  nm->s2
+  {rank =same; nm; s2}
 
 }
 ----
@@ -1336,13 +1337,15 @@ digraph G {
   graph [ dpi = 190 ];
   rankdir="RL";
   
-  s5[label="segment 5",style="filled",fillcolor="green"];
-  s1[label="segment 1",style="filled"];
-  s5->"segment 4"->"segment 3"->"segment 2"->s1
+  s1[label="segment 1"]
+  s2[label="segment 2"]
+  s3[label="segment 3"]
+  s3->s2->s1;
   
-  nm[label="new messages",shape="oval"]
-  nm->s5
-  {rank =same; nm; s5}
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+  nm->s3
+  {rank =same; nm; s3}
 
 }
 ----
@@ -1356,14 +1359,63 @@ digraph G {
   graph [ dpi = 190 ];
   rankdir="RL";
   
-  s5[label="segment 5",style="filled",fillcolor="green"];
-  s5->"segment 4"->"segment 3"->"segment 2"
+  s1[label="segment 1",style="filled"]
+  s2[label="segment 2"]
+  s3[label="segment 3"]
+  s3->s2->s1;
   
-  nm[label="new messages",shape="oval"]
-  nm->s5
-  {rank =same; nm; s5}
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/surprised.png"]
+  nm->s3
+  {rank =same; nm; s3}
+
 }
 ----
+
+== Как работает retention
+
+[graphviz,retention4,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s1[label="segment 2"]
+  s2[label="segment 3"]
+  s3[label="segment 4"]
+  s3->s2->s1;
+  
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+  nm->s3
+  {rank =same; nm; s3}
+
+}
+----
+
+== Как работает retention
+
+[graphviz,retention5,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 190 ];
+  rankdir="RL";
+  
+  s1[label="segment 3"]
+  s2[label="segment 4"]
+  s3[label="segment 5"]
+  s3->s2->s1;
+  
+  nm[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+  nm->s3
+  {rank =same; nm; s3}
+
+}
+----
+
 
 [%notitle]
 == Kafka как зацикленная магнитофонная плёнка
