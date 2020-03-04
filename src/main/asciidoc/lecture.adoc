@@ -1551,8 +1551,10 @@ digraph G {
   rankdir="LR";
   
     subgraph cluster_s2{
-        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
-        label="APP_ID_1"
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/worried.png"];
+        label="APP_ID_1";
+        style="rounded";
    }
   
   subgraph cluster_s1{
@@ -1570,25 +1572,17 @@ digraph G {
 
 == Добавляем ноды
 
-[graphviz,w2,svg]
+[graphviz,w2,png]
 ----
 digraph G {
   node [shape="rectangle"]
- // graph [ dpi = 140 ];
+  graph [ dpi = 140 ];
   rankdir="LR";
-  
-  
-  
       subgraph cluster_s2{
-          
-            
-        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
-            
-            
-            
-          
-        o2[label="Worker 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
-        
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
+        o2[shape="none",label="",
+                 image="src/main/asciidoc/images/neutral.png"]
         label="APP_ID_1"
       }
   
@@ -1607,26 +1601,26 @@ digraph G {
 
 == Ограничены только числом партиций
 
-[graphviz,w4,svg]
+[graphviz,w4,png]
 ----
 digraph G {
   node [shape="rectangle"]
   graph [ dpi = 140 ];
   rankdir="LR";
-  
-  
-  
       subgraph cluster_s2{
             
-        o1[label="Worker 1"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o1[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
         
-        o2[label="Worker 2"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o2[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
 
-        o3[label="Worker 3"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o3[shape="none",label="",
+                 image="src/main/asciidoc/images/smiley.png"]
 
-        o4[label="Worker 4"; shape="oval"; style=filled; fillcolor="#ffffcc"]
+        o4[shape="none",label="",
+                 image="src/main/asciidoc/images/rollingeyes.png"]
 
-        
         label="APP_ID_1"
       }
   
