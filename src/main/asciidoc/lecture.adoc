@@ -355,13 +355,31 @@ digraph D {
     subgraph cluster_t1 {
       label = "topic A";
       style = "rounded";
-      T1[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4"; style="invis"]
+      T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+                    <hr/>
+                    <tr><td>partition 4</td></tr>
+            </table>>; style="invis"]
     }
      
     subgraph cluster_t2 {
       label = "topic B";
       style = "rounded";
-      T2[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3"; style="invis"]
+      T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+            </table>>; style="invis"]
 
     }   
 
@@ -369,7 +387,19 @@ digraph D {
     subgraph cluster_t3 {
       label = "topic C";
       style = "rounded";
-      T3[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4|partition 5"; style="invis"]
+      T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+                    <hr/>
+                    <tr><td>partition 4</td></tr>
+                    <hr/>
+                    <tr><td>partition 5</td></tr>
+            </table>>; style="invis"]
     }   
     
     T1:p0->T2:p0->T3:p0[style=invis]
@@ -387,13 +417,31 @@ digraph D {
     subgraph cluster_t1 {
       label = "topic A";
       style = "rounded";
-      T1[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4"]
+      T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+                    <hr/>
+                    <tr><td>partition 4</td></tr>
+            </table>>]
     }
      
     subgraph cluster_t2 {
       label = "topic B";
       style = "rounded";
-      T2[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3"]
+      T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+            </table>>]
 
     }   
 
@@ -401,10 +449,23 @@ digraph D {
     subgraph cluster_t3 {
       label = "topic C";
       style = "rounded";
-      T3[shape="record"; label="<p0>partition 0|partition 1|partition 2|partition 3|partition 4|partition 5"]
+      T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
+                    <tr><td port="p0">partition 0</td></tr>
+                    <hr/>
+                    <tr><td>partition 1</td></tr>
+                    <hr/>
+                    <tr><td>partition 2</td></tr>
+                    <hr/>
+                    <tr><td>partition 3</td></tr>
+                    <hr/>
+                    <tr><td>partition 4</td></tr>
+                    <hr/>
+                    <tr><td>partition 5</td></tr>
+            </table>>]
     }   
     
-    T1:p0->T2:p0->T3:p0[style=invis]
+    T1:p0->T2:p0->T3:p0[style="invis"]
+    
 } 
 ----
 
@@ -1005,6 +1066,8 @@ digraph G {
         
         o4[shape="none",label="",
                  image="src/main/asciidoc/images/rollingeyes.png"]
+        
+        o1->o4[style="invis"];
         label="Consumer Group"
         style="rounded"
         
@@ -1583,7 +1646,8 @@ digraph G {
                  image="src/main/asciidoc/images/neutral.png"]
         o2[shape="none",label="",
                  image="src/main/asciidoc/images/neutral.png"]
-        label="APP_ID_1"
+        label="APP_ID_1";
+        style="rounded";
       }
   
   subgraph cluster_s1{
@@ -1621,7 +1685,8 @@ digraph G {
         o4[shape="none",label="",
                  image="src/main/asciidoc/images/rollingeyes.png"]
 
-        label="APP_ID_1"
+        label="APP_ID_1";
+        style="rounded";
       }
   
   subgraph cluster_s1{
