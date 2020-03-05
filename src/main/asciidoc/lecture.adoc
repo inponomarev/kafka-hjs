@@ -58,16 +58,20 @@ icon:twitter[size=lg] @inponomarev
 
 == Что такое лог?
 
+image::oak-log.jpg[{image-30-width}]
+
 [%step]
 * Добавляем данные в конец
 * Записанное не можем изменить
 * Читаем последовательно
 
-[%notitle]
-== Вступление
+== -- Что наша жизнь?
 
--- Что наша жизнь? 
-[.fragment]
+
+== -- Что наша жизнь?
+
+image::oak-log.jpg[{image-60-width}]
+
 -- Лог!
 
 
@@ -97,9 +101,8 @@ image::emptyshelf.jpg[]
 |===
 a|
 [%step]
-* Украли
+* Украли (разбили, выкинули и т. п.)
 * Потеряли: лежит где-то рядом
-* Разбили и выкинули
 a|
 |===
 
@@ -108,9 +111,8 @@ a|
 [cols=2]
 |===
 a|
-* Украли
+* Украли (разбили, выкинули и т. п.)
 * Потеряли: лежит где-то рядом
-* Разбили и выкинули
 * *ЭТО ВАША ТУПАЯ ПРОГРАММА НЕ РАБОТАЕТ*
 a|
 image::upset-cropped.jpg[]
@@ -222,7 +224,7 @@ image::messy.jpg[]
 
 
 
-== Архитектура решения: Ledger не работает в одиночку
+== Архитектура решения: лог не работает в одиночку
 
 [graphviz,erp-architecture,png]
 ----
@@ -231,8 +233,9 @@ digraph G {
   rankdir="LR";
   A[label="Documents",shape="cylinder"];
   B[label="Posting",shape="rectable",style="rounded"];
-  Ledger [shape="record",label="{ | | | | }"];
-  Caption[label="Ledger",shape="plaintext"];
+  Ledger [shape="none",label="",
+      image="src/main/asciidoc/images/oak-log-cropped.jpg"];
+  Caption[label="Log (ledger)",shape="plaintext"];
   
   {rank = same; Ledger; Caption;}
   C[label="Aggregating",shape="rectable",style="rounded"];
@@ -1621,7 +1624,14 @@ digraph G {
 
 == Существующие фреймворки потоковой обработки
 
-image::streaming-frameworks.png[]
+[cols=".^1a,.^1a,.^1a,.^1a,.^1a"]
+|===
+|image::spark-logo.svg[]
+|image::samza-logo.svg[]
+|image::storm-logo.svg[]
+|image::flink-logo.svg[]
+|image::kafka-logo.svg[]
+|===
 
 
 == Когда меня спрашивают, какой стриминговый фреймворк использовать
