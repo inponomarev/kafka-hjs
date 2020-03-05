@@ -312,39 +312,35 @@ digraph G {
 
 == Кластер Kafka: брокеры и Zookeeper
 
-[cols=3]
-|===
-a|
-Broker
+[graphviz,cluster-anatomy,png]
+----
+digraph D {
+  graph [ dpi = 180 ]; 
+  b1[shape="none",label="",
+      image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-image::kafka-logo.svg[{image-40-width}] 
+  b2[shape="none",label="",
+      image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-a|
-Broker
+  b3[shape="none",label="",
+      image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-image::kafka-logo.svg[{image-40-width}] 
-a|
-Broker
+  zk1[shape="none",label="",
+      image="src/main/asciidoc/images/zookeeper-logo-small.png"];
 
-image::kafka-logo.svg[{image-40-width}] 
-a|
-Zookeeper
+  zk2[shape="none",label="",
+      image="src/main/asciidoc/images/zookeeper-logo-small.png"];
 
-image::zookeeper-logo.png[{image-20-width}]
-a|
-Zookeeper
+  zk3[shape="none",label="",
+      image="src/main/asciidoc/images/zookeeper-logo-small.png"];
+      
+  b1->zk1[style="invis"];
+  b2->zk2[style="invis"];
+  b3->zk3[style="invis"];
+}
+----
 
-image::zookeeper-logo.png[{image-20-width}] 
-
-a|
-Zookeeper
-
-image::zookeeper-logo.png[{image-20-width}]
-|===
-
-
-
-== Топики и партиции
+== Топики, партиции и сообщения
 
 [graphviz,topics-partitions,png]
 ----
@@ -355,31 +351,75 @@ digraph D {
     subgraph cluster_t1 {
       label = "topic A";
       style = "rounded";
+      T1[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
+    }
+     
+    subgraph cluster_t2 {
+      label = "topic B";
+      style = "rounded";
+      T2[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
+
+    }   
+
+
+    subgraph cluster_t3 {
+      label = "topic C";
+      style = "rounded";
+      T3[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
+    }   
+    
+    T1:p0->T2:p0->T3:p0[style="invis"]
+    
+} 
+----
+
+
+== Топики, партиции и сообщения
+
+[graphviz,topics-partitions1,png]
+----
+digraph D {
+  graph [ dpi = 180 ]; 
+
+   rankdir = LR;
+    subgraph cluster_t1 {
+      label = "topic A";
+      style = "rounded";
       T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
-                    <hr/>
-                    <tr><td>partition 1</td></tr>
-                    <hr/>
-                    <tr><td>partition 2</td></tr>
-                    <hr/>
-                    <tr><td>partition 3</td></tr>
-                    <hr/>
-                    <tr><td>partition 4</td></tr>
-            </table>>; style="invis"]
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
     }
      
     subgraph cluster_t2 {
       label = "topic B";
       style = "rounded";
       T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
-                    <hr/>
-                    <tr><td>partition 1</td></tr>
-                    <hr/>
-                    <tr><td>partition 2</td></tr>
-                    <hr/>
-                    <tr><td>partition 3</td></tr>
-            </table>>; style="invis"]
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
 
     }   
 
@@ -388,25 +428,22 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
-                    <hr/>
-                    <tr><td>partition 1</td></tr>
-                    <hr/>
-                    <tr><td>partition 2</td></tr>
-                    <hr/>
-                    <tr><td>partition 3</td></tr>
-                    <hr/>
-                    <tr><td>partition 4</td></tr>
-                    <hr/>
-                    <tr><td>partition 5</td></tr>
-            </table>>; style="invis"]
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
     }   
     
-    T1:p0->T2:p0->T3:p0[style=invis]
+    T1:p0->T2:p0->T3:p0[style="invis"]
+    
 } 
 ----
 
-== Топики и партиции
+== Топики, партиции и сообщения
 
 [graphviz,topics-partitions2,png]
 ----
@@ -418,47 +455,22 @@ digraph D {
       label = "topic A";
       style = "rounded";
       T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0"><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-            </table>>]
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
     }
      
     subgraph cluster_t2 {
       label = "topic B";
       style = "rounded";
       T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0">partition 0</td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-            </table>>]
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
 
     }   
 
@@ -467,28 +479,14 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-                    <tr><td port="p0"><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    </td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-                    <hr/>
-                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/>
-                    <IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
-            </table>>]
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <hr/>
+        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        </table>>]
     }   
     
     T1:p0->T2:p0->T3:p0[style="invis"]
@@ -496,10 +494,9 @@ digraph D {
 } 
 ----
 
-
 == Репликация партиций
 
-[graphviz,broker-topics,png]
+[graphviz,broker-topics0,png]
 ----
 digraph G {
   node [shape="rectangle"]
@@ -508,7 +505,7 @@ digraph G {
   
    subgraph cluster_broker1{
     sm1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -517,7 +514,7 @@ digraph G {
   
   subgraph cluster_broker2{
     sm2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -526,7 +523,70 @@ digraph G {
   
   subgraph cluster_broker3{
     sm3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
+    
+    b3p2[label="partition 2"];
+    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    label="broker 3"
+  }
+  
+  subgraph cluster_clients{
+    R1[shape="none",label="", style="invis",
+                 image="src/main/asciidoc/images/smile.png"];
+    R2[shape="none",label="", style="invis",
+                 image="src/main/asciidoc/images/smile.png"];
+    R3[shape="none",label="", style="invis",
+                 image="src/main/asciidoc/images/smile.png"];
+    R1->R2->R3[style=invis];
+    style=invis;
+  }
+  
+  b1p1->b2p2[weight=10,style=invis];
+  b2p1->b3p2[weight=10,style=invis];
+  b1p1->b2p1;
+  b2p2->b3p2;
+  b3p3->b1p3;
+  
+  R1->b1p1[dir="none", style="invis"];
+  R2->b2p2[dir="none", style="invis"];
+  R3->b3p3[dir="none", style="invis"];
+
+}
+
+----
+
+
+
+== Репликация партиций
+
+[graphviz,broker-topics1,png]
+----
+digraph G {
+  node [shape="rectangle"]
+  graph [ dpi = 180 ];
+  rankdir="LR";
+  
+   subgraph cluster_broker1{
+    sm1[shape="none",label="",
+                 image="src/main/asciidoc/images/smile.png"];
+    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p3[label="partition 3"];
+    label="broker 1"
+  }
+  
+  
+  subgraph cluster_broker2{
+    sm2[shape="none",label="",
+                 image="src/main/asciidoc/images/smile.png"];
+    b2p1[label="partition 1"];
+    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    
+    label="broker 2"
+  }
+  
+  subgraph cluster_broker3{
+    sm3[shape="none",label="",
+                 image="src/main/asciidoc/images/smile.png"];
     
     b3p2[label="partition 2"];
     b3p3[label="partition 3",style=filled; fillcolor="green"];
@@ -535,11 +595,11 @@ digraph G {
   
   subgraph cluster_clients{
     R1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -571,7 +631,7 @@ digraph G {
   
    subgraph cluster_broker1{
     sm1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -580,7 +640,7 @@ digraph G {
   
   subgraph cluster_broker2{
     sm2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -599,9 +659,9 @@ digraph G {
   
   subgraph cluster_clients{
     R1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R3[shape="none",label="",
                  image="src/main/asciidoc/images/worried.png"];
     R1->R2->R3[style=invis];
@@ -642,7 +702,7 @@ digraph G {
   
   subgraph cluster_broker2{
     sm2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -661,11 +721,11 @@ digraph G {
   
   subgraph cluster_clients{
     R1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -703,7 +763,7 @@ digraph G {
   
   subgraph cluster_broker2{
     sm2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -712,7 +772,7 @@ digraph G {
   
   subgraph cluster_broker3{
     sm3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b3p2[label="partition 2"];
     b3p3[label="partition 3"];
     label="broker 3"
@@ -720,11 +780,11 @@ digraph G {
   
   subgraph cluster_clients{
     R1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -755,7 +815,7 @@ digraph G {
   
    subgraph cluster_broker1{
     sm1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b1p1[label="partition 1",style=filled; fillcolor="green"];
     b1p3[label="partition 3"];
     label="broker 1"
@@ -764,7 +824,7 @@ digraph G {
   
   subgraph cluster_broker2{
     sm2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
     b2p2[label="partition 2",style=filled; fillcolor="green"];
     
@@ -773,7 +833,7 @@ digraph G {
   
   subgraph cluster_broker3{
     sm3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     
     b3p2[label="partition 2"];
     b3p3[label="partition 3",style=filled; fillcolor="green"];
@@ -782,11 +842,11 @@ digraph G {
   
   subgraph cluster_clients{
     R1[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R3[shape="none",label="",
-                 image="src/main/asciidoc/images/smiley.png"];
+                 image="src/main/asciidoc/images/smile.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -851,6 +911,8 @@ a|image::high-throughput.jpg[]
 
 `acks` = 0
 
+&nbsp;
+
 [graphviz,prod1,png]
 ----
 digraph G {
@@ -894,6 +956,9 @@ digraph G {
 == Запись в Кафку
 
 `acks` = 1
+
+&nbsp;
+
 
 [graphviz,prod2,png]
 ----
