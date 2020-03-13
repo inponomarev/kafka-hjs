@@ -1622,26 +1622,26 @@ digraph G {
 }
 ----
 
-== Существующие фреймворки потоковой обработки
+// == Существующие фреймворки потоковой обработки
 
-[cols=".^1a,.^1a,.^1a,.^1a,.^1a"]
-|===
-|image::spark-logo.svg[]
-|image::samza-logo.svg[]
-|image::storm-logo.svg[]
-|image::flink-logo.svg[]
-|image::kafka-logo.svg[]
-|===
-
-
-== Когда меня спрашивают, какой стриминговый фреймворк использовать
-
-image::weuseflink1.jpg[{image-90-width}]
+// [cols=".^1a,.^1a,.^1a,.^1a,.^1a"]
+// |===
+// |image::spark-logo.svg[]
+// |image::samza-logo.svg[]
+// |image::storm-logo.svg[]
+// |image::flink-logo.svg[]
+// |image::kafka-logo.svg[]
+// |===
 
 
-== Когда меня спрашивают, какой стриминговый фреймворк использовать
+// == Когда меня спрашивают, какой стриминговый фреймворк использовать
 
-image::weuseflink2.jpg[{image-90-width}]
+// image::weuseflink1.jpg[{image-90-width}]
+
+
+// == Когда меня спрашивают, какой стриминговый фреймворк использовать
+
+// image::weuseflink2.jpg[{image-90-width}]
 
 == Stateless Transformation
 [graphviz, "yelling-topology1.png"]
@@ -1850,8 +1850,7 @@ digraph D {
           style = "invis"
           S1 [shape=plaintext label = "Source"];
           S2 [shape=plaintext label = "Local store"];
-          S3 [shape=plaintext label = "Changelog"];
-          S1->S2->S3 [style="invis"]
+          S1->S2 [style="invis"]
       }
 
     subgraph cluster_p1 {
@@ -1860,21 +1859,19 @@ digraph D {
         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
+
         d->ls1;
-        
-        ls1->p3[dir="both"];
           
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -1882,25 +1879,22 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
           
         
-        ls1[shape="cylinder" label = "RocksDB"]
+        ls1[shape="cylinder" label = <<table border="0" cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">15</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">10</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">20</font></td></tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
-        
-        
     }
-    
+
   }
 } 
 -----
@@ -1926,21 +1920,21 @@ digraph D {
         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
+
         d->ls1;
         
-        ls1->p3[dir="both"];
+        ls1->p3v1;
           
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -1948,30 +1942,35 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 15, B: 10, D: 20"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">15</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">10</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">20</font></td></tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
-        
-
+        ls1->p1v1;
+        ls1->p2v1;
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1;
-        p1v1[shape="record"; label="{B: 10}"];
-        p2v1[shape="record"; label="{D: 20}"];
-        p3v1[shape="record"; label="{A: 15}"];
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr></table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr></table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr></table>>];
   }
 } 
 -----
@@ -1980,7 +1979,7 @@ digraph D {
 [graphviz, "local-partitioning-2.png"]
 -----
 digraph D {
-  graph [ dpi = 150 ];
+  graph [ dpi = 150 ]; 
   subgraph system {
 
      subgraph cluster_s2{
@@ -1997,21 +1996,21 @@ digraph D {
         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
+
         d->ls1;
         
-        ls1->p3[dir="both"];
+        ls1->p3v1;
           
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2019,30 +2018,44 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 19, B: 12, D: 22"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">19</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">12</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">22</font></td></tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
-        
-
+        ls1->p1v1;
+        ls1->p2v1;
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1;
-        p1v1[shape="record"; label="{B: 12|B: 10}"];
-        p2v1[shape="record"; label="{D: 22|D: 20}"];
-        p3v1[shape="record"; label="{A: 19|A: 15}"];
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        </table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        </table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        </table>>];
   }
 } 
 -----
@@ -2053,7 +2066,7 @@ digraph D {
 digraph D {
   graph [ dpi = 150 ]; 
   subgraph system {
-  
+
      subgraph cluster_s2{
           style = "invis"
           S1 [shape=plaintext label = "Source"];
@@ -2064,13 +2077,14 @@ digraph D {
 
     subgraph cluster_p1 {
       label = "Worker 1";
-        
-          
+
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2078,44 +2092,60 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 19, B: 12"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">19</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">12</font></td>
+        </tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
+        ls1->p1v1;
+        ls1->p3v1;
     }
+
+
     subgraph cluster_p2 {
       label = "Worker 2";
-      subgraph cluster_pp2{
+         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
-        ls2[shape="cylinder" label = "D: ???"]
+      
+        ls2[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td><img src="src/main/asciidoc/images/question-mark.png"/></td></tr></table>>]
         d->ls2;
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        ls2->p3[dir="both"];
+        ls2->p2v1[style="invis"];
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1[style="invis"];
-        p1v1[shape="record"; label="{B: 12|B: 10}"];
-        p3v1[shape="record"; label="{D: 22|D: 20}"; style="invis"];
-        p2v1[shape="record"; label="{A: 19|A: 15}"];
-    
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        </table>>];
+        p2v1[shape="none"; style="invis"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        </table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        </table>>];
   }
 } 
 -----
@@ -2126,7 +2156,7 @@ digraph D {
 digraph D {
   graph [ dpi = 150 ]; 
   subgraph system {
-  
+
      subgraph cluster_s2{
           style = "invis"
           S1 [shape=plaintext label = "Source"];
@@ -2137,13 +2167,14 @@ digraph D {
 
     subgraph cluster_p1 {
       label = "Worker 1";
-        
-          
+
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2151,44 +2182,60 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 19, B: 12"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">19</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">12</font></td>
+        </tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
+        ls1->p1v1;
+        ls1->p3v1;
     }
+
+
     subgraph cluster_p2 {
       label = "Worker 2";
-      subgraph cluster_pp2{
+         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
-        ls2[shape="cylinder" label = "D: 22"]
+      
+        ls2[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">22</font></td></tr></table>>]
         d->ls2;
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        ls2->p3[dir="both"];
+        ls2->p2v1[dir="back"];
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1[dir="back"];
-        p1v1[shape="record"; label="{B: 12|B: 10}"];
-        p3v1[shape="record"; label="{D: 22|D: 20}"];
-        p2v1[shape="record"; label="{A: 19|A: 15}"];
-    
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        </table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        </table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        </table>>];
   }
 } 
 -----
@@ -2199,7 +2246,7 @@ digraph D {
 digraph D {
   graph [ dpi = 150 ]; 
   subgraph system {
-  
+
      subgraph cluster_s2{
           style = "invis"
           S1 [shape=plaintext label = "Source"];
@@ -2210,13 +2257,14 @@ digraph D {
 
     subgraph cluster_p1 {
       label = "Worker 1";
-        
-          
+
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2224,44 +2272,66 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 21, B: 13"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">21</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">13</font></td>
+        </tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
+        ls1->p1v1;
+        ls1->p3v1;
     }
+
+
     subgraph cluster_p2 {
       label = "Worker 2";
-      subgraph cluster_pp2{
+         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
-        ls2[shape="cylinder" label = "D: 23"]
+      
+        ls2[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">23</font></td></tr></table>>]
         d->ls2;
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        ls2->p3[dir="both"];
+        ls2->p2v1;
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1;
-        p1v1[shape="record"; label="{B: 13|B: 12|B: 10}"];
-        p3v1[shape="record"; label="{D: 23|D: 22|D: 20}"];
-        p2v1[shape="record"; label="{A: 21|A: 19|A: 15}"];
-    
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>13</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        </table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>23</td></tr>        
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        </table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>21</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        </table>>];
   }
 } 
 -----
@@ -2272,7 +2342,7 @@ digraph D {
 digraph D {
   graph [ dpi = 150 ]; 
   subgraph system {
-  
+
      subgraph cluster_s2{
           style = "invis"
           S1 [shape=plaintext label = "Source"];
@@ -2283,13 +2353,14 @@ digraph D {
 
     subgraph cluster_p1 {
       label = "Worker 1";
-        
-          
+
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2297,44 +2368,54 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 21, B: 13"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">21</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">13</font></td>
+        </tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
+        ls1->p1v1;
+        ls1->p3v1;
     }
+
+
     subgraph cluster_p2 {
       label = "Worker 2";
-      subgraph cluster_pp2{
+         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
-        ls2[shape="cylinder" label = "D: 23"]
+      
+        ls2[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">23</font></td></tr></table>>]
         d->ls2;
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        ls2->p3[dir="both"];
+        ls2->p2v1;
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1;
-        p1v1[shape="record"; label="{B: 13}"];
-        p3v1[shape="record"; label="{D: 23}"];
-        p2v1[shape="record"; label="{A: 21}"];
-    
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>13</td></tr>
+        </table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>23</td></tr>        
+        </table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>21</td></tr>
+        </table>>];
   }
 } 
 -----
@@ -2360,21 +2441,21 @@ digraph D {
         subgraph cluster_pp2{
               label = "Partition 3"
                 
-              d[label = "D"];
-              
-              
+              d[shape="none", label="",
+                 image="src/main/asciidoc/images/pear.png"];
           }
-          
-          
+
         d->ls1;
         
-        ls1->p3[dir="both"];
+        ls1->p3v1;
           
           subgraph cluster_pp11{
               label = "Partition 2"
           
-              b [label = "B"];
-              c[label = "C"];
+              b [shape="none", label="",
+                 image="src/main/asciidoc/images/red-apple.png"];
+              c[shape="none", label="",
+                 image="src/main/asciidoc/images/kiwi.png"];
               
           }
  
@@ -2382,30 +2463,35 @@ digraph D {
               label = "Partition 1"
               
               
-              a [label = "A"];
+              a [shape="none", label="",
+                 image="src/main/asciidoc/images/banana.png"];
               
           }
-          
         
-        ls1[shape="cylinder" label = "A: 21, B: 13, D: 23"]
+        ls1[shape="cylinder" label = <<table border="0"  cellspacing="5">
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td><font point-size="24">21</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td><font point-size="24">13</font></td>
+        <vr/><td><img src="src/main/asciidoc/images/pear.png"/></td><td><font point-size="24">23</font></td></tr></table>>]
         a->ls1;
         b->ls1;
         c->ls1;
         
-        p1[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 2"];
-        p2[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 3"];
-        p3[shape="plaintext"; style="filled"; fillcolor="#ffffcc"; label = "Partition 1"];
-        ls1->p1[dir="both"];
-        ls1->p2[dir="both"];
-        
-
+        ls1->p1v1;
+        ls1->p2v1;
     }
-        p1->p1v1;
-        p2->p2v1;
-        p3->p3v1;
-        p1v1[shape="record"; label="{B: 13}"];
-        p2v1[shape="record"; label="{D: 23}"];
-        p3v1[shape="record"; label="{A: 21}"];
+
+        p1v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 2</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>13</td></tr></table>>];
+        p2v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 3</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>23</td></tr></table>>];
+        p3v1[shape="none"; label= <<table cellborder="0">
+        <tr><td colspan="2">Partition 1</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>21</td></tr></table>>];
   }
 } 
 -----
