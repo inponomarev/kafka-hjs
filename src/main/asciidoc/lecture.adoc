@@ -247,7 +247,7 @@ digraph G {
 }
 ----
 
-== Подведём итоги
+== Предварительный итог
 
 Наличие лога позволяет
 
@@ -262,11 +262,29 @@ digraph G {
 |===
 .^|image::kafka.jpg[]
 .^|
-1. [line-through]#Что такое лог и почему это важно#
-2. *Что такое Kafka и что она умеет*
-3. Что такое потоковая архитектура и на что способны потоковые обработчики
-4. Kafka и JavaScript
-5. Как попробовать Кафку сегодня
+. [line-through]#Что такое лог и почему это важно#
+. *Что такое Kafka и что она умеет*
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+. [line-through]#Что такое лог и почему это важно#
+. Что такое Kafka и что она умеет
+.. *Общая информация*
+.. Как устроен кластер
+.. Как устроена запись
+.. Как устроено чтение
+.. Retention и компактификация
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
 .^|image::kafka.jpg[]
 |===
 
@@ -311,7 +329,23 @@ digraph G {
 * Могут быть прочитаны несколькими потребителями
 * Не брокер уведомляет консьюмеров, а консьюмеры забирают их
 
-// == TODO: база данных наизнанку
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+. [line-through]#Что такое лог и почему это важно#
+. Что такое Kafka и что она умеет
+.. [line-through]#Общая информация#
+.. *Как устроен кластер*
+.. Как устроена запись
+.. Как устроено чтение
+.. Retention и компактификация
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
 
 == Кластер Kafka: брокеры и Zookeeper
 
@@ -319,22 +353,22 @@ digraph G {
 ----
 digraph D {
   graph [ dpi = 180 ]; 
-  b1[shape="none",label="",
+  b1[shape="rectangle",label="",
       image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-  b2[shape="none",label="",
+  b2[shape="rectangle",label="",
       image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-  b3[shape="none",label="",
+  b3[shape="rectangle",label="",
       image="src/main/asciidoc/images/kafka-logo-small.png"];
 
-  zk1[shape="none",label="",
+  zk1[shape="rectangle",label="",
       image="src/main/asciidoc/images/zookeeper-logo-small.png"];
 
-  zk2[shape="none",label="",
+  zk2[shape="rectangle",label="",
       image="src/main/asciidoc/images/zookeeper-logo-small.png"];
 
-  zk3[shape="none",label="",
+  zk3[shape="rectangle",label="",
       image="src/main/asciidoc/images/zookeeper-logo-small.png"];
       
   b1->zk1[style="invis"];
@@ -355,11 +389,11 @@ digraph D {
       label = "topic A";
       style = "rounded";
       T1[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }
      
@@ -367,9 +401,9 @@ digraph D {
       label = "topic B";
       style = "rounded";
       T2[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
 
     }   
@@ -379,13 +413,13 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; style="invis"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>3</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }   
     
@@ -407,11 +441,11 @@ digraph D {
       label = "topic A";
       style = "rounded";
       T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }
      
@@ -419,9 +453,9 @@ digraph D {
       label = "topic B";
       style = "rounded";
       T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
 
     }   
@@ -431,13 +465,13 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>3</td><vr/><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td style="invis"><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }   
     
@@ -458,11 +492,11 @@ digraph D {
       label = "topic A";
       style = "rounded";
       T1[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }
      
@@ -470,9 +504,9 @@ digraph D {
       label = "topic B";
       style = "rounded";
       T2[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
 
     }   
@@ -482,13 +516,13 @@ digraph D {
       label = "topic C";
       style = "rounded";
       T3[shape="none"; label=<<table cellspacing="5" cellborder="0"  border="1">
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>0</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>1</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>2</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         <hr/>
-        <tr><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
+        <tr><td>3</td><vr/><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td><td><IMG SCALE="BOTH" SRC="src/main/asciidoc/images/message-small.png"/></td></tr>
         </table>>]
     }   
     
@@ -664,7 +698,7 @@ digraph G {
     R1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smile.png"];
+                 image="src/main/asciidoc/images/neutral.png"];
     R3[shape="none",label="",
                  image="src/main/asciidoc/images/worried.png"];
     R1->R2->R3[style=invis];
@@ -726,9 +760,9 @@ digraph G {
     R1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     R2[shape="none",label="",
-                 image="src/main/asciidoc/images/smile.png"];
+                 image="src/main/asciidoc/images/neutral.png"];
     R3[shape="none",label="",
-                 image="src/main/asciidoc/images/smile.png"];
+                 image="src/main/asciidoc/images/neutral.png"];
     R1->R2->R3[style=invis];
     style=invis;
   }
@@ -866,6 +900,24 @@ digraph G {
 }
 ----
 
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+. [line-through]#Что такое лог и почему это важно#
+. Что такое Kafka и что она умеет
+.. [line-through]#Общая информация#
+.. [line-through]#Как устроен кластер#
+.. *Как устроена запись*
+.. Как устроено чтение
+.. Retention и компактификация
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
 == Анатомия сообщения
 
 [graphviz,message-anatomy,png]
@@ -877,28 +929,50 @@ digraph G {
     label=<<table cellspacing="5" cellborder="0" style="rounded" border="1">
                     <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
                     <hr/>
+                    <tr><td>Номер партиции</td></tr>
+                    <hr/>
                     <tr><td>Ключ</td></tr>
                     <hr/>
                     <tr><td>Значение</td></tr>
                     <hr/>
-                    <tr><td>Номер партиции</td></tr>
+                    <tr><td>Заголовки</td></tr>
             </table>>;
             
   ]
 }
 ----
 
-== В какую партицию полетит сообщение?
+
+== Анатомия сообщения
+
+[graphviz,message-anatomy2,png]
+----
+digraph G {
+  graph [ dpi = 200 ];
+  msg[
+    shape="none";
+    label=<<table cellspacing="5" cellborder="0" style="rounded" border="1">
+                    <tr><td><IMG SCALE="TRUE" SRC="src/main/asciidoc/images/message.png"/></td></tr>
+                    <hr/>
+                    <tr><td bgcolor="gray">Номер партиции</td></tr>
+                    <hr/>
+                    <tr><td bgcolor="gray">Ключ</td></tr>
+                    <hr/>
+                    <tr><td>Значение</td></tr>
+                    <hr/>
+                    <tr><td>Заголовки</td></tr>
+            </table>>;
+            
+  ]
+}
+----
+
 [source,java]
 ----
 // hash the keyBytes to choose a partition
 return Utils.toPositive(Utils.murmur2(keyBytes)) % numPartitions;
 ----
 
-[source,java]
-----
-int part = Utils.toPositive(nextValue) % availablePartitions.size();
-----
 
 == Пропускная способность vs время ожидания
 
@@ -1050,6 +1124,25 @@ digraph G {
   a->b1p1[];
 }
 ----
+
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+. [line-through]#Что такое лог и почему это важно#
+. Что такое Kafka и что она умеет
+.. [line-through]#Общая информация#
+.. [line-through]#Как устроен кластер#
+.. [line-through]#Как устроена запись#
+.. *Как устроено чтение*
+.. Retention и компактификация
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
+
 
 == Чтение из Кафки
 
@@ -1441,8 +1534,23 @@ digraph G {
 }
 ----
 
-// == At least once, at most once & exactly once в понимании Кафки
-// TODO
+== Наш план
+[cols="20a,60a,20a"]
+|===
+.^|image::kafka.jpg[]
+.^|
+. [line-through]#Что такое лог и почему это важно#
+. Что такое Kafka и что она умеет
+.. [line-through]#Общая информация#
+.. [line-through]#Как устроен кластер#
+.. [line-through]#Как устроена запись#
+.. [line-through]#Как устроено чтение#
+.. *Retention и компактификация*
+. Что такое потоковая архитектура и на что способны потоковые обработчики
+. Kafka и JavaScript
+. Как попробовать Кафку сегодня
+.^|image::kafka.jpg[]
+|===
 
 
 == Как работает retention
@@ -2590,16 +2698,16 @@ image::streams-noway.svg[{image-90-width}]
 ** В обычном режиме, сбой в KStreams приводит к повторному чтению данных.
 ** В режиме once-only delivery -- чтение и запись между топиками Kafka.
 
-== Если нужно хранить данные всё время
+//== Если нужно хранить данные всё время
 
-* Лямбда-архитектура
+//* Лямбда-архитектура
 
-[cols="30a,70a"]
-|===
-.^|image::nikita_salnikov.jpg[]
-.^|
-*Никита Сальников-Тарновский* https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
-|===
+//[cols="30a,70a"]
+//|===
+//.^|image::nikita_salnikov.jpg[]
+//.^|
+//*Никита Сальников-Тарновский* //https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
+//|===
 
 == Наш план
 
@@ -2706,10 +2814,10 @@ digraph G {
 
 == Преобразующий/выходной каскад на node.js?
 
-[cols=2]
+[cols=">40a,60a"]
 |===
-a|image::nodefluent.png[]
-a|
+|image::nodefluent.png[]
+|
 https://github.com/nodefluent[Nodefluent]
 
 * node-sinek -- ещё один клиент
@@ -2762,6 +2870,7 @@ image::conduktor.png[]
 
 Conduktor -- лучший GUI инструмент
 
+[%notitle]
 == Conduktor
 
 image::conduktor-screen.png[]
@@ -2780,11 +2889,6 @@ image::conduktor-screen.png[]
 
 
 
-
-
-
-
-
 == Kafka: The Definitive Guide
 
 [.custom-style]
@@ -2800,7 +2904,7 @@ image::conduktor-screen.png[]
 == Сообщества, конференции
 - Kafka Summit Conference: https://kafka-summit.org/
 
-image::kafka-summit.png[]
+image::kafka-summit.png[{image-50-width}]
 
 == Телеграм
 
@@ -2814,3 +2918,16 @@ image::kafka-summit.png[]
 Moscow Apache Kafka® Meetup by Confluent -- раз в квартал
 
 
+== На этом всё!
+
+[cols=">.^40a,<.^60a"]
+|===
+|image::kafka-logo.svg[{image-30-width}]
+|image::conduktor.png[]
+|===
+
+icon:twitter[size=lg] https://twitter.com/inponomarev[@inponomarev]
+
+ponomarev@corchestra.ru
+
+*Спасибо!*

@@ -254,6 +254,11 @@ body {
 .reveal table td.halign-center {
   text-align: center; }
   
+
+.reveal table th.halign-right,
+.reveal table td.halign-right {
+  text-align: right; }
+
   
 .reveal table th[align="right"],
 .reveal table td[align="right"] {
