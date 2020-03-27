@@ -1,2 +1,3 @@
 src/main/asciidoc/output/
 target/
+.m2/
