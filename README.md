@@ -1,6 +1,6 @@
 # Порядок сборки проекта на Windows в локальном Docker-контейнере
 
-1. Скачать и установить Docker for Windows (Требуется Windows 10+)
+1. Скачать и установить Docker for Windows (Требуется Windows 10+) https://hub.docker.com/editions/community/docker-ce-desktop-windows/
 2. Склонировать локально проект с гита. Создать в нём пустую папку `.m2`
 3. Собрать Docker-образ: в директории проекта выполнить команду
 
