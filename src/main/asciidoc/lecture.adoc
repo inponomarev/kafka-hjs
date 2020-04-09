@@ -1,4 +1,4 @@
-= Apache Kafka: что это и как она изменит архитектуру вашего приложения
+= Apache Kafka: *что это и как она изменит архитектуру* *вашего приложения*
 Иван Пономарёв, КУРС/МФТИ
 :revealjs_theme: black
 :revealjs_customtheme: white_course.css
@@ -33,10 +33,10 @@ icon:twitter[size=lg] @inponomarev
 [%notitle]
 == Кто я такой
 
-[cols="30a,70a"]
+[cols="40a,60a"]
 |===
 .^|image::me.jpg[]
-.^|
+.^|[.arrov_bottom]
 * Tech Lead at KURS
 * ERP systems & Java background
 * Speaker at JPoint, Devoops, Heisenbug, JUG.MSK, etc.
@@ -46,19 +46,19 @@ icon:twitter[size=lg] @inponomarev
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 1. *Что такое лог и почему это важно*
 2. Что такое Kafka и что она умеет
 3. Что такое потоковая архитектура и на что способны потоковые обработчики
 4. Kafka и JavaScript
 5. Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Что такое лог?
 
-image::oak-log.jpg[{image-30-width}]
+image::not_brand/oak-log.jpg[{image-30-width}]
 
 [%step]
 * Добавляем данные в конец
@@ -70,9 +70,9 @@ image::oak-log.jpg[{image-30-width}]
 
 == -- Что наша жизнь?
 
-image::oak-log.jpg[{image-60-width}]
+image::not_brand/oak-log.jpg[{image-40-width}]
 
--- Лог!
+-- *Лог!*
 
 
 
@@ -93,7 +93,7 @@ image::oak-log.jpg[{image-60-width}]
 
 // Надо взять товар с полки, но там пусто!
 
-image::emptyshelf.jpg[]
+image::not_brand/emptyshelf.jpg[{image-50-width}]
 
 == Что это может быть?
 
@@ -115,7 +115,7 @@ a|
 * Потеряли: лежит где-то рядом
 * *ЭТО ВАША ТУПАЯ ПРОГРАММА НЕ РАБОТАЕТ*
 a|
-image::upset-cropped.jpg[]
+image::not_brand/upset-cropped.jpg[]
 
 |===
 
@@ -124,7 +124,7 @@ image::upset-cropped.jpg[]
 // * «Текущий снимок»? Делать нечего.
 // * «База данных есть склад» -- просто, но не работает
 
-image::messy.jpg[]
+image::not_brand/messy.jpg[{image-50-width}]
 
 
 == Как на самом деле надо проектировать?
@@ -234,7 +234,7 @@ digraph G {
   A[label="Documents",shape="cylinder"];
   B[label="Posting",shape="rectable",style="rounded"];
   Ledger [shape="none",label="",
-      image="src/main/asciidoc/images/oak-log-cropped.jpg"];
+      image="src/main/asciidoc/images/oak-log-cropped.png"];
   Caption[label="Log (ledger)",shape="plaintext"];
   
   {rank = same; Ledger; Caption;}
@@ -260,21 +260,21 @@ digraph G {
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . *Что такое Kafka и что она умеет*
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . Что такое Kafka и что она умеет
 .. *Общая информация*
@@ -285,19 +285,21 @@ digraph G {
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Kafka это
 
-[cols="1a,1a"]
+[cols="1a,2a,3a,1a"]
 |===
+<.^|
 |image::kafka-logo.svg[]
 <.^|
 * распределённый
 * масштабируемый
 * отказоустойчивый лог
 * https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines[миллионы записей в секунду]
+<.^|
 |===
 
 
@@ -332,8 +334,8 @@ digraph G {
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . Что такое Kafka и что она умеет
 .. [line-through]#Общая информация#
@@ -344,7 +346,7 @@ digraph G {
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Кластер Kafka: брокеры и Zookeeper
@@ -543,7 +545,7 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
     b1p3[label="partition 3"];
     label="broker 1"
   }
@@ -553,7 +555,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -563,7 +565,7 @@ digraph G {
                  image="src/main/asciidoc/images/smile.png"];
     
     b3p2[label="partition 2"];
-    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    b3p3[label="partition 3",style=filled; fillcolor="#4db34d"];
     label="broker 3"
   }
   
@@ -606,7 +608,7 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
     b1p3[label="partition 3"];
     label="broker 1"
   }
@@ -616,7 +618,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -626,7 +628,7 @@ digraph G {
                  image="src/main/asciidoc/images/smile.png"];
     
     b3p2[label="partition 2"];
-    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    b3p3[label="partition 3",style=filled; fillcolor="#4db34d"];
     label="broker 3"
   }
   
@@ -659,7 +661,7 @@ digraph G {
 
 == Репликация партиций
 
-[graphviz,broker-topics2,png]
+[graphviz,broker-topics2,png, role="dizzy"]
 ----
 digraph G {
   node [shape="rectangle"]
@@ -669,7 +671,7 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
     b1p3[label="partition 3"];
     label="broker 1"
   }
@@ -679,7 +681,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -721,7 +723,7 @@ digraph G {
 
 == Репликация партиций
 
-[graphviz,broker-topics3,png]
+[graphviz,broker-topics3,png, role="dizzy"]
 ----
 digraph G {
   node [shape="rectangle"]
@@ -731,8 +733,8 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/neutral.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
-    b1p3[label="partition 3",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
+    b1p3[label="partition 3",style=filled; fillcolor="#4db34d"];
     label="broker 1"
   }
   
@@ -741,7 +743,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -792,8 +794,8 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/neutral.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
-    b1p3[label="partition 3",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
+    b1p3[label="partition 3",style=filled; fillcolor="#4db34d"];
     label="broker 1"
   }
   
@@ -802,7 +804,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -853,7 +855,7 @@ digraph G {
    subgraph cluster_broker1{
     sm1[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
-    b1p1[label="partition 1",style=filled; fillcolor="green"];
+    b1p1[label="partition 1",style=filled; fillcolor="#4db34d"];
     b1p3[label="partition 3"];
     label="broker 1"
   }
@@ -863,7 +865,7 @@ digraph G {
     sm2[shape="none",label="",
                  image="src/main/asciidoc/images/smile.png"];
     b2p1[label="partition 1"];
-    b2p2[label="partition 2",style=filled; fillcolor="green"];
+    b2p2[label="partition 2",style=filled; fillcolor="#4db34d"];
     
     label="broker 2"
   }
@@ -873,7 +875,7 @@ digraph G {
                  image="src/main/asciidoc/images/smile.png"];
     
     b3p2[label="partition 2"];
-    b3p3[label="partition 3",style=filled; fillcolor="green"];
+    b3p3[label="partition 3",style=filled; fillcolor="#4db34d"];
     label="broker 3"
   }
   
@@ -903,8 +905,8 @@ digraph G {
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . Что такое Kafka и что она умеет
 .. [line-through]#Общая информация#
@@ -915,7 +917,7 @@ digraph G {
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Анатомия сообщения
@@ -980,8 +982,8 @@ return Utils.toPositive(Utils.murmur2(keyBytes)) % numPartitions;
 
 [cols=2]
 |===
-a|image::low-throughput.jpg[]
-a|image::high-throughput.jpg[]
+a|image::not_brand/low-throughput.jpg[]
+a|image::not_brand/high-throughput.jpg[]
 |===
 
 == Запись в Кафку
@@ -1046,7 +1048,7 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
-    b1p1[label="partition 1",style="filled",fillcolor="green"];
+    b1p1[label="partition 1",style="filled",fillcolor="#4db34d"];
     
     label="broker 1"
   }
@@ -1093,19 +1095,19 @@ digraph G {
   rankdir="LR";
   
    subgraph cluster_broker1{
-    b1p1[label="partition 1",style="filled",fillcolor="green"];
+    b1p1[label="partition 1",style="filled",fillcolor="#4db34d"];
     
     label="broker 1"
   }
   
   
   subgraph cluster_broker2{
-    b2p1[label="partition 1",style="filled",fillcolor="green"];
+    b2p1[label="partition 1",style="filled",fillcolor="#4db34d"];
     label="broker 2"
   }
  
   subgraph cluster_broker3{
-    b3p1[label="partition 1",style="filled",fillcolor="green"];
+    b3p1[label="partition 1",style="filled",fillcolor="#4db34d"];
     label="broker 3";
   }
  
@@ -1128,8 +1130,8 @@ digraph G {
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . Что такое Kafka и что она умеет
 .. [line-through]#Общая информация#
@@ -1140,7 +1142,7 @@ digraph G {
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 
@@ -1327,9 +1329,9 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
@@ -1363,11 +1365,11 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
@@ -1399,11 +1401,11 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
@@ -1439,9 +1441,9 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
@@ -1478,12 +1480,12 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
@@ -1517,14 +1519,14 @@ digraph G {
         shape = none
         label = <<table border="0" cellspacing="0">
                     <tr>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="blue">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
-                    <td border="1" bgcolor="green">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4d4cb4">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
+                    <td border="1" bgcolor="#4db34d">&nbsp;</td>
                     <td border="1" bgcolor="white">&nbsp;</td>
                     </tr>
                 </table>>
@@ -1537,8 +1539,8 @@ digraph G {
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 . [line-through]#Что такое лог и почему это важно#
 . Что такое Kafka и что она умеет
 .. [line-through]#Общая информация#
@@ -1549,7 +1551,7 @@ digraph G {
 . Что такое потоковая архитектура и на что способны потоковые обработчики
 . Kafka и JavaScript
 . Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 
@@ -1625,7 +1627,7 @@ digraph G {
   graph [ dpi = 190 ];
   rankdir="RL";
   
-  s1[label="segment 1",style="filled"]
+  s1[label="segment 1",style="filled" fillcolor="#634545"; fontcolor="#ffffff"]
   s2[label="segment 2"]
   s3[label="segment 3"]
   s3->s2->s1;
@@ -1686,7 +1688,7 @@ digraph G {
 [%notitle]
 == Kafka как зацикленная магнитофонная плёнка
 
-image::tapeloop.jpg[{image-70-width}]
+image::tapeloop.jpg[{image-60-width}]
 
 == Компактификация топиков
 
@@ -1696,14 +1698,14 @@ image::log_compaction.png[{image-60-width}]
 == Наш план
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 1. [line-through]#Что такое лог и почему это важно#
 2. [line-through]#Что такое Kafka и что она умеет#
 3. *Что такое потоковая архитектура и на что способны потоковые обработчики*
 4. Kafka и JavaScript
 5. Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 
@@ -1758,7 +1760,7 @@ digraph G {
 graph [ dpi = 150 ]; 
 rankdir="LR";
 node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
-Source[style=filled; fillcolor="#ffffcc"];
+Source[style=filled; fillcolor="#634545"; fontcolor="#ffffff"];
 Source -> MapVal -> Sink
 
 }
@@ -1778,7 +1780,7 @@ digraph G {
 graph [ dpi = 150 ]; 
 rankdir="LR";
 node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
-MapVal[style=filled; fillcolor="#ffffcc"];
+MapVal[style=filled; fillcolor="#634545"; fontcolor="#ffffff"];
 
 Source -> MapVal -> Sink
 
@@ -1799,7 +1801,7 @@ digraph G {
 graph [ dpi = 150 ]; 
 rankdir="LR";
 node [fontsize=16; shape="circle"; fixedsize="true"; width="1.1"];
-Sink[style=filled; fillcolor="#ffffcc"];
+Sink[style=filled; fillcolor="#634545"; fontcolor="#ffffff"];
 
 Source -> MapVal -> Sink
 
@@ -1927,7 +1929,7 @@ Source -> MapVal -> Sum -> Sink
 Sum -> Store [dir=both; label=" \n "]
 {rank = same; Store; Sum;}
 Store -> Changelog[style="invis"]
-Changelog[shape="box"; style="invis"; width="1.5"; fillcolor="#ffffcc"]
+Changelog[shape="box"; style="invis"; width="1.5"; fillcolor="#634545"; fontcolor="#ffffff";]
 }
 -----
 
@@ -1943,7 +1945,7 @@ Source -> MapVal -> Sum -> Sink
 Sum -> Store [dir=both; label=" \n "]
 {rank = same; Store; Sum;}
 Store -> Changelog
-Changelog[shape="box"; style="filled"; width="1.5"; fillcolor="#ffffcc"]
+Changelog[shape="box"; style="filled"; width="1.5"; fillcolor="#634545"; fontcolor="#ffffff";]
 }
 -----
 
@@ -2685,7 +2687,7 @@ image::streams-ok.svg[{image-90-width}]
 
 [%notitle]
 == Kafka -- это зацикленная плёнка
-image::tapeloop.jpg[{image-70-width}]
+image::tapeloop.jpg[{image-60-width}]
 
 [%notitle]
 == Где использовать Kafka не очень удобно
@@ -2713,14 +2715,14 @@ image::streams-noway.svg[{image-90-width}]
 
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 1. [line-through]#Что такое лог и почему это важно#
 2. [line-through]#Что такое Kafka и что она умеет#
 3. [line-through]#Что такое потоковая архитектура и на что способны потоковые обработчики#
 4. *Kafka и JavaScript*
 5. Как попробовать Кафку сегодня
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Kafka и Javascript
@@ -2730,7 +2732,7 @@ image::streams-noway.svg[{image-90-width}]
 digraph G {
   graph [ dpi = 190 ];
   rankdir="LR";
-  A[label="Collection\ntier",shape="rectangle",style="rounded"];
+  A[label="Collection\ntier",shape="rectangle",style="rounded";];
 
   Ledger1 [shape="record",label="{ | | | | }"];
   Caption1[label="Log\n(Kafka)",shape="plaintext"];
@@ -2753,7 +2755,7 @@ digraph G {
 digraph G {
   graph [ dpi = 190 ];
   rankdir="LR";
-  A[label="Collection\ntier",shape="rectangle",style="rounded,filled"];
+  A[label="Collection\ntier",shape="rectangle",style="rounded,filled"; fillcolor="#634545"; fontcolor="#ffffff";];
 
   Ledger1 [shape="record",label="{ | | | | }"];
   Caption1[label="Log\n(Kafka)",shape="plaintext"];
@@ -2799,7 +2801,7 @@ digraph G {
   Ledger1 [shape="record",label="{ | | | | }"];
   Caption1[label="Log\n(Kafka)",shape="plaintext"];
   {rank = same; Ledger1; Caption1;}
-  C[label="Analysis tier",shape="rectangle",style="rounded,filled"];
+  C[label="Analysis tier",shape="rectangle",style="rounded,filled" fillcolor="#634545"; fontcolor="#ffffff";];
   Ledger2 [shape="record",label="{ | | | | }"];
   Caption2[label="Log\n(Kafka)",shape="plaintext"];
   {rank = same; Ledger2; Caption2;}
@@ -2839,7 +2841,7 @@ digraph G {
   {rank = same; Ledger1; Caption1;}
   C[label="Analysis tier\n(KSQL)",shape="rectangle",style="rounded"];
  
-  E[label="Consumer\n(serverless)",shape="rectangle",style="rounded,filled"];
+  E[label="Consumer\n(serverless)",shape="rectangle",style="rounded,filled"fillcolor="#634545"; fontcolor="#ffffff";];
   A->Ledger1->C->E;
 }
 ----
@@ -2850,14 +2852,14 @@ https://www.confluent.io/kafka-summit-lon19/event-sourcing-stream-processing-ser
 
 [cols="20a,60a,20a"]
 |===
-.^|image::kafka.jpg[]
-.^|
+.<|image::kafka.jpg[]
+.<|
 1. [line-through]#Что такое лог и почему это важно#
 2. [line-through]#Что такое Kafka и что она умеет#
 3. [line-through]#Что такое потоковая архитектура и на что способны потоковые обработчики#
 4. [line-through]#Kafka и JavaScript#
 5. *Как попробовать Кафку сегодня*
-.^|image::kafka.jpg[]
+.<|image::kafka.jpg[]
 |===
 
 == Вы решили попробовать Кафку. С чего начать?
@@ -2879,7 +2881,7 @@ image::conduktor-screen.png[]
 
 [cols="30a,70a"]
 |===
-.^|image::koshelev.jpg[]
+.^|image::koshelev.png[]
 .^|
 *Григорий Кошелев*
 

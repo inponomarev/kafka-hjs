@@ -5,34 +5,56 @@
  */
 /*import url(../../lib/font/source-sans-pro/source-sans-pro.css);*/
 
-@font-face {
-	font-family: "Roboto-condensed";
-	src: url(roboto-2014/RobotoCondensedRegular.ttf) format("truetype");
-	font-weight: normal;
+/*@font-face {
+  font-family: "Roboto-condensed";
+  src: url(roboto-2014/RobotoCondensedRegular.ttf) format("truetype");
+  font-weight: normal;
 }
 @font-face {
-	font-family: "Roboto-condensed";
-	src: url(roboto-2014/RobotoCondensed-Bold.ttf) format("truetype");
-	font-weight: bold;
-}
-
-@font-face {
-	font-family: "Roboto";
-	src: url(roboto-2014/Roboto-Regular.ttf) format("truetype");
-	font-weight: normal;
+  font-family: "Roboto-condensed";
+  src: url(roboto-2014/RobotoCondensed-Bold.ttf) format("truetype");
+  font-weight: bold;
 }
 
 @font-face {
-	font-family: "Roboto";
-	src: url(roboto-2014/Roboto-Bold.ttf) format("truetype");
-	font-weight: bold;
+  font-family: "Roboto";
+  src: url(roboto-2014/Roboto-Regular.ttf) format("truetype");
+  font-weight: normal;
 }
 
 @font-face {
-	font-family: "Roboto";
-	src: url(roboto-2014/Roboto-Italic.ttf) format("truetype");
-	font-style: italic; 
+  font-family: "Roboto";
+  src: url(roboto-2014/Roboto-Bold.ttf) format("truetype");
+  font-weight: bold;
 }
+
+@font-face {
+  font-family: "Roboto";
+  src: url(roboto-2014/Roboto-Italic.ttf) format("truetype");
+  font-style: italic; 
+}
+*/
+@font-face {
+    font-family: 'TT Lakes Compressed';
+    src: local('TT Lakes Compressed Bold'), local('TTLakesCompressed-Bold'),
+        url('fonts/hinted-TTLakesCompressed-Bold.woff2') format('woff2'),
+        url('fonts/hinted-TTLakesCompressed-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TT Lakes';
+    src: local('TT Lakes Medium'), local('TTLakes-Medium'),
+        url('fonts/hinted-TTLakes-Medium.woff2') format('woff2'),
+        url('fonts/hinted-TTLakes-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+
+
 
 
 
@@ -48,7 +70,10 @@ body {
   background-color: #fff; }
 
 .reveal {
-  font-family: Roboto, "Source Sans Pro", Helvetica, sans-serif;
+  /*font-family: Roboto, "Source Sans Pro", Helvetica, sans-serif;*/
+  /*font-family: 'TT Lakes Compressed', Helvetica, sans-serif;*/
+  font-family: 'TT Lakes', Helvetica, sans-serif;;
+  font-weight: 500;
   font-size: 24px;
   font-weight: normal;
   color: #222; }
@@ -75,30 +100,30 @@ body {
 .reveal h6 {
   margin: 0 0 20px 0;
   color: #222;
-  font-family: Roboto, "Source Sans Pro", Helvetica, sans-serif;
+  /*font-family: Roboto, "Source Sans Pro", Helvetica, sans-serif;*/
+  /*font-family: 'TT Lakes Compressed', Helvetica, sans-serif;*/
+  font-family: 'TT Lakes Compressed', Helvetica, sans-serif;
+  font-weight: bold;
 /*  font-weight: 600;*/
   font-size: 2em;
+  color: #584640;
   line-height: 1.2;
   letter-spacing: normal;
 /*  text-transform: uppercase;*/
   text-shadow: none;
   word-wrap: break-word; }
 
-.reveal h1 {
-  font-family: Roboto-condensed;
-  font-size: 3.5em; 
-  margin-bottom: 10px;
-  margin-top: 200px;
-  border-bottom: 2px dotted #DDD;
-  padding-bottom: 5px;
-  
-  }
+
 
 .reveal h2 {
-  font-size: 2.1em; 
-  padding-bottom: 10px;
-  border-bottom: 2px dotted #DDD;
-  font-family: Roboto-condensed;}
+  font-size: 3em; 
+  max-width: 1030px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 30px;
+  /*border-bottom: 2px dotted #DDD;*/
+  /*font-family: Roboto-condensed;*/
+}
   
  
 .reveal .title h2 {
@@ -272,8 +297,8 @@ body {
     border-bottom: 1px solid;  }
 
 .reveal table tfoot tr:last-child td {
-    border-bottom: none;  }	
-	
+    border-bottom: none;  } 
+  
 .reveal sup {
   vertical-align: super; }
 
@@ -386,7 +411,9 @@ td.valign-top {
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid #555;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    padding: 2%; */}
+    padding: 2%; */
+    max-height: 720px;
+  }
 
 
 .reveal section img.plain {
@@ -437,9 +464,9 @@ td.valign-top {
 .reveal .author small {
   margin-top: 20px;
   font-size: 1.1em;
-  font-family: Roboto-condensed;
+  /*font-family: Roboto-condensed;*/
   /*font-weight: bold;*/
-  color: #AAA
+  /*color: #AAA*/
   /*font-style: oblique;*/
 }  
   
@@ -470,7 +497,6 @@ td.valign-top {
 }
 
 body {
-  background-image: url(pattern.svg);
   background-repeat: repeat;
 }
   
@@ -479,18 +505,224 @@ body {
   margin: 2em 0px;
 }
 
-.reveal .preamble {
+/*.reveal .preamble {
     display: block;
     position: absolute;
     bottom: 80px;
     width: 100%;
     color: #2a76dd;
 }
-
+*/
 .reveal .preamble a {
     color: #2a76dd;
 }
 
 section.title {
   height: 100%;
+}
+.reveal .slide-background-content{
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+
+.reveal .slides > section, .reveal .slides > section > section{
+  padding: 30px 0px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+
+
+.backgrounds .slide-background.title .slide-background-content{
+  background-image: url(images/background/title.jpg);
+}
+.backgrounds .slide-background .slide-background-content{
+  background-image: url(images/background/another_bg.jpg);
+}
+.reveal .backgrounds{
+  background: url(images/background/another_bg.jpg) center/contain no-repeat;
+}
+
+
+
+.reveal .slides .title{
+  padding-top: 50px;
+}
+.slides .title h1{
+  top: 0;
+  left: 0;
+  font-size: 151px;
+  margin-top: 110px;
+  text-transform: uppercase;
+  /*color: #584640;*/
+  color: transparent;
+  position: relative;
+  text-align: center;
+  background: url(images/main/main_h1_bg.jpg);
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1px #fff;
+
+}
+.slides .title h1:before{
+ content: '';
+ width: 100%;
+ height: 140px;
+ left: 0;
+ right: 0;
+ top: -140px;
+ position: absolute;
+ background: url(images/main/logo.png) center top no-repeat;
+}
+.slides .title h1:after{
+  content: 'Apache Kafka';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: transparent;
+  text-shadow: 5.162px 7.372px 0px rgba(88, 70, 64, 0.75);
+  z-index: -1;
+
+}
+.slides .title h2{
+  text-align: center;
+  background: url(images/main/main_h2_bg.jpg.png) center no-repeat;
+  width: 1022px;
+  height: 181px;
+  margin: auto;
+  color: #584640;
+  text-align: center;
+  margin-bottom: -30px;
+  font-size: 50px;
+  /*width: ;*/
+}
+.slides .title h2 strong{
+  display: block;
+}
+.slides .title h2 strong:last-of-type{
+  display: inline-block;
+  position: relative;
+}
+.slides .title h2 strong:last-of-type:after,
+.slides .title h2 strong:last-of-type:before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 100px;
+  height: 30px;
+  margin-top: -15px;
+  background: url(images/main/main_stars_h2.png) center no-repeat;
+}
+.slides .title h2 strong:last-of-type:after{
+  right: 0;
+  margin-right: -110px;
+}
+.slides .title h2 strong:last-of-type:before{
+  left: 0;
+  margin-left: -110px;
+}
+.slides .title .author,
+.slides .title .author small,
+.slides .title .preamble,
+.slides .title .preamble p,
+.slides .title .preamble a{
+  color: #99827b;
+  font-size: 37px;
+  margin: 0;
+}
+
+.slides .title .author{
+  padding-top: 20px;
+}
+.slides .title .preamble{
+  /*transform: translateY(100%);*/
+  position: absolute;
+  bottom: 170px;
+  left: 0;
+  right: 0;
+}
+
+.reveal .imageblock{
+  margin: 0;
+}
+
+.reveal .arrov_bottom{
+  padding-bottom: 60px;
+  max-width: 900px;
+  text-align: left;
+  background: url(images/main/list_bottom.png) 0 100% no-repeat;
+}
+.reveal .ulist ul{
+  padding-left: 50px;
+  /*font-family: 'TT Lakes Compressed';*/
+  /*font-weight: bold;*/
+  color: #584640;
+  font-size: 26px;
+}
+.reveal .ulist li{
+  list-style: none;
+  position: relative;
+  color: #584640;
+}
+.reveal .ulist li p{
+  color: #584640;
+
+}
+.reveal .ulist li:before{
+  content: '';
+  width: 29px;
+  position: absolute;
+  top: 0.5em;
+  left: -46px;
+  height: 29px;
+  background: url(images/main/list_star.png) center no-repeat;
+}
+#_кто_я_такой{
+  margin-top: 110px;
+  padding-top: 100px;
+}
+
+#_кто_я_такой .imageblock{
+  max-width: 450px;
+  margin-left: auto;
+}
+
+.reveal ol,
+.reveal p{
+  color: #99827b;
+}
+.reveal p strong{
+  color: #584640;
+}
+#_всюду_где_ценностьвлияние_данных_уменьшается_с_их_возрастом img,
+#_kafkaэто_зацикленная_плёнка img,
+#_где_использовать_kafka_не_очень_удобно img,
+#_kafka_как_зацикленная_магнитофонная_плёнка img{
+  margin-top: 100px;
+}
+.reveal table th{
+  text-transform: uppercase;
+  font-size: 1.2em;
+  padding: 0.2em 0.5em 0.7em 0.2em;
+}
+.dizzy{
+  display: inline-block;
+  position: relative;
+}
+.dizzy:after{
+  position: absolute;
+  width: 28%;
+  bottom: 15%;
+  right: 0;
+  content: '';
+  height: 0;
+  padding-top: 15%;
+  background: url(images/not_avi.png) center/contain no-repeat;
+}
+.dizzy img{
+  display: block;
+  max-width: 100%;
 }
