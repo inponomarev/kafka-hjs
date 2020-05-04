@@ -726,3 +726,7 @@ section.title {
   display: block;
   max-width: 100%;
 }
+
+.replication .imageblock img{
+  max-width: 990px;
+}

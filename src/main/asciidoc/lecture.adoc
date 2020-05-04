@@ -533,6 +533,7 @@ digraph D {
 } 
 ----
 
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics0,png]
@@ -595,7 +596,7 @@ digraph G {
 ----
 
 
-
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics1,png]
@@ -658,7 +659,7 @@ digraph G {
 ----
 
 
-
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics2,png, role="dizzy"]
@@ -721,6 +722,7 @@ digraph G {
 
 ----
 
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics3,png, role="dizzy"]
@@ -781,7 +783,7 @@ digraph G {
 
 ----
 
-
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics4,png]
@@ -843,6 +845,7 @@ digraph G {
 
 ----
 
+[.replication]
 == Репликация партиций
 
 [graphviz,broker-topics5,png]
