@@ -2145,23 +2145,23 @@ digraph D {
         p1v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 2</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
         </table>>];
         p2v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 3</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
         </table>>];
         p3v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 1</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
         </table>>];
   }
 } 
@@ -2235,23 +2235,23 @@ digraph D {
         p1v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 2</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
         </table>>];
         p2v1[shape="none"; style="invis"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 3</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
         </table>>];
         p3v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 1</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
         </table>>];
   }
 } 
@@ -2325,23 +2325,23 @@ digraph D {
         p1v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 2</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
         </table>>];
         p2v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 3</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
         </table>>];
         p3v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 1</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
-        <hr/>
         <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        <hr/>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
         </table>>];
   }
 } 
@@ -2415,29 +2415,29 @@ digraph D {
         p1v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 2</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>13</td></tr>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
         <hr/>
         <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>12</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>10</td></tr>
+        <tr><td><img src="src/main/asciidoc/images/red-apple.png"/></td><td>13</td></tr>
         </table>>];
         p2v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 3</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>23</td></tr>        
+         <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
         <hr/>
         <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>22</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>20</td></tr>
+        <tr><td><img src="src/main/asciidoc/images/pear.png"/></td><td>23</td></tr>
         </table>>];
         p3v1[shape="none"; label= <<table cellborder="0">
         <tr><td colspan="2">Partition 1</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>21</td></tr>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
         <hr/>
         <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>19</td></tr>
         <hr/>
-        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>15</td></tr>
+        <tr><td><img src="src/main/asciidoc/images/banana.png"/></td><td>21</td></tr>
         </table>>];
   }
 } 
