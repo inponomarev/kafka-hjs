@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'TT Lakes';
+    src: local('TT Lakes Medium'), local('TTLakes-Medium'),
+        url('hinted-TTLakes-Medium.woff2') format('woff2'),
+        url('hinted-TTLakes-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
