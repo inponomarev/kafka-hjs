@@ -1,0 +1,4802 @@
+#. extracted from lecture.adoc
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-17 09:29+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 2.2.5\n"
+
+#: lecture.adoc:24
+msgid ""
+"= Apache Kafka: *что это и как она изменит архитектуру* *вашего приложения*\n"
+"Иван Пономарёв, КУРС/МФТИ\n"
+":revealjs_theme: black\n"
+":revealjs_customtheme: white_course.css\n"
+":revealjs_slideNumber:\n"
+":revealjs_history:\n"
+":revealjs_progress:\n"
+":encoding: UTF-8\n"
+":lang: ru\n"
+"include::_doc_general_attributes.adoc[]\n"
+":doctype: article\n"
+":toclevels: 3\n"
+":imagesdir: images\n"
+":source-highlighter: highlightjs\n"
+":highlightjsdir: highlight\n"
+":icons: font\n"
+":iconfont-remote!:\n"
+":iconfont-name: font-awesome-4.7.0/css/font-awesome\n"
+":revealjs_mouseWheel: true\n"
+":revealjs_center: false\n"
+":revealjs_transition: none\n"
+":revealjs_width: 1600\n"
+":revealjs_height: 900"
+msgstr ""
+
+#: lecture.adoc:28
+msgid ""
+"//== Часть 1. Введение\n"
+":!figure-caption:"
+msgstr ""
+
+#: lecture.adoc:30
+msgctxt "lecture.adoc:30"
+msgid "ponomarev@corchestra.ru"
+msgstr ""
+
+#: lecture.adoc:32
+msgid "icon:twitter[size=lg] @inponomarev"
+msgstr ""
+
+#: lecture.adoc:35
+msgid ""
+"[%notitle]\n"
+"== Кто я такой"
+msgstr ""
+
+#: lecture.adoc:45
+msgid ""
+"[cols=\"40a,60a\"]\n"
+"|===\n"
+".^|image::me.jpg[]\n"
+".^|[.arrov_bottom]\n"
+"* Tech Lead at KURS\n"
+"* ERP systems & Java background\n"
+"* Speaker at JPoint, Devoops, Heisenbug, JUG.MSK, etc.\n"
+"* Twitter @inponomarev\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:58
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+"1. *Что такое лог и почему это важно*\n"
+"2. Что такое Kafka и что она умеет\n"
+"3. Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+"4. Kafka и JavaScript\n"
+"5. Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:60
+msgid "== Что такое лог?"
+msgstr ""
+
+#: lecture.adoc:62
+msgid "image::not_brand/oak-log.jpg[{image-30-width}]"
+msgstr ""
+
+#: lecture.adoc:67
+msgid ""
+"[%step]\n"
+"* Добавляем данные в конец\n"
+"* Записанное не можем изменить\n"
+"* Читаем последовательно"
+msgstr ""
+
+#: lecture.adoc:69
+msgctxt "lecture.adoc:69"
+msgid "== -- Что наша жизнь?"
+msgstr ""
+
+#: lecture.adoc:72
+msgctxt "lecture.adoc:72"
+msgid "== -- Что наша жизнь?"
+msgstr ""
+
+#: lecture.adoc:74
+msgid "image::not_brand/oak-log.jpg[{image-40-width}]"
+msgstr ""
+
+#: lecture.adoc:76
+msgid "-- *Лог!*"
+msgstr ""
+
+#: lecture.adoc:80
+msgid "== Автоматизировать склад. Как?"
+msgstr ""
+
+#: lecture.adoc:89
+msgid ""
+"[.fragment]\n"
+"[cols=\"1,1,1\",options=header]\n"
+"|===\n"
+"|товар | ячейка | кол-во \n"
+"|X     |  A     | 8     \n"
+"|X     |  B     | 2      \n"
+"|Y     |  B     | 1      \n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:91
+msgid "// База данных -- это склад?!"
+msgstr ""
+
+#: lecture.adoc:93
+msgid "== Всё хорошо, пока..."
+msgstr ""
+
+#: lecture.adoc:95
+msgid "// Надо взять товар с полки, но там пусто!"
+msgstr ""
+
+#: lecture.adoc:97
+msgid "image::not_brand/emptyshelf.jpg[{image-50-width}]"
+msgstr ""
+
+#: lecture.adoc:99
+msgctxt "lecture.adoc:99"
+msgid "== Что это может быть?"
+msgstr ""
+
+#: lecture.adoc:108
+msgid ""
+"[cols=2]\n"
+"|===\n"
+"a|\n"
+"[%step]\n"
+"* Украли (разбили, выкинули и т. п.)\n"
+"* Потеряли: лежит где-то рядом\n"
+"a|\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:110
+msgctxt "lecture.adoc:110"
+msgid "== Что это может быть?"
+msgstr ""
+
+#: lecture.adoc:119
+msgid ""
+"[cols=2]\n"
+"|===\n"
+"a|\n"
+"* Украли (разбили, выкинули и т. п.)\n"
+"* Потеряли: лежит где-то рядом\n"
+"* *ЭТО ВАША ТУПАЯ ПРОГРАММА НЕ РАБОТАЕТ*\n"
+"a|\n"
+"image::not_brand/upset-cropped.jpg[]"
+msgstr ""
+
+#: lecture.adoc:121
+msgctxt "lecture.adoc:121"
+msgid "|==="
+msgstr ""
+
+#: lecture.adoc:123
+msgid "== Что будем делать?"
+msgstr ""
+
+#: lecture.adoc:126
+msgid ""
+"// * «Текущий снимок»? Делать нечего.\n"
+"// * «База данных есть склад» -- просто, но не работает"
+msgstr ""
+
+#: lecture.adoc:128
+msgid "image::not_brand/messy.jpg[{image-50-width}]"
+msgstr ""
+
+#: lecture.adoc:131
+msgctxt "lecture.adoc:131"
+msgid "== Как на самом деле надо проектировать?"
+msgstr ""
+
+#: lecture.adoc:137
+msgid ""
+"[cols=\"1a,3a\"]\n"
+"|===\n"
+"|image::noway.png[]\n"
+"<.^|* «База данных -- это склад»\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:139
+msgctxt "lecture.adoc:139"
+msgid "== Как на самом деле надо проектировать?"
+msgstr ""
+
+#: lecture.adoc:146
+msgid ""
+"[cols=\"1a,3a\"]\n"
+"|===\n"
+"|image::noway.png[]\n"
+"<.^|* «База данных -- это склад»\n"
+"|image::okay.png[]\n"
+"<.^|"
+msgstr ""
+
+#: lecture.adoc:148
+msgid "* База данных отражает процессы. "
+msgstr ""
+
+#: lecture.adoc:151
+msgid ""
+"* Текущее состояние -- результат выполнения процессов\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:154
+msgctxt "lecture.adoc:154"
+msgid "== Warehouse Ledger"
+msgstr ""
+
+#: lecture.adoc:157
+msgctxt "lecture.adoc:157"
+msgid ""
+"[cols=\"1,1,1,1,1\",options=header]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:163
+msgid ""
+"|дата |товар | ячейка | кол-во | описание\n"
+"|02.04.2020|X     |  A     | 10     | начальный остаток\n"
+"|02.04.2020|X     |  B     | 2      | начальный остаток\n"
+"|02.04.2020|Y     |  B     | 1      | начальный остаток\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:165
+msgctxt "lecture.adoc:165"
+msgid "== Warehouse Ledger"
+msgstr ""
+
+#: lecture.adoc:168
+msgctxt "lecture.adoc:168"
+msgid ""
+"[cols=\"1,1,1,1,1\",options=header]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:175
+msgid ""
+"|дата |товар | ячейка | кол-во | описание\n"
+"|02.04.2020|X     |  A     | 10     | начальный остаток\n"
+"|02.04.2020|X     |  B     | 2      | начальный остаток\n"
+"|02.04.2020|Y     |  B     | 1      | начальный остаток\n"
+"|09.04.2020|X     |  A     | -2     | Василий по заданию №1\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:177
+msgctxt "lecture.adoc:177"
+msgid "== Warehouse Ledger"
+msgstr ""
+
+#: lecture.adoc:180
+msgctxt "lecture.adoc:180"
+msgid ""
+"[cols=\"1,1,1,1,1\",options=header]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:188
+msgid ""
+"|дата |товар | ячейка | кол-во | описание\n"
+"|02.04.2020|X     |  A     | 10     | начальный остаток\n"
+"|02.04.2020|X     |  B     | 2      | начальный остаток\n"
+"|02.04.2020|Y     |  B     | 1      | начальный остаток\n"
+"|09.04.2020|X     |  A     | -2     | Василий по заданию №1\n"
+"|09.04.2020|X     |  B     | 2     | Василий по заданию №1\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:190
+msgid "== А если мы ошиблись с учётом?"
+msgstr ""
+
+#: lecture.adoc:193
+msgctxt "lecture.adoc:193"
+msgid ""
+"[cols=\"1,1,1,1,1\",options=header]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:199
+msgid ""
+"|дата |товар | ячейка | кол-во | описание\n"
+"|9.04.2020|X     |  A     | -2     | Василий по заданию №1\n"
+"|9.04.2020|X     |  B     | 2     | Василий по заданию №1\n"
+"|9.04.2020|X     |  A     | 2     | Сторно задания №1\n"
+"|9.04.2020|X     |  B     | -2     | Сторно задания №1"
+msgstr ""
+
+#: lecture.adoc:201
+msgctxt "lecture.adoc:201"
+msgid "|==="
+msgstr ""
+
+#: lecture.adoc:204
+msgid "== На какие вопросы уже можно ответить?"
+msgstr ""
+
+#: lecture.adoc:210
+msgid ""
+"[%step]\n"
+"* Сколько у нас всего на складе товара Y?\n"
+"* Что лежит в ячейке B?\n"
+"* Сколько товаров переместил Василий 9 апреля?\n"
+"* Какие корректировки вносились в систему?"
+msgstr ""
+
+#: lecture.adoc:212
+msgid "== Расследуем инцидент"
+msgstr ""
+
+#: lecture.adoc:216
+msgid ""
+"* 9 апреля Василий должен был положить товар из A в В.\n"
+"* Давайте посмотрим, что лежит в A?\n"
+"* Давайте спросим Василия?"
+msgstr ""
+
+#: lecture.adoc:218
+msgid "== На какие вопросы можно будет легко ответить?"
+msgstr ""
+
+#: lecture.adoc:224
+msgid ""
+"[%step]\n"
+"* Нагрузка на полку лимитирована 100 кг\n"
+"* -- Добавляем поле \"вес\" в Ledger!\n"
+"* Нужно посчитать зарплату работников склада\n"
+"* -- Даже добавлять ничего не надо."
+msgstr ""
+
+#: lecture.adoc:228
+msgid "== Архитектура решения: лог не работает в одиночку"
+msgstr ""
+
+#: lecture.adoc:239
+msgid ""
+"[graphviz,erp-architecture,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph[dpi=\"180\"];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Documents\",shape=\"cylinder\"];\n"
+"  B[label=\"Posting\",shape=\"rectable\",style=\"rounded\"];\n"
+"  Ledger [shape=\"none\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/oak-log-cropped.png\"];\n"
+"  Caption[label=\"Log (ledger)\",shape=\"plaintext\"];"
+msgstr ""
+
+#: lecture.adoc:249
+msgid ""
+"  {rank = same; Ledger; Caption;}\n"
+"  C[label=\"Aggregating\",shape=\"rectable\",style=\"rounded\"];\n"
+"  D[label=\"Balance Sheets\\n"
+"Reports\\n"
+"etc\",shape=\"cylinder\"];\n"
+"  A->B;\n"
+"  B->Ledger;\n"
+"  Ledger->C;\n"
+"  C->D;\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:251
+msgid "== Предварительный итог"
+msgstr ""
+
+#: lecture.adoc:253
+msgid "Наличие лога позволяет"
+msgstr ""
+
+#: lecture.adoc:259
+msgid ""
+"[%step]\n"
+"* Добавлять новую функциональность\n"
+"* Искать корелляции событий, выявлять и расследовать мошенническое "
+"поведение\n"
+"* Исправлять алгоритмические ошибки и пересчитывать данные\n"
+"* Наша жизнь -- это append-only log"
+msgstr ""
+
+#: lecture.adoc:272
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". *Что такое Kafka и что она умеет*\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:290
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". Что такое Kafka и что она умеет\n"
+".. *Общая информация*\n"
+".. Как устроен кластер\n"
+".. Как устроена запись\n"
+".. Как устроено чтение\n"
+".. Retention и компактификация\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:292
+msgid "== Kafka это"
+msgstr ""
+
+#: lecture.adoc:304
+msgid ""
+"[cols=\"1a,2a,3a,1a\"]\n"
+"|===\n"
+"<.^|\n"
+"|image::kafka-logo.svg[]\n"
+"<.^|\n"
+"* распределённый\n"
+"* масштабируемый\n"
+"* отказоустойчивый лог\n"
+"* https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-"
+"writes-second-three-cheap-machines[миллионы записей в секунду]\n"
+"<.^|\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:307
+msgid "== В Кафке можно"
+msgstr ""
+
+#: lecture.adoc:314
+msgid ""
+"[cols=\"1a,2a\"]\n"
+"|===\n"
+"| image::okay.png[]\n"
+"|* Записать нечто в именованный лог (topic)\n"
+"* Прочитать записи из топика в FIFO порядке (в пределах партиции)\n"
+"* Зафиксировать место, до которого дочитал"
+msgstr ""
+
+#: lecture.adoc:316
+msgctxt "lecture.adoc:316"
+msgid "|==="
+msgstr ""
+
+#: lecture.adoc:318
+msgid "== В Кафке нельзя"
+msgstr ""
+
+#: lecture.adoc:326
+msgid ""
+"[cols=\"1a,2a\"]\n"
+"|===\n"
+"| image::noway.png[]\n"
+"|* Стереть запись\n"
+"* Изменить запись\n"
+"* Найти в логе запись иначе, как по её порядковому номеру\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:345
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". Что такое Kafka и что она умеет\n"
+".. [line-through]#Общая информация#\n"
+".. *Как устроен кластер*\n"
+".. Как устроена запись\n"
+".. Как устроено чтение\n"
+".. Retention и компактификация\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:347
+msgid "== Кластер Kafka: брокеры и Zookeeper"
+msgstr ""
+
+#: lecture.adoc:354
+msgid ""
+"[graphviz,cluster-anatomy,png]\n"
+"----\n"
+"digraph D {\n"
+"  graph [ dpi = 180 ]; \n"
+"  b1[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/kafka-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:357
+msgid ""
+"  b2[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/kafka-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:360
+msgid ""
+"  b3[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/kafka-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:363
+msgid ""
+"  zk1[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/zookeeper-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:366
+msgid ""
+"  zk2[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/zookeeper-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:369
+msgid ""
+"  zk3[shape=\"rectangle\",label=\"\",\n"
+"      image=\"src/main/asciidoc/images/zookeeper-logo-small.png\"];"
+msgstr ""
+
+#: lecture.adoc:375
+msgid ""
+"  b1->zk1[style=\"invis\"];\n"
+"  b2->zk2[style=\"invis\"];\n"
+"  b3->zk3[style=\"invis\"];\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:377
+msgctxt "lecture.adoc:377"
+msgid "== Топики, партиции и сообщения"
+msgstr ""
+
+#: lecture.adoc:382
+msgid ""
+"[graphviz,topics-partitions,png]\n"
+"----\n"
+"digraph D {\n"
+"  graph [ dpi = 180 ]; "
+msgstr ""
+
+#: lecture.adoc:395
+msgid ""
+"   rankdir = LR;\n"
+"    subgraph cluster_t1 {\n"
+"      label = \"topic A\";\n"
+"      style = \"rounded\";\n"
+"      T1[shape=\"none\"; style=\"invis\"; label=<<table cellspacing=\"5\" "
+"cellborder=\"0\"  border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:404
+msgid ""
+"    subgraph cluster_t2 {\n"
+"      label = \"topic B\";\n"
+"      style = \"rounded\";\n"
+"      T2[shape=\"none\"; style=\"invis\"; label=<<table cellspacing=\"5\" "
+"cellborder=\"0\"  border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]"
+msgstr ""
+
+#: lecture.adoc:406
+msgctxt "lecture.adoc:406"
+msgid "    }   "
+msgstr ""
+
+#: lecture.adoc:421
+msgid ""
+"    subgraph cluster_t3 {\n"
+"      label = \"topic C\";\n"
+"      style = \"rounded\";\n"
+"      T3[shape=\"none\"; style=\"invis\"; label=<<table cellspacing=\"5\" "
+"cellborder=\"0\"  border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>3</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]\n"
+"    }   "
+msgstr ""
+
+#: lecture.adoc:423
+msgctxt "lecture.adoc:423"
+msgid "    T1:p0->T2:p0->T3:p0[style=\"invis\"]"
+msgstr ""
+
+#: lecture.adoc:426
+msgctxt "lecture.adoc:426"
+msgid ""
+"} \n"
+"----"
+msgstr ""
+
+#: lecture.adoc:429
+msgctxt "lecture.adoc:429"
+msgid "== Топики, партиции и сообщения"
+msgstr ""
+
+#: lecture.adoc:434
+msgid ""
+"[graphviz,topics-partitions1,png]\n"
+"----\n"
+"digraph D {\n"
+"  graph [ dpi = 180 ]; "
+msgstr ""
+
+#: lecture.adoc:447
+msgid ""
+"   rankdir = LR;\n"
+"    subgraph cluster_t1 {\n"
+"      label = \"topic A\";\n"
+"      style = \"rounded\";\n"
+"      T1[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:456
+msgid ""
+"    subgraph cluster_t2 {\n"
+"      label = \"topic B\";\n"
+"      style = \"rounded\";\n"
+"      T2[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]"
+msgstr ""
+
+#: lecture.adoc:458
+msgctxt "lecture.adoc:458"
+msgid "    }   "
+msgstr ""
+
+#: lecture.adoc:473
+msgid ""
+"    subgraph cluster_t3 {\n"
+"      label = \"topic C\";\n"
+"      style = \"rounded\";\n"
+"      T3[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        <hr/>\n"
+"        <tr><td>3</td><vr/><td style=\"invis\"><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td style=\"invis\"><IMG "
+"SCALE=\"BOTH\" SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>"
+"\n"
+"        </table>>]\n"
+"    }   "
+msgstr ""
+
+#: lecture.adoc:475
+msgctxt "lecture.adoc:475"
+msgid "    T1:p0->T2:p0->T3:p0[style=\"invis\"]"
+msgstr ""
+
+#: lecture.adoc:478
+msgctxt "lecture.adoc:478"
+msgid ""
+"} \n"
+"----"
+msgstr ""
+
+#: lecture.adoc:480
+msgctxt "lecture.adoc:480"
+msgid "== Топики, партиции и сообщения"
+msgstr ""
+
+#: lecture.adoc:485
+msgid ""
+"[graphviz,topics-partitions2,png]\n"
+"----\n"
+"digraph D {\n"
+"  graph [ dpi = 180 ]; "
+msgstr ""
+
+#: lecture.adoc:498
+msgid ""
+"   rankdir = LR;\n"
+"    subgraph cluster_t1 {\n"
+"      label = \"topic A\";\n"
+"      style = \"rounded\";\n"
+"      T1[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        </table>>]\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:507
+msgid ""
+"    subgraph cluster_t2 {\n"
+"      label = \"topic B\";\n"
+"      style = \"rounded\";\n"
+"      T2[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        </table>>]"
+msgstr ""
+
+#: lecture.adoc:509
+msgctxt "lecture.adoc:509"
+msgid "    }   "
+msgstr ""
+
+#: lecture.adoc:524
+msgid ""
+"    subgraph cluster_t3 {\n"
+"      label = \"topic C\";\n"
+"      style = \"rounded\";\n"
+"      T3[shape=\"none\"; label=<<table cellspacing=\"5\" cellborder=\"0\"  "
+"border=\"1\">\n"
+"        <tr><td>0</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>1</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>2</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        <hr/>\n"
+"        <tr><td>3</td><vr/><td><IMG SCALE=\"BOTH\" SRC=\""
+"src/main/asciidoc/images/message-small.png\"/></td><td><IMG SCALE=\"BOTH\" "
+"SRC=\"src/main/asciidoc/images/message-small.png\"/></td></tr>\n"
+"        </table>>]\n"
+"    }   "
+msgstr ""
+
+#: lecture.adoc:526
+msgctxt "lecture.adoc:526"
+msgid "    T1:p0->T2:p0->T3:p0[style=\"invis\"]"
+msgstr ""
+
+#: lecture.adoc:529
+msgctxt "lecture.adoc:529"
+msgid ""
+"} \n"
+"----"
+msgstr ""
+
+#: lecture.adoc:532
+msgctxt "lecture.adoc:532"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:539
+msgid ""
+"[graphviz,broker-topics0,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:547
+msgctxt "lecture.adoc:547"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:554
+msgctxt "lecture.adoc:554"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:557
+msgctxt "lecture.adoc:557"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:561
+msgctxt "lecture.adoc:561"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];"
+msgstr ""
+
+#: lecture.adoc:566
+msgctxt "lecture.adoc:566"
+msgid ""
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 3\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:577
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\", style=\"invis\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\", style=\"invis\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R3[shape=\"none\",label=\"\", style=\"invis\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:583
+msgctxt "lecture.adoc:583"
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b2p1->b3p2[weight=10,style=invis];\n"
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2;\n"
+"  b3p3->b1p3;"
+msgstr ""
+
+#: lecture.adoc:587
+msgid ""
+"  R1->b1p1[dir=\"none\", style=\"invis\"];\n"
+"  R2->b2p2[dir=\"none\", style=\"invis\"];\n"
+"  R3->b3p3[dir=\"none\", style=\"invis\"];"
+msgstr ""
+
+#: lecture.adoc:589
+msgctxt "lecture.adoc:589"
+msgid "}"
+msgstr ""
+
+#: lecture.adoc:591
+msgctxt "lecture.adoc:591"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:595
+msgctxt "lecture.adoc:595"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:602
+msgid ""
+"[graphviz,broker-topics1,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:610
+msgctxt "lecture.adoc:610"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:617
+msgctxt "lecture.adoc:617"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:620
+msgctxt "lecture.adoc:620"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:624
+msgctxt "lecture.adoc:624"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];"
+msgstr ""
+
+#: lecture.adoc:629
+msgctxt "lecture.adoc:629"
+msgid ""
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 3\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:640
+msgctxt "lecture.adoc:640"
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:646
+msgctxt "lecture.adoc:646"
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b2p1->b3p2[weight=10,style=invis];\n"
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2;\n"
+"  b3p3->b1p3;"
+msgstr ""
+
+#: lecture.adoc:650
+msgid ""
+"  R1->b1p1[dir=\"none\"];\n"
+"  R2->b2p2[dir=\"none\"];\n"
+"  R3->b3p3[dir=\"none\"];"
+msgstr ""
+
+#: lecture.adoc:652
+msgctxt "lecture.adoc:652"
+msgid "}"
+msgstr ""
+
+#: lecture.adoc:654
+msgctxt "lecture.adoc:654"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:658
+msgctxt "lecture.adoc:658"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:665
+msgid ""
+"[graphviz,broker-topics2,png, role=\"dizzy\"]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:673
+msgctxt "lecture.adoc:673"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:680
+msgctxt "lecture.adoc:680"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:683
+msgctxt "lecture.adoc:683"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:691
+msgctxt "lecture.adoc:691"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/dizzy.png\"];\n"
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\"];\n"
+"    label=\"broker 3\";\n"
+"    style=filled;"
+msgstr ""
+
+#: lecture.adoc:693
+msgctxt "lecture.adoc:693"
+msgid "  }"
+msgstr ""
+
+#: lecture.adoc:704
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];\n"
+"    R3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/worried.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:710
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b2p1->b3p2[weight=10,style=invis];\n"
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2[style=invis];\n"
+"  b3p3->b1p3[style=invis];"
+msgstr ""
+
+#: lecture.adoc:714
+msgid ""
+"  R1->b1p1[dir=\"none\"];\n"
+"  R2->b2p2[dir=\"none\"];\n"
+"  R3->b3p3[dir=\"none\",style=\"dashed\"];"
+msgstr ""
+
+#: lecture.adoc:716
+msgctxt "lecture.adoc:716"
+msgid "}"
+msgstr ""
+
+#: lecture.adoc:718
+msgctxt "lecture.adoc:718"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:721
+msgctxt "lecture.adoc:721"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:728
+msgid ""
+"[graphviz,broker-topics3,png, role=\"dizzy\"]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:736
+msgctxt "lecture.adoc:736"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:743
+msgctxt "lecture.adoc:743"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:746
+msgctxt "lecture.adoc:746"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:754
+msgctxt "lecture.adoc:754"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/dizzy.png\"];\n"
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\"];\n"
+"    label=\"broker 3\";\n"
+"    style=filled;"
+msgstr ""
+
+#: lecture.adoc:756
+msgctxt "lecture.adoc:756"
+msgid "  }"
+msgstr ""
+
+#: lecture.adoc:767
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];\n"
+"    R3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:772
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2[weight=10,style=invis];\n"
+"  b3p3->b1p3[style=invis];"
+msgstr ""
+
+#: lecture.adoc:777
+msgctxt "lecture.adoc:777"
+msgid ""
+"  R1->b1p1[dir=\"none\"];\n"
+"  R2->b2p2[dir=\"none\"];\n"
+"  R3->b1p3[dir=\"none\",weight=0];\n"
+"}"
+msgstr ""
+
+#: lecture.adoc:779
+msgctxt "lecture.adoc:779"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:782
+msgctxt "lecture.adoc:782"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:789
+msgid ""
+"[graphviz,broker-topics4,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:797
+msgctxt "lecture.adoc:797"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:804
+msgctxt "lecture.adoc:804"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:807
+msgctxt "lecture.adoc:807"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:815
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\"];\n"
+"    label=\"broker 3\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:826
+msgctxt "lecture.adoc:826"
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:830
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b2p2->b3p2[weight=10,style=invis];"
+msgstr ""
+
+#: lecture.adoc:834
+msgid ""
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2;\n"
+"  b3p3->b1p3[dir=back];"
+msgstr ""
+
+#: lecture.adoc:839
+msgctxt "lecture.adoc:839"
+msgid ""
+"  R1->b1p1[dir=\"none\"];\n"
+"  R2->b2p2[dir=\"none\"];\n"
+"  R3->b1p3[dir=\"none\",weight=0];\n"
+"}"
+msgstr ""
+
+#: lecture.adoc:841
+msgctxt "lecture.adoc:841"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:844
+msgctxt "lecture.adoc:844"
+msgid ""
+"[.replication]\n"
+"== Репликация партиций"
+msgstr ""
+
+#: lecture.adoc:851
+msgid ""
+"[graphviz,broker-topics5,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:859
+msgctxt "lecture.adoc:859"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    sm1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b1p1[label=\"partition 1\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    b1p3[label=\"partition 3\"];\n"
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:866
+msgctxt "lecture.adoc:866"
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    sm2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    b2p2[label=\"partition 2\",style=filled; fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:869
+msgctxt "lecture.adoc:869"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:873
+msgctxt "lecture.adoc:873"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    sm3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];"
+msgstr ""
+
+#: lecture.adoc:878
+msgctxt "lecture.adoc:878"
+msgid ""
+"    b3p2[label=\"partition 2\"];\n"
+"    b3p3[label=\"partition 3\",style=filled; fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 3\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:889
+msgctxt "lecture.adoc:889"
+msgid ""
+"  subgraph cluster_clients{\n"
+"    R1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smile.png\"];\n"
+"    R1->R2->R3[style=invis];\n"
+"    style=invis;\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:895
+msgctxt "lecture.adoc:895"
+msgid ""
+"  b1p1->b2p2[weight=10,style=invis];\n"
+"  b2p1->b3p2[weight=10,style=invis];\n"
+"  b1p1->b2p1;\n"
+"  b2p2->b3p2;\n"
+"  b3p3->b1p3;"
+msgstr ""
+
+#: lecture.adoc:901
+msgid ""
+"  R1->b1p1[dir=\"none\"];\n"
+"  R2->b2p2[dir=\"none\"];\n"
+"  R3->b3p3[dir=\"none\"];\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:919
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". Что такое Kafka и что она умеет\n"
+".. [line-through]#Общая информация#\n"
+".. [line-through]#Как устроен кластер#\n"
+".. *Как устроена запись*\n"
+".. Как устроено чтение\n"
+".. Retention и компактификация\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:921
+msgctxt "lecture.adoc:921"
+msgid "== Анатомия сообщения"
+msgstr ""
+
+#: lecture.adoc:939
+msgid ""
+"[graphviz,message-anatomy,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 200 ];\n"
+"  msg[\n"
+"    shape=\"none\";\n"
+"    label=<<table cellspacing=\"5\" cellborder=\"0\" style=\"rounded\" "
+"border=\"1\">\n"
+"                    <tr><td><IMG SCALE=\"TRUE\" SRC=\""
+"src/main/asciidoc/images/message.png\"/></td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Номер партиции</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Ключ</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Значение</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Заголовки</td></tr>\n"
+"            </table>>;"
+msgstr ""
+
+#: lecture.adoc:943
+msgctxt "lecture.adoc:943"
+msgid ""
+"  ]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:946
+msgctxt "lecture.adoc:946"
+msgid "== Анатомия сообщения"
+msgstr ""
+
+#: lecture.adoc:964
+msgid ""
+"[graphviz,message-anatomy2,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 200 ];\n"
+"  msg[\n"
+"    shape=\"none\";\n"
+"    label=<<table cellspacing=\"5\" cellborder=\"0\" style=\"rounded\" "
+"border=\"1\">\n"
+"                    <tr><td><IMG SCALE=\"TRUE\" SRC=\""
+"src/main/asciidoc/images/message.png\"/></td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td bgcolor=\"gray\">Номер партиции</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td bgcolor=\"gray\">Ключ</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Значение</td></tr>\n"
+"                    <hr/>\n"
+"                    <tr><td>Заголовки</td></tr>\n"
+"            </table>>;"
+msgstr ""
+
+#: lecture.adoc:968
+msgctxt "lecture.adoc:968"
+msgid ""
+"  ]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:974
+msgid ""
+"[source,java]\n"
+"----\n"
+"// hash the keyBytes to choose a partition\n"
+"return Utils.toPositive(Utils.murmur2(keyBytes)) % numPartitions;\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:977
+msgid "== Пропускная способность vs время ожидания"
+msgstr ""
+
+#: lecture.adoc:979
+msgid "`batch.size` and `linger.ms`"
+msgstr ""
+
+#: lecture.adoc:985
+msgid ""
+"[cols=2]\n"
+"|===\n"
+"a|image::not_brand/low-throughput.jpg[]\n"
+"a|image::not_brand/high-throughput.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:987
+msgctxt "lecture.adoc:987"
+msgid "== Запись в Кафку"
+msgstr ""
+
+#: lecture.adoc:989
+msgid "`acks` = 0"
+msgstr ""
+
+#: lecture.adoc:991
+msgctxt "lecture.adoc:991"
+msgid "&nbsp;"
+msgstr ""
+
+#: lecture.adoc:999
+msgid ""
+"[graphviz,prod1,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"];\n"
+"  compound=true;\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1002
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    b1p1[label=\"partition 1\"];"
+msgstr ""
+
+#: lecture.adoc:1005
+msgctxt "lecture.adoc:1005"
+msgid ""
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1009
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    b2p1[label=\"partition 1\"];"
+msgstr ""
+
+#: lecture.adoc:1012
+msgctxt "lecture.adoc:1012"
+msgid ""
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1017
+msgctxt "lecture.adoc:1017"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    b3p1[label=\"partition 1\"];\n"
+"    label=\"broker 3\";\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1019
+msgctxt "lecture.adoc:1019"
+msgid "  b1p1->b2p1->b3p1[style=\"invis\"]"
+msgstr ""
+
+#: lecture.adoc:1024
+msgid ""
+"  a[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/zany.png\"];\n"
+"  a->b1p1[lhead=\"cluster_broker1\",dir=back];\n"
+"  a->b1p1[lhead=\"cluster_broker1\"];"
+msgstr ""
+
+#: lecture.adoc:1028
+msgctxt "lecture.adoc:1028"
+msgid "}"
+msgstr ""
+
+#: lecture.adoc:1030
+msgctxt "lecture.adoc:1030"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:1033
+msgctxt "lecture.adoc:1033"
+msgid "== Запись в Кафку"
+msgstr ""
+
+#: lecture.adoc:1035
+msgid "`acks` = 1"
+msgstr ""
+
+#: lecture.adoc:1037
+msgctxt "lecture.adoc:1037"
+msgid "&nbsp;"
+msgstr ""
+
+#: lecture.adoc:1046
+msgid ""
+"[graphviz,prod2,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"];\n"
+"  compound=true;\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1049
+msgctxt "lecture.adoc:1049"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    b1p1[label=\"partition 1\",style=\"filled\",fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:1052
+msgctxt "lecture.adoc:1052"
+msgid ""
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1058
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    b2p1[label=\"partition 1\"];\n"
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1063
+msgctxt "lecture.adoc:1063"
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    b3p1[label=\"partition 1\"];\n"
+"    label=\"broker 3\";\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1065
+msgctxt "lecture.adoc:1065"
+msgid "  b1p1->b2p1->b3p1[style=\"invis\"]"
+msgstr ""
+
+#: lecture.adoc:1069
+msgid ""
+"  a[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/suspicious.png\"];"
+msgstr ""
+
+#: lecture.adoc:1072
+msgid ""
+"  a->b1p1[dir=back];\n"
+"  a->b1p1[];"
+msgstr ""
+
+#: lecture.adoc:1075
+msgctxt "lecture.adoc:1075"
+msgid "}"
+msgstr ""
+
+#: lecture.adoc:1077
+msgctxt "lecture.adoc:1077"
+msgid "----"
+msgstr ""
+
+#: lecture.adoc:1080
+msgctxt "lecture.adoc:1080"
+msgid "== Запись в Кафку"
+msgstr ""
+
+#: lecture.adoc:1082
+msgid "`acks` = -1"
+msgstr ""
+
+#: lecture.adoc:1084
+msgid "`min.insync.replicas`"
+msgstr ""
+
+#: lecture.adoc:1093
+msgid ""
+"[graphviz,prod3,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"];\n"
+"  compound=true;\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1096
+msgctxt "lecture.adoc:1096"
+msgid ""
+"   subgraph cluster_broker1{\n"
+"    b1p1[label=\"partition 1\",style=\"filled\",fillcolor=\"#4db34d\"];"
+msgstr ""
+
+#: lecture.adoc:1099
+msgctxt "lecture.adoc:1099"
+msgid ""
+"    label=\"broker 1\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1105
+msgid ""
+"  subgraph cluster_broker2{\n"
+"    b2p1[label=\"partition 1\",style=\"filled\",fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 2\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1110
+msgid ""
+"  subgraph cluster_broker3{\n"
+"    b3p1[label=\"partition 1\",style=\"filled\",fillcolor=\"#4db34d\"];\n"
+"    label=\"broker 3\";\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1114
+msgid ""
+"  b1p1->b2p1[weight=10];\n"
+"  b1p1->b2p1[weight=10;dir=back];\n"
+"  b2p1->b3p1[weight=10;style=invis];"
+msgstr ""
+
+#: lecture.adoc:1118
+msgid "  b1p1->b3p1->b1p1;"
+msgstr ""
+
+#: lecture.adoc:1121
+msgid ""
+"  a[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/fear.png\"];"
+msgstr ""
+
+#: lecture.adoc:1126
+msgid ""
+"  a->b1p1[dir=back];\n"
+"  a->b1p1[];\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1144
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". Что такое Kafka и что она умеет\n"
+".. [line-through]#Общая информация#\n"
+".. [line-through]#Как устроен кластер#\n"
+".. [line-through]#Как устроена запись#\n"
+".. *Как устроено чтение*\n"
+".. Retention и компактификация\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:1147
+msgctxt "lecture.adoc:1147"
+msgid "== Чтение из Кафки"
+msgstr ""
+
+#: lecture.adoc:1160
+msgid ""
+"[graphviz,ConsumerG0,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";\n"
+"  subgraph cluster_s2{\n"
+"    o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/worried.png\"]\n"
+"    label=\"Consumer Group\"\n"
+"    style=\"rounded\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1168
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o1\n"
+"    \"partition 3\"->o1\n"
+"  }\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1170
+msgctxt "lecture.adoc:1170"
+msgid "== Чтение из Кафки"
+msgstr ""
+
+#: lecture.adoc:1178
+msgid ""
+"[graphviz,ConsumerG,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";\n"
+"      subgraph cluster_s2{"
+msgstr ""
+
+#: lecture.adoc:1181
+msgid ""
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];"
+msgstr ""
+
+#: lecture.adoc:1184
+msgid ""
+"        o2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"];"
+msgstr ""
+
+#: lecture.adoc:1188
+msgid ""
+"        label=\"Consumer Group\";\n"
+"        style=\"rounded\"\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:1196
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o1\n"
+"    \"partition 3\"->o2    \n"
+"  }\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1204
+msgid ""
+"== Чтение из Кафки\n"
+"[graphviz,ConsumerG2,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1208
+msgctxt "lecture.adoc:1208"
+msgid "      subgraph cluster_s2{"
+msgstr ""
+
+#: lecture.adoc:1211
+msgctxt "lecture.adoc:1211"
+msgid ""
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1214
+msgctxt "lecture.adoc:1214"
+msgid ""
+"        o2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1217
+msgctxt "lecture.adoc:1217"
+msgid ""
+"        o3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1220
+msgid ""
+"        label=\"Consumer Group\"\n"
+"        style=\"rounded\""
+msgstr ""
+
+#: lecture.adoc:1222
+msgctxt "lecture.adoc:1222"
+msgid "      }"
+msgstr ""
+
+#: lecture.adoc:1229
+msgctxt "lecture.adoc:1229"
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o2\n"
+"    \"partition 3\"->o3 \n"
+"    label=\"source-topic\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1232
+msgctxt "lecture.adoc:1232"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1240
+msgid ""
+"== Чтение из Кафки\n"
+"[graphviz,ConsumerG3,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 180 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1244
+msgctxt "lecture.adoc:1244"
+msgid "      subgraph cluster_s2{"
+msgstr ""
+
+#: lecture.adoc:1247
+msgctxt "lecture.adoc:1247"
+msgid ""
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1250
+msgctxt "lecture.adoc:1250"
+msgid ""
+"        o2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1253
+msgctxt "lecture.adoc:1253"
+msgid ""
+"        o3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1256
+msgctxt "lecture.adoc:1256"
+msgid ""
+"        o4[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/rollingeyes.png\"]"
+msgstr ""
+
+#: lecture.adoc:1260
+msgid ""
+"        o1->o4[style=\"invis\"];\n"
+"        label=\"Consumer Group\"\n"
+"        style=\"rounded\""
+msgstr ""
+
+#: lecture.adoc:1262
+msgctxt "lecture.adoc:1262"
+msgid "      }"
+msgstr ""
+
+#: lecture.adoc:1269
+msgctxt "lecture.adoc:1269"
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o2\n"
+"    \"partition 3\"->o3 \n"
+"    label=\"source-topic\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1272
+msgctxt "lecture.adoc:1272"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1274
+msgctxt "lecture.adoc:1274"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1280
+msgid ""
+"[graphviz,offcommit1,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\""
+msgstr ""
+
+#: lecture.adoc:1309
+msgid ""
+"      subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        Consumer2[shape=\"circle\",style=\"rounded\",label=\"C2\",style=\""
+"invis\"]\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }\n"
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"   Ledger->Consumer[dir=back] \n"
+"   Ledger->Consumer2[dir=back, style=invis]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1311
+msgctxt "lecture.adoc:1311"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1345
+msgid ""
+"[graphviz,offcommit2,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\"\n"
+"      subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        Consumer2[shape=\"circle\",style=\"rounded\",label=\"C2\",style=\""
+"invis\"]\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }\n"
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"   Ledger->Consumer[dir=back] \n"
+"   Ledger->Consumer2[dir=back, style=invis]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1347
+msgctxt "lecture.adoc:1347"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1381
+msgid ""
+"[graphviz,offcommit3,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\"\n"
+"      subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        Consumer2[shape=\"circle\",style=\"rounded\",label=\"C2\",style=\""
+"invis\"]\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }\n"
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"   Ledger->Consumer[dir=back]\n"
+"   Ledger->Consumer2[dir=back, style=invis]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1383
+msgctxt "lecture.adoc:1383"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1417
+msgid ""
+"[graphviz,offcommit4,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\"\n"
+"    subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/dizzy.png\"];\n"
+"        Consumer2[shape=\"circle\",style=\"rounded\",label=\"C2\",style=\""
+"invis\"]\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }\n"
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"   Ledger->Consumer[dir=back] \n"
+"   Ledger->Consumer2[dir=back, style=invis]\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1420
+msgctxt "lecture.adoc:1420"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1434
+msgid ""
+"[graphviz,offcommit5,png]\n"
+"----\n"
+"digraph G {\n"
+"   graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\"\n"
+"    subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/skull.png\"];\n"
+"        Consumer2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }"
+msgstr ""
+
+#: lecture.adoc:1457
+msgid ""
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"    Ledger->Consumer[dir=back, style=\"invis\"]\n"
+"    Ledger->Consumer2[dir=back] \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1459
+msgctxt "lecture.adoc:1459"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1465
+msgid ""
+"[graphviz,offcommit6,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\""
+msgstr ""
+
+#: lecture.adoc:1474
+msgctxt "lecture.adoc:1474"
+msgid ""
+"    subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/skull.png\"];\n"
+"        Consumer2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }"
+msgstr ""
+
+#: lecture.adoc:1496
+msgid ""
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"    Ledger->Consumer[dir=back, style=\"invis\"]\n"
+"    Ledger->Consumer2[dir=back]  \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1498
+msgctxt "lecture.adoc:1498"
+msgid "== Offset Commit"
+msgstr ""
+
+#: lecture.adoc:1504
+msgid ""
+"[graphviz,offcommit7,png]\n"
+"----\n"
+"digraph G {\n"
+"    graph [ dpi = 200 ];\n"
+"    rankdir=\"LR\""
+msgstr ""
+
+#: lecture.adoc:1513
+msgctxt "lecture.adoc:1513"
+msgid ""
+"    subgraph cluster_s2{\n"
+"        Consumer[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/skull.png\"];\n"
+"        Consumer2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"];\n"
+"        style=\"rounded\";\n"
+"        label=\"Group\"\n"
+"   }"
+msgstr ""
+
+#: lecture.adoc:1535
+msgid ""
+"    Ledger\n"
+"    [\n"
+"        shape = none\n"
+"        label = <<table border=\"0\" cellspacing=\"0\">\n"
+"                    <tr>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4d4cb4\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"#4db34d\">&nbsp;</td>\n"
+"                    <td border=\"1\" bgcolor=\"white\">&nbsp;</td>\n"
+"                    </tr>\n"
+"                </table>>\n"
+"    ]\n"
+"    Ledger->Consumer[dir=back, style=\"invis\"]\n"
+"    Ledger->Consumer2[dir=back]  \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1553
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+". [line-through]#Что такое лог и почему это важно#\n"
+". Что такое Kafka и что она умеет\n"
+".. [line-through]#Общая информация#\n"
+".. [line-through]#Как устроен кластер#\n"
+".. [line-through]#Как устроена запись#\n"
+".. [line-through]#Как устроено чтение#\n"
+".. *Retention и компактификация*\n"
+". Что такое потоковая архитектура и на что способны потоковые обработчики\n"
+". Kafka и JavaScript\n"
+". Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:1556
+msgctxt "lecture.adoc:1556"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1563
+msgid ""
+"[graphviz,retention0,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1565
+msgid "  s1[label=\"segment 1\"]"
+msgstr ""
+
+#: lecture.adoc:1571
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"  nm->s1\n"
+"  {rank =same; nm; s1}"
+msgstr ""
+
+#: lecture.adoc:1574
+msgctxt "lecture.adoc:1574"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1576
+msgctxt "lecture.adoc:1576"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1583
+msgid ""
+"[graphviz,retention1,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1587
+msgid ""
+"  s1[label=\"segment 1\"]\n"
+"  s2[label=\"segment 2\"]\n"
+"  s2->s1;"
+msgstr ""
+
+#: lecture.adoc:1592
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"  nm->s2\n"
+"  {rank =same; nm; s2}"
+msgstr ""
+
+#: lecture.adoc:1595
+msgctxt "lecture.adoc:1595"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1597
+msgctxt "lecture.adoc:1597"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1604
+msgid ""
+"[graphviz,retention2,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1609
+msgid ""
+"  s1[label=\"segment 1\"]\n"
+"  s2[label=\"segment 2\"]\n"
+"  s3[label=\"segment 3\"]\n"
+"  s3->s2->s1;"
+msgstr ""
+
+#: lecture.adoc:1614
+msgctxt "lecture.adoc:1614"
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"  nm->s3\n"
+"  {rank =same; nm; s3}"
+msgstr ""
+
+#: lecture.adoc:1617
+msgctxt "lecture.adoc:1617"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1619
+msgctxt "lecture.adoc:1619"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1626
+msgid ""
+"[graphviz,retention3,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1631
+msgid ""
+"  s1[label=\"segment 1\",style=\"filled\" fillcolor=\"#634545\"; fontcolor=\""
+"#ffffff\"]\n"
+"  s2[label=\"segment 2\"]\n"
+"  s3[label=\"segment 3\"]\n"
+"  s3->s2->s1;"
+msgstr ""
+
+#: lecture.adoc:1636
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/surprised.png\"]\n"
+"  nm->s3\n"
+"  {rank =same; nm; s3}"
+msgstr ""
+
+#: lecture.adoc:1639
+msgctxt "lecture.adoc:1639"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1641
+msgctxt "lecture.adoc:1641"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1648
+msgid ""
+"[graphviz,retention4,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1653
+msgid ""
+"  s1[label=\"segment 2\"]\n"
+"  s2[label=\"segment 3\"]\n"
+"  s3[label=\"segment 4\"]\n"
+"  s3->s2->s1;"
+msgstr ""
+
+#: lecture.adoc:1658
+msgctxt "lecture.adoc:1658"
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"  nm->s3\n"
+"  {rank =same; nm; s3}"
+msgstr ""
+
+#: lecture.adoc:1661
+msgctxt "lecture.adoc:1661"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1663
+msgctxt "lecture.adoc:1663"
+msgid "== Как работает retention"
+msgstr ""
+
+#: lecture.adoc:1670
+msgid ""
+"[graphviz,retention5,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"RL\";"
+msgstr ""
+
+#: lecture.adoc:1675
+msgid ""
+"  s1[label=\"segment 3\"]\n"
+"  s2[label=\"segment 4\"]\n"
+"  s3[label=\"segment 5\"]\n"
+"  s3->s2->s1;"
+msgstr ""
+
+#: lecture.adoc:1680
+msgctxt "lecture.adoc:1680"
+msgid ""
+"  nm[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"  nm->s3\n"
+"  {rank =same; nm; s3}"
+msgstr ""
+
+#: lecture.adoc:1683
+msgctxt "lecture.adoc:1683"
+msgid ""
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1687
+msgid ""
+"[%notitle]\n"
+"== Kafka как зацикленная магнитофонная плёнка"
+msgstr ""
+
+#: lecture.adoc:1689
+msgid "image::tapeloop.jpg[{image-60-width}]"
+msgstr ""
+
+#: lecture.adoc:1691
+msgid "== Компактификация топиков"
+msgstr ""
+
+#: lecture.adoc:1694
+msgid ""
+".Источник: Kafka Documentation\n"
+"image::log_compaction.png[{image-60-width}]"
+msgstr ""
+
+#: lecture.adoc:1707
+msgid ""
+"== Наш план\n"
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+"1. [line-through]#Что такое лог и почему это важно#\n"
+"2. [line-through]#Что такое Kafka и что она умеет#\n"
+"3. *Что такое потоковая архитектура и на что способны потоковые обработчики*"
+"\n"
+"4. Kafka и JavaScript\n"
+"5. Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:1710
+msgid "== Потоковая обработка данных: архитектура"
+msgstr ""
+
+#: lecture.adoc:1717
+msgid ""
+"[graphviz,streaming-arch1,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Collection\\n"
+"tier\",shape=\"rectangle\",style=\"rounded\"];"
+msgstr ""
+
+#: lecture.adoc:1731
+msgctxt "lecture.adoc:1731"
+msgid ""
+"  Ledger1 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption1[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger1; Caption1;}\n"
+"  C[label=\"Analysis tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  Ledger2 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption2[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger2; Caption2;}\n"
+"  D[label=\"In-memory\\n"
+"data store\",shape=\"cylinder\"];\n"
+"  E[label=\"Data\\n"
+"access tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  A->Ledger1->C->Ledger2->D->E;\n"
+"  {rank = same; C; D;} \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1733
+msgid "// == Существующие фреймворки потоковой обработки"
+msgstr ""
+
+#: lecture.adoc:1742
+msgid ""
+"// [cols=\".^1a,.^1a,.^1a,.^1a,.^1a\"]\n"
+"// |===\n"
+"// |image::spark-logo.svg[]\n"
+"// |image::samza-logo.svg[]\n"
+"// |image::storm-logo.svg[]\n"
+"// |image::flink-logo.svg[]\n"
+"// |image::kafka-logo.svg[]\n"
+"// |==="
+msgstr ""
+
+#: lecture.adoc:1745
+msgctxt "lecture.adoc:1745"
+msgid "// == Когда меня спрашивают, какой стриминговый фреймворк использовать"
+msgstr ""
+
+#: lecture.adoc:1747
+msgid "// image::weuseflink1.jpg[{image-90-width}]"
+msgstr ""
+
+#: lecture.adoc:1750
+msgctxt "lecture.adoc:1750"
+msgid "// == Когда меня спрашивают, какой стриминговый фреймворк использовать"
+msgstr ""
+
+#: lecture.adoc:1752
+msgid "// image::weuseflink2.jpg[{image-90-width}]"
+msgstr ""
+
+#: lecture.adoc:1762
+msgid ""
+"== Stateless Transformation\n"
+"[graphviz, \"yelling-topology1.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=16; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"Source[style=filled; fillcolor=\"#634545\"; fontcolor=\"#ffffff\"];\n"
+"Source -> MapVal -> Sink"
+msgstr ""
+
+#: lecture.adoc:1765
+msgctxt "lecture.adoc:1765"
+msgid ""
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:1771
+msgid ""
+"[source,java]\n"
+"----\n"
+"KStream<String, String> stream =  streamsBuilder.stream(\n"
+"     SRC_TOPIC, Consumed.with(Serdes.String(), Serdes.String());\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1781
+msgid ""
+"== Stateless Transformation\n"
+"[graphviz, \"yelling-topology2.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=16; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"MapVal[style=filled; fillcolor=\"#634545\"; fontcolor=\"#ffffff\"];"
+msgstr ""
+
+#: lecture.adoc:1783
+msgctxt "lecture.adoc:1783"
+msgid "Source -> MapVal -> Sink"
+msgstr ""
+
+#: lecture.adoc:1786
+msgctxt "lecture.adoc:1786"
+msgid ""
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:1792
+msgid ""
+"[source,java]\n"
+"----\n"
+"KStream<String, String> upperCasedStream =\n"
+"    stream.mapValues(String::toUpperCase);\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1802
+msgid ""
+"== Stateless Transformation\n"
+"[graphviz, \"yelling-topology3.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=16; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"Sink[style=filled; fillcolor=\"#634545\"; fontcolor=\"#ffffff\"];"
+msgstr ""
+
+#: lecture.adoc:1804
+msgctxt "lecture.adoc:1804"
+msgid "Source -> MapVal -> Sink"
+msgstr ""
+
+#: lecture.adoc:1807
+msgctxt "lecture.adoc:1807"
+msgid ""
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:1813
+msgid ""
+"[source,java,highlight='7-8']\n"
+"----\n"
+"upperCasedStream.to(SINK_TOPIC,\n"
+"     Produced.with(Serdes.String(), Serdes.String());\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1815
+msgid "== Три строчки кода, ну и что тут такого?"
+msgstr ""
+
+#: lecture.adoc:1817
+msgid ""
+"* Больше сообщений в секунду? -- больше машин с одинаковым  `application.id`!"
+msgstr ""
+
+#: lecture.adoc:1824
+msgid ""
+"[graphviz,w1,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 140 ];\n"
+"  rankdir=\"LR\";"
+msgstr ""
+
+#: lecture.adoc:1831
+msgid ""
+"    subgraph cluster_s2{\n"
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/worried.png\"];\n"
+"        label=\"APP_ID_1\";\n"
+"        style=\"rounded\";\n"
+"   }"
+msgstr ""
+
+#: lecture.adoc:1837
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o1\n"
+"    \"partition 3\"->o1  \n"
+"    label=\"source-topic\""
+msgstr ""
+
+#: lecture.adoc:1839
+msgctxt "lecture.adoc:1839"
+msgid "  }"
+msgstr ""
+
+#: lecture.adoc:1844
+msgid ""
+"  sink[label=\"sink-topic\"]\n"
+"  o1->sink\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1846
+msgid "== Добавляем ноды"
+msgstr ""
+
+#: lecture.adoc:1861
+msgid ""
+"[graphviz,w2,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 140 ];\n"
+"  rankdir=\"LR\";\n"
+"      subgraph cluster_s2{\n"
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"        o2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/neutral.png\"]\n"
+"        label=\"APP_ID_1\";\n"
+"        style=\"rounded\";\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:1868
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o1\n"
+"    \"partition 3\"->o2 \n"
+"    label=\"source-topic\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1874
+msgid ""
+"  sink[label=\"sink-topic\"]\n"
+"  o1->sink\n"
+"  o2->sink\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1876
+msgid "== Ограничены только числом партиций"
+msgstr ""
+
+#: lecture.adoc:1884
+msgid ""
+"[graphviz,w4,png]\n"
+"----\n"
+"digraph G {\n"
+"  node [shape=\"rectangle\"]\n"
+"  graph [ dpi = 140 ];\n"
+"  rankdir=\"LR\";\n"
+"      subgraph cluster_s2{"
+msgstr ""
+
+#: lecture.adoc:1887
+msgctxt "lecture.adoc:1887"
+msgid ""
+"        o1[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1890
+msgctxt "lecture.adoc:1890"
+msgid ""
+"        o2[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1893
+msgctxt "lecture.adoc:1893"
+msgid ""
+"        o3[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/smiley.png\"]"
+msgstr ""
+
+#: lecture.adoc:1896
+msgctxt "lecture.adoc:1896"
+msgid ""
+"        o4[shape=\"none\",label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/rollingeyes.png\"]"
+msgstr ""
+
+#: lecture.adoc:1900
+msgid ""
+"        label=\"APP_ID_1\";\n"
+"        style=\"rounded\";\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:1907
+msgctxt "lecture.adoc:1907"
+msgid ""
+"  subgraph cluster_s1{\n"
+"    \"partition 1\"->o1\n"
+"    \"partition 2\"->o2\n"
+"    \"partition 3\"->o3 \n"
+"    label=\"source-topic\"\n"
+"  }"
+msgstr ""
+
+#: lecture.adoc:1914
+msgid ""
+"  sink[label=\"sink-topic\"]\n"
+"  o1->sink\n"
+"  o2->sink\n"
+"  o3->sink\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:1932
+msgid ""
+"== Магия Stateful Transformation\n"
+"[graphviz, \"counting-topology-changelog1.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=18; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"Store [shape=\"cylinder\"; label=\"RocksDB\"; fixedsize=\"true\"; width=\"1."
+"5\"]\n"
+"Source -> MapVal -> Sum -> Sink\n"
+"Sum -> Store [dir=both; label=\" \\n"
+" \"]\n"
+"{rank = same; Store; Sum;}\n"
+"Store -> Changelog[style=\"invis\"]\n"
+"Changelog[shape=\"box\"; style=\"invis\"; width=\"1.5\"; fillcolor=\"#"
+"634545\"; fontcolor=\"#ffffff\";]\n"
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:1948
+msgid ""
+"== Изменения реплицируются в топик!\n"
+"[graphviz, \"counting-topology-changelog2.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=18; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"Store [shape=\"cylinder\"; label=\"RocksDB\"; fixedsize=\"true\"; width=\"1."
+"5\"]\n"
+"Source -> MapVal -> Sum -> Sink\n"
+"Sum -> Store [dir=both; label=\" \\n"
+" \"]\n"
+"{rank = same; Store; Sum;}\n"
+"Store -> Changelog\n"
+"Changelog[shape=\"box\"; style=\"filled\"; width=\"1.5\"; fillcolor=\"#"
+"634545\"; fontcolor=\"#ffffff\";]\n"
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:1955
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-oneworker.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:1962
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S1->S2 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:1965
+msgctxt "lecture.adoc:1965"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:1968
+msgctxt "lecture.adoc:1968"
+msgid ""
+"        subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:1972
+msgctxt "lecture.adoc:1972"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:1974
+msgctxt "lecture.adoc:1974"
+msgid "        d->ls1;"
+msgstr ""
+
+#: lecture.adoc:1977
+msgctxt "lecture.adoc:1977"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:1982
+msgctxt "lecture.adoc:1982"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:1984
+msgctxt "lecture.adoc:1984"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:1987
+msgctxt "lecture.adoc:1987"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:1991
+msgctxt "lecture.adoc:1991"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:1993
+msgctxt "lecture.adoc:1993"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2002
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\" cellspacing=\"5\""
+">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">15</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">10</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">20</font></td></tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2004
+msgid "    }"
+msgstr ""
+
+#: lecture.adoc:2008
+msgid ""
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2015
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-1.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2023
+msgctxt "lecture.adoc:2023"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2026
+msgctxt "lecture.adoc:2026"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2029
+msgctxt "lecture.adoc:2029"
+msgid ""
+"        subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2033
+msgctxt "lecture.adoc:2033"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2035
+msgctxt "lecture.adoc:2035"
+msgid "        d->ls1;"
+msgstr ""
+
+#: lecture.adoc:2037
+msgctxt "lecture.adoc:2037"
+msgid "        ls1->p3v1;"
+msgstr ""
+
+#: lecture.adoc:2040
+msgctxt "lecture.adoc:2040"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2045
+msgctxt "lecture.adoc:2045"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2047
+msgctxt "lecture.adoc:2047"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2050
+msgctxt "lecture.adoc:2050"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2054
+msgctxt "lecture.adoc:2054"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2056
+msgctxt "lecture.adoc:2056"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2064
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">15</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">10</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">20</font></td></tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2068
+msgctxt "lecture.adoc:2068"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p2v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2084
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>10</td></tr></table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>20</td></tr></table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>15</td></tr></table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2091
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-2.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2099
+msgctxt "lecture.adoc:2099"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2102
+msgctxt "lecture.adoc:2102"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2105
+msgctxt "lecture.adoc:2105"
+msgid ""
+"        subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2109
+msgctxt "lecture.adoc:2109"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2111
+msgctxt "lecture.adoc:2111"
+msgid "        d->ls1;"
+msgstr ""
+
+#: lecture.adoc:2113
+msgctxt "lecture.adoc:2113"
+msgid "        ls1->p3v1;"
+msgstr ""
+
+#: lecture.adoc:2116
+msgctxt "lecture.adoc:2116"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2121
+msgctxt "lecture.adoc:2121"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2123
+msgctxt "lecture.adoc:2123"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2126
+msgctxt "lecture.adoc:2126"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2130
+msgctxt "lecture.adoc:2130"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2132
+msgctxt "lecture.adoc:2132"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2140
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">19</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">12</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">22</font></td></tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2144
+msgctxt "lecture.adoc:2144"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p2v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2169
+msgctxt "lecture.adoc:2169"
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>10</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>12</td></tr>\n"
+"        </table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>20</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>22</td></tr>\n"
+"        </table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>15</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>19</td></tr>\n"
+"        </table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2176
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-25.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2184
+msgctxt "lecture.adoc:2184"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2187
+msgctxt "lecture.adoc:2187"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2190
+msgctxt "lecture.adoc:2190"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2195
+msgctxt "lecture.adoc:2195"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2197
+msgctxt "lecture.adoc:2197"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2200
+msgctxt "lecture.adoc:2200"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2204
+msgctxt "lecture.adoc:2204"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2206
+msgctxt "lecture.adoc:2206"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2214
+msgctxt "lecture.adoc:2214"
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">19</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">12</font></td>\n"
+"        </tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2218
+msgctxt "lecture.adoc:2218"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p3v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2224
+msgctxt "lecture.adoc:2224"
+msgid ""
+"    subgraph cluster_p2 {\n"
+"      label = \"Worker 2\";\n"
+"         subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2228
+msgctxt "lecture.adoc:2228"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2234
+msgid ""
+"        ls2[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"img src=\"src/main/asciidoc/images/question-mark.png\"/></td></tr></table>>]"
+"\n"
+"        d->ls2;\n"
+"        ls2->p2v1[style=\"invis\"];\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2259
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>10</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>12</td></tr>\n"
+"        </table>>];\n"
+"        p2v1[shape=\"none\"; style=\"invis\"; label= <<table cellborder=\"0\""
+">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>20</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>22</td></tr>\n"
+"        </table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>15</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>19</td></tr>\n"
+"        </table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2266
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-3.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2274
+msgctxt "lecture.adoc:2274"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2277
+msgctxt "lecture.adoc:2277"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2280
+msgctxt "lecture.adoc:2280"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2285
+msgctxt "lecture.adoc:2285"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2287
+msgctxt "lecture.adoc:2287"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2290
+msgctxt "lecture.adoc:2290"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2294
+msgctxt "lecture.adoc:2294"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2296
+msgctxt "lecture.adoc:2296"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2304
+msgctxt "lecture.adoc:2304"
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">19</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">12</font></td>\n"
+"        </tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2308
+msgctxt "lecture.adoc:2308"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p3v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2314
+msgctxt "lecture.adoc:2314"
+msgid ""
+"    subgraph cluster_p2 {\n"
+"      label = \"Worker 2\";\n"
+"         subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2318
+msgctxt "lecture.adoc:2318"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2324
+msgid ""
+"        ls2[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">22</font></td></tr></table>>]\n"
+"        d->ls2;\n"
+"        ls2->p2v1[dir=\"back\"];\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2349
+msgctxt "lecture.adoc:2349"
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>10</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>12</td></tr>\n"
+"        </table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>20</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>22</td></tr>\n"
+"        </table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>15</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>19</td></tr>\n"
+"        </table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2356
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-4.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2364
+msgctxt "lecture.adoc:2364"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2367
+msgctxt "lecture.adoc:2367"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2370
+msgctxt "lecture.adoc:2370"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2375
+msgctxt "lecture.adoc:2375"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2377
+msgctxt "lecture.adoc:2377"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2380
+msgctxt "lecture.adoc:2380"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2384
+msgctxt "lecture.adoc:2384"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2386
+msgctxt "lecture.adoc:2386"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2394
+msgctxt "lecture.adoc:2394"
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">21</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">13</font></td>\n"
+"        </tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2398
+msgctxt "lecture.adoc:2398"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p3v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2404
+msgctxt "lecture.adoc:2404"
+msgid ""
+"    subgraph cluster_p2 {\n"
+"      label = \"Worker 2\";\n"
+"         subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2408
+msgctxt "lecture.adoc:2408"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2414
+msgctxt "lecture.adoc:2414"
+msgid ""
+"        ls2[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">23</font></td></tr></table>>]\n"
+"        d->ls2;\n"
+"        ls2->p2v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2445
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>10</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>12</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>13</td></tr>\n"
+"        </table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"         <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>20</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>22</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>23</td></tr>\n"
+"        </table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>15</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>19</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>21</td></tr>\n"
+"        </table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2452
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-5.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2460
+msgctxt "lecture.adoc:2460"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2463
+msgctxt "lecture.adoc:2463"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2466
+msgctxt "lecture.adoc:2466"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2471
+msgctxt "lecture.adoc:2471"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2473
+msgctxt "lecture.adoc:2473"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2476
+msgctxt "lecture.adoc:2476"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2480
+msgctxt "lecture.adoc:2480"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2482
+msgctxt "lecture.adoc:2482"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2490
+msgctxt "lecture.adoc:2490"
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">21</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">13</font></td>\n"
+"        </tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2494
+msgctxt "lecture.adoc:2494"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p3v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2500
+msgctxt "lecture.adoc:2500"
+msgid ""
+"    subgraph cluster_p2 {\n"
+"      label = \"Worker 2\";\n"
+"         subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2504
+msgctxt "lecture.adoc:2504"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2510
+msgctxt "lecture.adoc:2510"
+msgid ""
+"        ls2[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">23</font></td></tr></table>>]\n"
+"        d->ls2;\n"
+"        ls2->p2v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2529
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>13</td></tr>\n"
+"        </table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>23</td></tr>        \n"
+"        </table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>21</td></tr>\n"
+"        </table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2536
+msgid ""
+"== Партиционирование и local state\n"
+"[graphviz, \"local-partitioning-6.png\"]\n"
+"-----\n"
+"digraph D {\n"
+"  graph [ dpi = 150 ]; \n"
+"  subgraph system {"
+msgstr ""
+
+#: lecture.adoc:2544
+msgctxt "lecture.adoc:2544"
+msgid ""
+"     subgraph cluster_s2{\n"
+"          style = \"invis\"\n"
+"          S1 [shape=plaintext label = \"Source\"];\n"
+"          S2 [shape=plaintext label = \"Local store\"];\n"
+"          S3 [shape=plaintext label = \"Changelog\"];\n"
+"          S1->S2->S3 [style=\"invis\"]\n"
+"      }"
+msgstr ""
+
+#: lecture.adoc:2547
+msgctxt "lecture.adoc:2547"
+msgid ""
+"    subgraph cluster_p1 {\n"
+"      label = \"Worker 1\";"
+msgstr ""
+
+#: lecture.adoc:2550
+msgctxt "lecture.adoc:2550"
+msgid ""
+"        subgraph cluster_pp2{\n"
+"              label = \"Partition 3\""
+msgstr ""
+
+#: lecture.adoc:2554
+msgctxt "lecture.adoc:2554"
+msgid ""
+"              d[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/pear.png\"];\n"
+"          }"
+msgstr ""
+
+#: lecture.adoc:2556
+msgctxt "lecture.adoc:2556"
+msgid "        d->ls1;"
+msgstr ""
+
+#: lecture.adoc:2558
+msgctxt "lecture.adoc:2558"
+msgid "        ls1->p3v1;"
+msgstr ""
+
+#: lecture.adoc:2561
+msgctxt "lecture.adoc:2561"
+msgid ""
+"          subgraph cluster_pp11{\n"
+"              label = \"Partition 2\""
+msgstr ""
+
+#: lecture.adoc:2566
+msgctxt "lecture.adoc:2566"
+msgid ""
+"              b [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/red-apple.png\"];\n"
+"              c[shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/kiwi.png\"];"
+msgstr ""
+
+#: lecture.adoc:2568
+msgctxt "lecture.adoc:2568"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2571
+msgctxt "lecture.adoc:2571"
+msgid ""
+"        subgraph cluster_pp1{\n"
+"              label = \"Partition 1\""
+msgstr ""
+
+#: lecture.adoc:2575
+msgctxt "lecture.adoc:2575"
+msgid ""
+"              a [shape=\"none\", label=\"\",\n"
+"                 image=\"src/main/asciidoc/images/banana.png\"];"
+msgstr ""
+
+#: lecture.adoc:2577
+msgctxt "lecture.adoc:2577"
+msgid "          }"
+msgstr ""
+
+#: lecture.adoc:2585
+msgid ""
+"        ls1[shape=\"cylinder\" label = <<table border=\"0\"  cellspacing=\""
+"5\">\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\"/></td><td><"
+"font point-size=\"24\">21</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td><font point-size=\"24\">13</font></td>\n"
+"        <vr/><td><img src=\"src/main/asciidoc/images/pear.png\"/></td><td><"
+"font point-size=\"24\">23</font></td></tr></table>>]\n"
+"        a->ls1;\n"
+"        b->ls1;\n"
+"        c->ls1;"
+msgstr ""
+
+#: lecture.adoc:2589
+msgctxt "lecture.adoc:2589"
+msgid ""
+"        ls1->p1v1;\n"
+"        ls1->p2v1;\n"
+"    }"
+msgstr ""
+
+#: lecture.adoc:2605
+msgid ""
+"        p1v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 2</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/red-apple.png\""
+"/></td><td>13</td></tr></table>>];\n"
+"        p2v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 3</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/pear.png\""
+"/></td><td>23</td></tr></table>>];\n"
+"        p3v1[shape=\"none\"; label= <<table cellborder=\"0\">\n"
+"        <tr><td colspan=\"2\">Partition 1</td></tr>\n"
+"        <hr/>\n"
+"        <tr><td><img src=\"src/main/asciidoc/images/banana.png\""
+"/></td><td>21</td></tr></table>>];\n"
+"  }\n"
+"} \n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2608
+msgid "== Что ещё умеют стримы?"
+msgstr ""
+
+#: lecture.adoc:2610
+msgid "Соединять источники!"
+msgstr ""
+
+#: lecture.adoc:2621
+msgid ""
+"[graphviz, \"join-storages.png\"]\n"
+"-----\n"
+"digraph G {\n"
+"graph [ dpi = 150 ]; \n"
+"rankdir=\"LR\";\n"
+"node [fontsize=18; shape=\"circle\"; fixedsize=\"true\"; width=\"1.1\"];\n"
+"Store1 [shape=\"cylinder\"; label=\"Local Store 1\"; fixedsize=\"true\"; "
+"width=\"1.7\"]\n"
+"Store2 [shape=\"cylinder\"; label=\"Local Store 2\"; fixedsize=\"true\"; "
+"width=\"1.7\"]\n"
+"Source1 -> Join\n"
+"Source2 -> Join"
+msgstr ""
+
+#: lecture.adoc:2627
+msgid ""
+"Join -> Sink\n"
+"Join -> Store1 [dir=both; label=\" \\n"
+" \"]\n"
+"Join -> Store2 [dir=both; label=\" \\n"
+" \"]\n"
+"Store1 -> Store2 [style=invis]\n"
+"{rank = same; Store1; Join }"
+msgstr ""
+
+#: lecture.adoc:2630
+msgctxt "lecture.adoc:2630"
+msgid ""
+"}\n"
+"-----"
+msgstr ""
+
+#: lecture.adoc:2632
+msgid "== Агрегировать данные во временных окнах"
+msgstr ""
+
+#: lecture.adoc:2635
+msgid ""
+".Источник: Kafka Streams in Action\n"
+"image::tumbling-window.png[{image-70-width}]"
+msgstr ""
+
+#: lecture.adoc:2637
+msgid "== «Склеивать» данные, относящиеся к рабочей сессии"
+msgstr ""
+
+#: lecture.adoc:2639
+msgid "image::streams-session-windows-02.png[{image-50-width}]"
+msgstr ""
+
+#: lecture.adoc:2641
+msgid "== KSQL "
+msgstr ""
+
+#: lecture.adoc:2658
+msgid ""
+"[source,sql]\n"
+"----\n"
+"CREATE STREAM pageviews_enriched AS\n"
+"  SELECT pv.viewtime,\n"
+"         pv.userid AS userid,\n"
+"         pv.pageid,\n"
+"         pv.timestring,\n"
+"         u.gender,\n"
+"         u.regionid,\n"
+"         u.interests,\n"
+"         u.contactinfo\n"
+"  FROM pageviews_transformed pv\n"
+"  LEFT JOIN users_5part u ON pv.userid = u.userid\n"
+"  EMIT CHANGES;\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2660
+msgid "== KSQL"
+msgstr ""
+
+#: lecture.adoc:2673
+msgid ""
+"[source,sql]\n"
+"----\n"
+"CREATE TABLE pageviews_per_region_per_30secs AS\n"
+"  SELECT regionid,\n"
+"         count(*)\n"
+"  FROM pageviews_enriched\n"
+"  WINDOW TUMBLING (SIZE 30 SECONDS)\n"
+"  WHERE UCASE(gender)='FEMALE' AND LCASE(regionid)='region_6'\n"
+"  GROUP BY regionid\n"
+"  EMIT CHANGES;\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2675
+msgid "== Кейсы для потоковых систем"
+msgstr ""
+
+#: lecture.adoc:2679
+msgid ""
+"* Мониторинг! Логи!\n"
+"* Отслеживание действий пользователей\n"
+"* Выявление аномалий (в т. ч. попыток мошенничества)"
+msgstr ""
+
+#: lecture.adoc:2683
+msgid ""
+"[%notitle]\n"
+"== Всюду, где ценность/влияние данных уменьшается с их «возрастом»\n"
+"image::streams-ok.svg[{image-90-width}]"
+msgstr ""
+
+#: lecture.adoc:2688
+msgid ""
+"[%notitle]\n"
+"== Kafka -- это зацикленная плёнка\n"
+"image::tapeloop.jpg[{image-60-width}]"
+msgstr ""
+
+#: lecture.adoc:2692
+msgid ""
+"[%notitle]\n"
+"== Где использовать Kafka не очень удобно\n"
+"image::streams-noway.svg[{image-90-width}]"
+msgstr ""
+
+#: lecture.adoc:2694
+msgid "== О чём следует помнить"
+msgstr ""
+
+#: lecture.adoc:2699
+msgid ""
+"* При изменении схемы данных миграция не похожа на RDBMS.\n"
+"* Once-only delivery:\n"
+"** В обычном режиме, сбой в KStreams приводит к повторному чтению данных.\n"
+"** В режиме once-only delivery -- чтение и запись между топиками Kafka."
+msgstr ""
+
+#: lecture.adoc:2701
+msgid "//== Если нужно хранить данные всё время"
+msgstr ""
+
+#: lecture.adoc:2703
+msgid "//* Лямбда-архитектура"
+msgstr ""
+
+#: lecture.adoc:2710
+msgid ""
+"//[cols=\"30a,70a\"]\n"
+"//|===\n"
+"//.^|image::nikita_salnikov.jpg[]\n"
+"//.^|\n"
+"//*Никита Сальников-Тарновский* "
+"//https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое "
+"приложение — это не только код, но и 3-4 года поддержки в проде]\n"
+"//|==="
+msgstr ""
+
+#: lecture.adoc:2712
+msgctxt "lecture.adoc:2712"
+msgid "== Наш план"
+msgstr ""
+
+#: lecture.adoc:2724
+msgid ""
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+"1. [line-through]#Что такое лог и почему это важно#\n"
+"2. [line-through]#Что такое Kafka и что она умеет#\n"
+"3. [line-through]#Что такое потоковая архитектура и на что способны "
+"потоковые обработчики#\n"
+"4. *Kafka и JavaScript*\n"
+"5. Как попробовать Кафку сегодня\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2726
+msgctxt "lecture.adoc:2726"
+msgid "== Kafka и Javascript"
+msgstr ""
+
+#: lecture.adoc:2733
+msgid ""
+"[graphviz,streaming-arch2,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Collection\\n"
+"tier\",shape=\"rectangle\",style=\"rounded\";];"
+msgstr ""
+
+#: lecture.adoc:2747
+msgctxt "lecture.adoc:2747"
+msgid ""
+"  Ledger1 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption1[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger1; Caption1;}\n"
+"  C[label=\"Analysis tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  Ledger2 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption2[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger2; Caption2;}\n"
+"  D[label=\"In-memory\\n"
+"data store\",shape=\"cylinder\"];\n"
+"  E[label=\"Data\\n"
+"access tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  A->Ledger1->C->Ledger2->D->E;\n"
+"  {rank = same; C; D;} \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2749
+msgctxt "lecture.adoc:2749"
+msgid "== Kafka и Javascript"
+msgstr ""
+
+#: lecture.adoc:2756
+msgid ""
+"[graphviz,streaming-arch3,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Collection\\n"
+"tier\",shape=\"rectangle\",style=\"rounded,filled\"; fillcolor=\"#634545\"; "
+"fontcolor=\"#ffffff\";];"
+msgstr ""
+
+#: lecture.adoc:2770
+msgctxt "lecture.adoc:2770"
+msgid ""
+"  Ledger1 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption1[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger1; Caption1;}\n"
+"  C[label=\"Analysis tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  Ledger2 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption2[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger2; Caption2;}\n"
+"  D[label=\"In-memory\\n"
+"data store\",shape=\"cylinder\"];\n"
+"  E[label=\"Data\\n"
+"access tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  A->Ledger1->C->Ledger2->D->E;\n"
+"  {rank = same; C; D;} \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2772
+msgid "== kafka-node"
+msgstr ""
+
+#: lecture.adoc:2774
+msgid "image::kafka-node.png[]"
+msgstr ""
+
+#: lecture.adoc:2778
+msgid ""
+"* Лидер по звёздам и количеству использований\n"
+"* Чистая JavaScript-реализация\n"
+"* Умеет не всё."
+msgstr ""
+
+#: lecture.adoc:2780
+msgid "== node-rdkafka"
+msgstr ""
+
+#: lecture.adoc:2782
+msgid "image::node-rdkafka.png[]"
+msgstr ""
+
+#: lecture.adoc:2787
+msgid ""
+"* Github-метрики проигрывают kafka-node\n"
+"* JavaScript/C++\n"
+"* Обёртка вокруг librdkafka -- очень зрелого проекта\n"
+"* Умеет работать с Confluent Cloud"
+msgstr ""
+
+#: lecture.adoc:2790
+msgctxt "lecture.adoc:2790"
+msgid "== Преобразующий/выходной каскад на node.js?"
+msgstr ""
+
+#: lecture.adoc:2797
+msgid ""
+"[graphviz,streaming-arch4,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Collection\\n"
+"tier\",shape=\"rectangle\",style=\"rounded\"];"
+msgstr ""
+
+#: lecture.adoc:2811
+msgid ""
+"  Ledger1 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption1[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger1; Caption1;}\n"
+"  C[label=\"Analysis tier\",shape=\"rectangle\",style=\"rounded,filled\" "
+"fillcolor=\"#634545\"; fontcolor=\"#ffffff\";];\n"
+"  Ledger2 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption2[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger2; Caption2;}\n"
+"  D[label=\"In-memory\\n"
+"data store\",shape=\"cylinder\"];\n"
+"  E[label=\"Data\\n"
+"access tier\",shape=\"rectangle\",style=\"rounded\"];\n"
+"  A->Ledger1->C->Ledger2->D->E;\n"
+"  {rank = same; C; D;} \n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2815
+msgctxt "lecture.adoc:2815"
+msgid "== Преобразующий/выходной каскад на node.js?"
+msgstr ""
+
+#: lecture.adoc:2821
+msgid ""
+"[cols=\">40a,60a\"]\n"
+"|===\n"
+"|image::nodefluent.png[]\n"
+"|\n"
+"https://github.com/nodefluent[Nodefluent]"
+msgstr ""
+
+#: lecture.adoc:2826
+msgid ""
+"* node-sinek -- ещё один клиент\n"
+"* kafka-streams -- реимплементация KStreams для node.js\n"
+"* kafka-connect -- реимплементация kafka-connect\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2828
+msgid "== KSQL + Serverless"
+msgstr ""
+
+#: lecture.adoc:2835
+msgid ""
+"[graphviz,streaming-arch5,png]\n"
+"----\n"
+"digraph G {\n"
+"  graph [ dpi = 190 ];\n"
+"  rankdir=\"LR\";\n"
+"  A[label=\"Collection\\n"
+"tier\",shape=\"rectangle\",style=\"rounded\"];"
+msgstr ""
+
+#: lecture.adoc:2840
+msgid ""
+"  Ledger1 [shape=\"record\",label=\"{ | | | | }\"];\n"
+"  Caption1[label=\"Log\\n"
+"(Kafka)\",shape=\"plaintext\"];\n"
+"  {rank = same; Ledger1; Caption1;}\n"
+"  C[label=\"Analysis tier\\n"
+"(KSQL)\",shape=\"rectangle\",style=\"rounded\"];"
+msgstr ""
+
+#: lecture.adoc:2845
+msgid ""
+"  E[label=\"Consumer\\n"
+"(serverless)\",shape=\"rectangle\",style=\"rounded,filled\"fillcolor=\"#"
+"634545\"; fontcolor=\"#ffffff\";];\n"
+"  A->Ledger1->C->E;\n"
+"}\n"
+"----"
+msgstr ""
+
+#: lecture.adoc:2847
+msgid ""
+"https://www.confluent.io/kafka-summit-lon19/event-sourcing-stream-processing-"
+"serverless[Benjamin Stopford: Event Sourcing, Stream Processing and "
+"Serverless]"
+msgstr ""
+
+#: lecture.adoc:2849
+msgctxt "lecture.adoc:2849"
+msgid "== Наш план"
+msgstr ""
+
+#: lecture.adoc:2861
+msgid ""
+"[cols=\"20a,60a,20a\"]\n"
+"|===\n"
+".<|image::kafka.jpg[]\n"
+".<|\n"
+"1. [line-through]#Что такое лог и почему это важно#\n"
+"2. [line-through]#Что такое Kafka и что она умеет#\n"
+"3. [line-through]#Что такое потоковая архитектура и на что способны "
+"потоковые обработчики#\n"
+"4. [line-through]#Kafka и JavaScript#\n"
+"5. *Как попробовать Кафку сегодня*\n"
+".<|image::kafka.jpg[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2863
+msgid "== Вы решили попробовать Кафку. С чего начать?"
+msgstr ""
+
+#: lecture.adoc:2865
+msgid "https://kafka.apache.org/downloads"
+msgstr ""
+
+#: lecture.adoc:2867
+msgid "`kafkacat` -- лучший CLI инструмент"
+msgstr ""
+
+#: lecture.adoc:2869
+msgid "image::conduktor.png[]"
+msgstr ""
+
+#: lecture.adoc:2871
+msgid "Conduktor -- лучший GUI инструмент"
+msgstr ""
+
+#: lecture.adoc:2874
+msgid ""
+"[%notitle]\n"
+"== Conduktor"
+msgstr ""
+
+#: lecture.adoc:2876
+msgid "image::conduktor-screen.png[]"
+msgstr ""
+
+#: lecture.adoc:2878
+msgid "== Эксплуатировать Кафку в production тяжело"
+msgstr ""
+
+#: lecture.adoc:2884
+msgid ""
+"[cols=\"30a,70a\"]\n"
+"|===\n"
+".^|image::koshelev.png[]\n"
+".^|\n"
+"*Григорий Кошелев*"
+msgstr ""
+
+#: lecture.adoc:2888
+msgid ""
+"* https://2019.jpoint.ru/talks/1xa5ea6p9djq1phnauiygm/[Когда всё пошло по "
+"Кафке]\n"
+"* https://2019.devoops-piter.ru/2019/spb/talks/3cq28gbf1fzn40dpbq6bpu/[Как "
+"готовить Кафку, чтобы не пригорало]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2892
+msgid "== Kafka: The Definitive Guide"
+msgstr ""
+
+#: lecture.adoc:2901
+msgid ""
+"[.custom-style]\n"
+"[cols=\"30a,70a\"]\n"
+"|===\n"
+"|image::kafka-the-definitive-guide.jpg[]\n"
+"|\n"
+"* Gwen Shapira, Neha Narkhede, Todd Palino\n"
+"* September 2017\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2905
+msgid ""
+"== Сообщества, конференции\n"
+"- Kafka Summit Conference: https://kafka-summit.org/"
+msgstr ""
+
+#: lecture.adoc:2907
+msgid "image::kafka-summit.png[{image-50-width}]"
+msgstr ""
+
+#: lecture.adoc:2909
+msgid "== Телеграм"
+msgstr ""
+
+#: lecture.adoc:2911
+msgid "Грефневая Кафка"
+msgstr ""
+
+#: lecture.adoc:2914
+msgid ""
+"* https://t.me/AwesomeKafka_ru\n"
+"* https://t.me/proKafka"
+msgstr ""
+
+#: lecture.adoc:2916
+msgid "== Митап в Москве "
+msgstr ""
+
+#: lecture.adoc:2918
+msgid "Moscow Apache Kafka® Meetup by Confluent -- раз в квартал"
+msgstr ""
+
+#: lecture.adoc:2921
+msgid "== На этом всё!"
+msgstr ""
+
+#: lecture.adoc:2927
+msgid ""
+"[cols=\">.^40a,<.^60a\"]\n"
+"|===\n"
+"|image::kafka-logo.svg[{image-30-width}]\n"
+"|image::conduktor.png[]\n"
+"|==="
+msgstr ""
+
+#: lecture.adoc:2929
+msgid "icon:twitter[size=lg] https://twitter.com/inponomarev[@inponomarev]"
+msgstr ""
+
+#: lecture.adoc:2931
+msgctxt "lecture.adoc:2931"
+msgid "ponomarev@corchestra.ru"
+msgstr ""
+
+#: lecture.adoc:2932
+msgid "*Спасибо!*"
+msgstr ""
