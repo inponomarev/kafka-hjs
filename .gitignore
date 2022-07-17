@@ -1,3 +1,11 @@
 src/main/asciidoc/output/
 target/
 .m2/
+
+*.bak
+
+#i18n gettext
+*.mo
+*.po~
+*.log
+lecture-en.adoc

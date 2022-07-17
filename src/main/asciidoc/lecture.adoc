@@ -1729,26 +1729,26 @@ digraph G {
 }
 ----
 
-// == Существующие фреймворки потоковой обработки
+== Существующие фреймворки потоковой обработки
 
-// [cols=".^1a,.^1a,.^1a,.^1a,.^1a"]
-// |===
-// |image::spark-logo.svg[]
-// |image::samza-logo.svg[]
-// |image::storm-logo.svg[]
-// |image::flink-logo.svg[]
-// |image::kafka-logo.svg[]
-// |===
-
-
-// == Когда меня спрашивают, какой стриминговый фреймворк использовать
-
-// image::weuseflink1.jpg[{image-90-width}]
+[cols=".^1a,.^1a,.^1a,.^1a,.^1a"]
+|===
+|image::spark-logo.svg[]
+|image::samza-logo.svg[]
+|image::storm-logo.svg[]
+|image::flink-logo.svg[]
+|image::kafka-logo.svg[]
+|===
 
 
-// == Когда меня спрашивают, какой стриминговый фреймворк использовать
+== Когда меня спрашивают, какой стриминговый фреймворк использовать
 
-// image::weuseflink2.jpg[{image-90-width}]
+image::weuseflink1.jpg[{image-90-width}]
+
+
+== Когда меня спрашивают, какой стриминговый фреймворк использовать
+
+image::weuseflink2.jpg[{image-90-width}]
 
 == Stateless Transformation
 [graphviz, "yelling-topology1.png"]
@@ -2697,16 +2697,16 @@ image::streams-noway.svg[{image-90-width}]
 ** В обычном режиме, сбой в KStreams приводит к повторному чтению данных.
 ** В режиме once-only delivery -- чтение и запись между топиками Kafka.
 
-//== Если нужно хранить данные всё время
+== Если нужно хранить данные всё время
 
-//* Лямбда-архитектура
+* Лямбда-архитектура
 
-//[cols="30a,70a"]
-//|===
-//.^|image::nikita_salnikov.jpg[]
-//.^|
-//*Никита Сальников-Тарновский* //https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
-//|===
+[cols="30a,70a"]
+|===
+.^|image::nikita_salnikov.jpg[]
+.^|
+*Никита Сальников-Тарновский* //https://2019.jokerconf.com/2019/talks/2qw2ljhlfoeiipjf0gfzzb/[Потоковое приложение — это не только код, но и 3-4 года поддержки в проде]
+|===
 
 == Наш план
 
@@ -2895,8 +2895,8 @@ image::conduktor-screen.png[]
 |===
 |image::kafka-the-definitive-guide.jpg[]
 |
-* Gwen Shapira, Neha Narkhede, Todd Palino
-* September 2017
+* Gwen Shapira, Todd Palino, Rajini Sivaram, Krit Petty
+* November 2021
 |===
 
 
